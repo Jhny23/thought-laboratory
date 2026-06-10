@@ -7,7 +7,8 @@ export default function Nav() {
   const path = usePathname();
 
   const links = [
-    { href: "/", label: "experiments" },
+    { href: "/experiments", label: "experiments" },
+    { href: "/biographies", label: "biographies" },
     { href: "/about", label: "about" },
   ];
 
@@ -35,7 +36,7 @@ export default function Nav() {
             fontFamily: "var(--mono)",
             fontSize: "0.62rem",
             letterSpacing: "0.08em",
-            color: path === l.href ? "var(--ink)" : "var(--muted)",
+            color: path.startsWith(l.href) ? "var(--ink)" : "var(--muted)",
             transition: "color 0.2s",
           }}>
             {l.label}

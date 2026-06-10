@@ -34,7 +34,7 @@ export default function About() {
         <div style={{ display: "flex", flexDirection: "column", gap: "0.7rem" }}>
           {[
             ["enquiries", "info@thoughtlaboratory.com"],
-            ["instagram", "@thoughtlaboratory"],
+            ["instagram", "@inthiscult"],
             ["newsletter", "(subscribe below)"],
           ].map(([k, v]) => (
             <div key={k} style={{ display: "grid", gridTemplateColumns: "100px 1fr" }}>
