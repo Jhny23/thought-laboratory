@@ -330,7 +330,242 @@ export default function HomePage() {
         </Reveal>
       </div>
 
+      {/* ── TEMPLE SECTION ── */}
+      <TempleSection />
+
       <Footer />
+    </div>
+  );
+}
+
+/* ── Cascading character streams ── */
+const leftStream = [
+  "我", "思", "故", "我", "在", "　", "無", "常", "是", "諸", "行",
+  "之", "本", "質", "　", "人", "者", "萬", "物", "之", "靈", "長",
+  "　", "識", "者", "不", "博", "博", "者", "不", "識", "　", "道",
+  "可", "道", "非", "常", "道", "　", "知", "者", "不", "言", "言",
+  "者", "不", "知", "　", "天", "下", "皆", "知", "美", "之", "為",
+];
+
+const rightStream = [
+  "吾", "日", "三", "省", "吾", "身", "　", "為", "人", "謀", "而",
+  "不", "忠", "乎", "　", "與", "朋", "友", "交", "而", "不", "信",
+  "乎", "　", "傳", "不", "習", "乎", "　", "自", "知", "者", "明",
+  "勝", "人", "者", "有", "力", "　", "自", "勝", "者", "強", "　",
+  "知", "足", "者", "富", "　", "強", "行", "者", "有", "志", "　",
+];
+
+const centerStream = [
+  "我", "們", "並", "非", "各", "自", "獨", "立", "存", "在", "的",
+  "實", "體", "　", "We", "are", "not", "separately", "existing",
+  "entities", "　", "自", "我", "之", "幻", "覺", "　", "意", "識",
+  "之", "流", "　", "時", "間", "之", "箭", "　", "因", "果", "之",
+  "鏈", "　", "Derek", "Parfit", "　", "理", "由", "與", "人", "格",
+];
+
+function TempleSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        position: "relative",
+        backgroundColor: "#F8F7F4",
+        overflow: "hidden",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      {/* Temple image — anchored top center */}
+      <div style={{
+        position: "relative",
+        width: "100%",
+        maxWidth: "760px",
+        zIndex: 2,
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(-20px)",
+        transition: "opacity 1.4s ease 0.2s, transform 1.4s ease 0.2s",
+      }}>
+        <img
+          src="/images/temple.png"
+          alt=""
+          style={{
+            width: "100%",
+            display: "block",
+            objectFit: "contain",
+          }}
+        />
+      </div>
+
+      {/* Cascading text — positioned below the temple image, overlapping naturally */}
+      <div style={{
+        position: "relative",
+        width: "100%",
+        maxWidth: "760px",
+        marginTop: "-12rem",
+        zIndex: 1,
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr 1fr",
+        gap: "0",
+        paddingBottom: "8rem",
+      }}>
+
+        {/* Left stream */}
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          paddingRight: "1.5rem",
+          opacity: visible ? 1 : 0,
+          transition: "opacity 1.8s ease 0.6s",
+        }}>
+          {leftStream.map((char, i) => (
+            <span
+              key={i}
+              style={{
+                fontFamily: "'Noto Serif SC', 'Source Han Serif', serif",
+                fontSize: char.length > 2 ? "0.48rem" : "0.85rem",
+                color: `rgba(28,28,26,${0.15 + (i % 7) * 0.04})`,
+                lineHeight: char === "　" ? 2.5 : 1.6,
+                letterSpacing: "0.05em",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(10px)",
+                transition: `opacity 600ms ease ${800 + i * 35}ms, transform 600ms ease ${800 + i * 35}ms`,
+              }}
+            >
+              {char}
+            </span>
+          ))}
+        </div>
+
+        {/* Center stream — Parfit quote */}
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          paddingTop: "6rem",
+        }}>
+          {centerStream.map((char, i) => (
+            <span
+              key={i}
+              style={{
+                fontFamily: char.length > 3
+                  ? "var(--mono)"
+                  : "'Noto Serif SC', 'Source Han Serif', serif",
+                fontSize: char.length > 3 ? "0.42rem" : char === "　" ? "0.5rem" : "0.9rem",
+                color: char === "Derek" || char === "Parfit"
+                  ? "rgba(28,28,26,0.35)"
+                  : `rgba(28,28,26,${0.12 + (i % 5) * 0.05})`,
+                lineHeight: char === "　" ? 3 : 1.5,
+                letterSpacing: char.length > 3 ? "0.12em" : "0.05em",
+                textAlign: "center",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(10px)",
+                transition: `opacity 600ms ease ${1000 + i * 40}ms, transform 600ms ease ${1000 + i * 40}ms`,
+              }}
+            >
+              {char}
+            </span>
+          ))}
+
+          {/* Red seal stamp */}
+          <div style={{
+            marginTop: "1.5rem",
+            width: "22px", height: "22px",
+            backgroundColor: "#8B1A1A",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            opacity: visible ? 0.8 : 0,
+            transition: "opacity 800ms ease 3000ms",
+          }}>
+            <span style={{
+              fontFamily: "'Noto Serif SC', serif",
+              fontSize: "0.5rem", color: "white",
+              lineHeight: 1,
+            }}>思</span>
+          </div>
+        </div>
+
+        {/* Right stream */}
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          paddingLeft: "1.5rem",
+          paddingTop: "2rem",
+          opacity: visible ? 1 : 0,
+          transition: "opacity 1.8s ease 0.8s",
+        }}>
+          {rightStream.map((char, i) => (
+            <span
+              key={i}
+              style={{
+                fontFamily: char.length > 2 ? "var(--mono)" : "'Noto Serif SC', 'Source Han Serif', serif",
+                fontSize: char.length > 2 ? "0.42rem" : "0.85rem",
+                color: `rgba(28,28,26,${0.1 + (i % 6) * 0.04})`,
+                lineHeight: char === "　" ? 2.5 : 1.6,
+                letterSpacing: char.length > 2 ? "0.1em" : "0.05em",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(10px)",
+                transition: `opacity 600ms ease ${900 + i * 38}ms, transform 600ms ease ${900 + i * 38}ms`,
+              }}
+            >
+              {char}
+            </span>
+          ))}
+
+          {/* Second red seal */}
+          <div style={{
+            marginTop: "1rem",
+            width: "18px", height: "18px",
+            backgroundColor: "#8B1A1A",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            opacity: visible ? 0.6 : 0,
+            transition: "opacity 800ms ease 3500ms",
+          }}>
+            <span style={{
+              fontFamily: "'Noto Serif SC', serif",
+              fontSize: "0.42rem", color: "white",
+            }}>道</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Parfit attribution — bottom */}
+      <div style={{
+        position: "relative", zIndex: 3,
+        paddingBottom: "5rem",
+        textAlign: "center",
+        opacity: visible ? 1 : 0,
+        transition: "opacity 1s ease 2.5s",
+      }}>
+        <p style={{
+          fontFamily: "var(--serif)", fontSize: "0.85rem",
+          fontStyle: "italic", color: "rgba(28,28,26,0.35)",
+          letterSpacing: "0.04em", marginBottom: "0.4rem",
+        }}>
+          "We are not separately existing entities."
+        </p>
+        <p style={{
+          fontFamily: "var(--mono)", fontSize: "0.48rem",
+          letterSpacing: "0.15em", color: "rgba(28,28,26,0.2)",
+        }}>
+          — Derek Parfit · Reasons and Persons · 1984
+        </p>
+      </div>
     </div>
   );
 }
