@@ -1,11 +1,9 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { experiments } from "@/app/data/experiments";
 import Nav from "@/app/components/Nav";
 import Footer from "@/app/components/Footer";
 
-/* ── Hero slides — abstract canvas art representing each mood ── */
 const slides = [
   {
     bg: "#1A1918",
@@ -32,17 +30,17 @@ const slides = [
     sub: "— socrates",
   },
 ];
+
 function HeroSlide({ slide, active }: { slide: typeof slides[0]; active: boolean }) {
   return (
     <div style={{
       position: "absolute", inset: 0,
       backgroundColor: slide.bg,
       opacity: active ? 1 : 0,
-      transition: "opacity 2s ease",   // slower fade
+      transition: "opacity 2s ease",
       display: "flex", alignItems: "flex-end",
       padding: "2.8rem",
     }}>
-      {/* Background image with Ken Burns zoom */}
       {slide.image && (
         <div style={{
           position: "absolute", inset: 0,
@@ -54,23 +52,19 @@ function HeroSlide({ slide, active }: { slide: typeof slides[0]; active: boolean
           transition: "transform 8s ease, opacity 2s ease",
         }} />
       )}
-
-      {/* Subtle texture lines */}
       <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.04 }} preserveAspectRatio="none">
         {Array.from({ length: 18 }).map((_, i) => (
           <line key={i} x1="0" y1={`${(i / 18) * 100}%`} x2="100%" y2={`${(i / 18) * 100}%`}
             stroke="white" strokeWidth="0.5" />
         ))}
       </svg>
-
       <div style={{ position: "relative", zIndex: 1 }}>
         <p style={{
           fontFamily: "var(--serif)",
           fontSize: "clamp(1.1rem, 2.2vw, 1.5rem)",
           fontStyle: "italic", fontWeight: 400,
           color: "rgba(250,250,248,0.85)",
-          marginBottom: "0.3rem",
-          lineHeight: 1.3,
+          marginBottom: "0.3rem", lineHeight: 1.3,
         }}>
           {slide.caption}
         </p>
@@ -88,182 +82,55 @@ function HeroSlide({ slide, active }: { slide: typeof slides[0]; active: boolean
 
 function Hero() {
   const [current, setCurrent] = useState(0);
-
   useEffect(() => {
     const t = setInterval(() => setCurrent(c => (c + 1) % slides.length), 7000);
     return () => clearInterval(t);
   }, []);
-
   return (
     <div style={{
-      position: "relative",
-      width: "100%",
-      aspectRatio: "16 / 7",
-      overflow: "hidden",
+      position: "relative", width: "100%",
+      aspectRatio: "16 / 7", overflow: "hidden",
       borderBottom: "1px solid var(--border)",
     }}>
-      {slides.map((s, i) => (
-        <HeroSlide key={i} slide={s} active={i === current} />
-      ))}
-
-      {/* Dot indicators — bottom right */}
+      {slides.map((s, i) => <HeroSlide key={i} slide={s} active={i === current} />)}
       <div style={{
         position: "absolute", bottom: "1.2rem", right: "1.8rem",
         display: "flex", gap: "6px", zIndex: 2,
       }}>
         {slides.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            style={{
-              width: "5px", height: "5px", borderRadius: "50%",
-              backgroundColor: i === current ? "rgba(250,250,248,0.8)" : "rgba(250,250,248,0.25)",
-              border: "none", padding: 0, cursor: "pointer",
-              transition: "background-color 0.3s",
-            }}
-          />
+          <button key={i} onClick={() => setCurrent(i)} style={{
+            width: "5px", height: "5px", borderRadius: "50%",
+            backgroundColor: i === current ? "rgba(250,250,248,0.8)" : "rgba(250,250,248,0.25)",
+            border: "none", padding: 0, cursor: "pointer",
+            transition: "background-color 0.3s",
+          }} />
         ))}
       </div>
     </div>
   );
 }
 
-/* ── Experiment card — B&W base, colour on hover (Metamorphoses behaviour) ── */
-function ExperimentCard({ exp }: { exp: typeof experiments[0] }) {
-  const [hovered, setHovered] = useState(false);
-  const available = exp.status === "available";
-
-  const CardWrapper = available ? Link : "div";
-  const wrapperProps = available ? { href: `/experiments/${exp.slug}` } : {};
-
+function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
   return (
-    <CardWrapper
-      {...(wrapperProps as any)}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        display: "block",
-        cursor: available ? "pointer" : "default",
-        borderBottom: "1px solid var(--border)",
-        padding: "0",
-      }}
-    >
-      {/* Image area — greyscale to colour */}
-      <div style={{
-        position: "relative",
-        aspectRatio: "4 / 3",
-        overflow: "hidden",
-        borderBottom: "1px solid var(--border)",
-      }}>
-        {/* Greyscale base */}
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundColor: "#C8C4BE",
-          opacity: hovered ? 0 : 1,
-          transition: "opacity 0.5s ease",
-          display: "flex", alignItems: "center", justifyContent: "center",
-        }}>
-          {/* Abstract mark for each experiment */}
-          <svg viewBox="0 0 200 200" style={{ width: "55%", opacity: 0.2 }}>
-            <ExperimentMark slug={exp.slug} />
-          </svg>
-        </div>
-
-        {/* Colour version */}
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundColor: exp.hue,
-          opacity: hovered ? 1 : 0,
-          transition: "opacity 0.5s ease",
-          display: "flex", alignItems: "center", justifyContent: "center",
-        }}>
-          <svg viewBox="0 0 200 200" style={{ width: "55%", opacity: 0.35 }}>
-            <ExperimentMark slug={exp.slug} />
-          </svg>
-        </div>
-
-        {/* Status tag */}
-        {!available && (
-          <div style={{
-            position: "absolute", top: "0.8rem", right: "0.8rem",
-            fontFamily: "var(--mono)", fontSize: "0.48rem",
-            letterSpacing: "0.12em", color: "var(--muted)",
-            backgroundColor: "var(--white)", padding: "0.2rem 0.5rem",
-          }}>
-            soon
-          </div>
-        )}
-      </div>
-
-      {/* Card text */}
-      <div style={{ padding: "0.9rem 0.1rem 1.2rem" }}>
-        <p style={{
-          fontFamily: "var(--mono)", fontSize: "0.6rem",
-          letterSpacing: "0.06em", color: "var(--muted)",
-          marginBottom: "0.25rem",
-        }}>
-          {exp.thinker}
-        </p>
-        <p style={{
-          fontFamily: "var(--serif)", fontSize: "1rem",
-          fontStyle: "italic", fontWeight: 400,
-          color: "var(--ink)", lineHeight: 1.2,
-          marginBottom: "0.2rem",
-        }}>
-          {exp.name}
-        </p>
-        <p style={{
-          fontFamily: "var(--mono)", fontSize: "0.55rem",
-          letterSpacing: "0.05em", color: "var(--muted)",
-        }}>
-          {exp.year}
-        </p>
-      </div>
-    </CardWrapper>
+    <div ref={ref} style={{
+      opacity: visible ? 1 : 0,
+      transform: visible ? "translateY(0)" : "translateY(18px)",
+      transition: `opacity 900ms ease ${delay}ms, transform 900ms ease ${delay}ms`,
+    }}>
+      {children}
+    </div>
   );
-}
-
-/* Abstract SVG marks — unique per experiment */
-function ExperimentMark({ slug }: { slug: string }) {
-  switch (slug) {
-    case "veil-of-ignorance":
-      return <circle cx="100" cy="100" r="70" stroke="currentColor" strokeWidth="1.5" fill="none" />;
-    case "experience-machine":
-      return (
-        <>
-          <rect x="40" y="40" width="120" height="120" stroke="currentColor" strokeWidth="1.5" fill="none" />
-          <circle cx="100" cy="100" r="30" stroke="currentColor" strokeWidth="1.5" fill="none" />
-        </>
-      );
-    case "moral-luck":
-      return (
-        <>
-          <line x1="30" y1="100" x2="170" y2="100" stroke="currentColor" strokeWidth="1.5" />
-          <line x1="100" y1="30" x2="100" y2="170" stroke="currentColor" strokeWidth="1.5" />
-        </>
-      );
-    case "the-absurd":
-      return <path d="M100,30 L170,170 L30,170 Z" stroke="currentColor" strokeWidth="1.5" fill="none" />;
-    case "determinism-court":
-      return (
-        <>
-          {[0,1,2,3,4].map(i => (
-            <circle key={i} cx="100" cy="100" r={20 + i * 16} stroke="currentColor" strokeWidth="0.8" fill="none" />
-          ))}
-        </>
-      );
-    case "repugnant-conclusion":
-      return (
-        <>
-          {[0,1,2,3,4,5,6].map(i => (
-            <rect key={i} x={30 + i * 20} y={170 - (i + 1) * 18} width="14" height={(i + 1) * 18}
-              stroke="currentColor" strokeWidth="1" fill="none" />
-          ))}
-        </>
-      );
-    default:
-      return <circle cx="100" cy="100" r="60" stroke="currentColor" strokeWidth="1.5" fill="none" />;
-  }
 }
 
 export default function HomePage() {
@@ -271,43 +138,196 @@ export default function HomePage() {
     <div style={{ backgroundColor: "var(--white)", minHeight: "100vh" }}>
       <Nav />
 
-      {/* Hero */}
       <div style={{ paddingTop: "3rem" }}>
         <Hero />
       </div>
 
-      {/* Filter bar — like Metamorphoses "filter +" */}
+      {/* ── ABOUT THE LAB ── */}
       <div style={{
-        display: "flex", justifyContent: "space-between", alignItems: "center",
-        padding: "0.9rem 1.8rem",
+        maxWidth: "700px",
+        margin: "0 auto",
+        padding: "8rem 1.8rem 8rem",
         borderBottom: "1px solid var(--border)",
       }}>
-        <span style={{
-          fontFamily: "var(--mono)", fontSize: "0.6rem",
-          letterSpacing: "0.1em", color: "var(--muted)",
-        }}>
-          all experiments
-        </span>
-        <span style={{
-          fontFamily: "var(--mono)", fontSize: "0.6rem",
-          letterSpacing: "0.1em", color: "var(--muted)",
-        }}>
-          {experiments.length} total · {experiments.filter(e => e.status === "available").length} available
-        </span>
+        <Reveal>
+          <p style={{
+            fontFamily: "var(--mono)", fontSize: "0.52rem",
+            letterSpacing: "0.2em", color: "var(--muted)",
+            marginBottom: "3rem",
+          }}>
+            thought laboratory
+          </p>
+        </Reveal>
+
+        <Reveal delay={80}>
+          <h2 style={{
+            fontFamily: "var(--serif)",
+            fontSize: "clamp(1.8rem, 4vw, 3rem)",
+            fontWeight: 400, fontStyle: "italic",
+            lineHeight: 1.1, color: "var(--ink)",
+            marginBottom: "3rem",
+            letterSpacing: "-0.01em",
+          }}>
+            Philosophy is not something<br />you observe from a distance.
+          </h2>
+        </Reveal>
+
+        <Reveal delay={140}>
+          <div style={{ height: "1px", backgroundColor: "var(--border)", marginBottom: "3rem" }} />
+        </Reveal>
+
+        <Reveal delay={180}>
+          <p style={{
+            fontFamily: "var(--serif)", fontSize: "1rem",
+            fontWeight: 300, lineHeight: 1.9,
+            color: "var(--ink)", marginBottom: "1.6rem",
+            maxWidth: "58ch",
+          }}>
+            Thought Laboratory is a collection of interactive experiments built on canonical philosophy. Not essays to read. Not arguments to follow at arm's length. Positions to take, under conditions that make taking them difficult.
+          </p>
+        </Reveal>
+
+        <Reveal delay={220}>
+          <p style={{
+            fontFamily: "var(--serif)", fontSize: "1rem",
+            fontWeight: 300, lineHeight: 1.9,
+            color: "var(--muted)", fontStyle: "italic",
+            maxWidth: "52ch",
+          }}>
+            Each experiment is drawn from a thought experiment that changed how philosophers reason — and redesigned so that you have to reason through it yourself.
+          </p>
+        </Reveal>
       </div>
 
-      {/* Grid */}
+      {/* ── FEATURED EXPERIMENT ── */}
       <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gap: "0",
-        borderLeft: "1px solid var(--border)",
+        maxWidth: "700px",
+        margin: "0 auto",
+        padding: "8rem 1.8rem 10rem",
       }}>
-        {experiments.map(exp => (
-          <div key={exp.slug} style={{ borderRight: "1px solid var(--border)", padding: "0 1.2rem" }}>
-            <ExperimentCard exp={exp} />
+        <Reveal>
+          <p style={{
+            fontFamily: "var(--mono)", fontSize: "0.52rem",
+            letterSpacing: "0.2em", color: "var(--muted)",
+            marginBottom: "5rem",
+          }}>
+            now open
+          </p>
+        </Reveal>
+
+        <Reveal delay={60}>
+          <p style={{
+            fontFamily: "var(--mono)", fontSize: "0.52rem",
+            letterSpacing: "0.15em", color: "var(--muted)",
+            marginBottom: "1.8rem",
+          }}>
+            experiment 016 · John Rawls · 1971
+          </p>
+        </Reveal>
+
+        <Reveal delay={100}>
+          <h2 style={{
+            fontFamily: "var(--serif)",
+            fontSize: "clamp(2rem, 5vw, 3.8rem)",
+            fontWeight: 400,
+            lineHeight: 1.05,
+            color: "var(--ink)",
+            marginBottom: "3rem",
+            letterSpacing: "-0.02em",
+            maxWidth: "18ch",
+          }}>
+            Veil of<br /><em>Ignorance</em>
+          </h2>
+        </Reveal>
+
+        <Reveal delay={140}>
+          <div style={{ height: "1px", backgroundColor: "var(--border)", marginBottom: "3rem" }} />
+        </Reveal>
+
+        <Reveal delay={180}>
+          <div style={{ marginBottom: "4rem" }}>
+            {[
+              ["domain",    "justice · society"],
+              ["duration",  "8 minutes"],
+              ["decisions", "6"],
+              ["thinker",   "John Rawls"],
+            ].map(([k, v]) => (
+              <div key={k} style={{
+                display: "grid", gridTemplateColumns: "100px 1fr",
+                borderTop: "1px solid var(--border)",
+                padding: "0.6rem 0",
+              }}>
+                <span style={{ fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.1em", color: "var(--muted)" }}>
+                  {k}
+                </span>
+                <span style={{ fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.06em", color: "var(--ink)" }}>
+                  {v}
+                </span>
+              </div>
+            ))}
+            <div style={{ borderTop: "1px solid var(--border)" }} />
           </div>
-        ))}
+        </Reveal>
+
+        <Reveal delay={220}>
+          <p style={{
+            fontFamily: "var(--serif)", fontSize: "1rem",
+            fontWeight: 300, lineHeight: 1.9,
+            color: "var(--ink)", marginBottom: "1.4rem",
+            maxWidth: "58ch",
+          }}>
+            Imagine you are about to be born into a world you must design — but you don't yet know who you will be in it. Rich or poor. Healthy or ill. Majority or minority.
+          </p>
+        </Reveal>
+
+        <Reveal delay={250}>
+          <p style={{
+            fontFamily: "var(--serif)", fontSize: "1rem",
+            fontWeight: 300, lineHeight: 1.9,
+            color: "var(--muted)", fontStyle: "italic",
+            marginBottom: "4rem", maxWidth: "52ch",
+          }}>
+            From behind this veil of ignorance, you have six decisions to make. The society you design is the one you will inhabit.
+          </p>
+        </Reveal>
+
+        <Reveal delay={290}>
+          <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
+            <Link href="/experiments/veil-of-ignorance" style={{
+              fontFamily: "var(--mono)", fontSize: "0.6rem",
+              letterSpacing: "0.12em", color: "var(--ink)",
+              border: "1px solid var(--ink)", padding: "0.75rem 1.6rem",
+              textDecoration: "none", transition: "all 0.2s",
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.backgroundColor = "var(--ink)";
+              e.currentTarget.style.color = "var(--white)";
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.color = "var(--ink)";
+            }}>
+              (enter experiment)
+            </Link>
+            <Link href="/experiments" style={{
+              fontFamily: "var(--mono)", fontSize: "0.55rem",
+              letterSpacing: "0.1em", color: "var(--muted)",
+              textDecoration: "none",
+              borderBottom: "1px solid transparent", paddingBottom: "1px",
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.color = "var(--ink)";
+              e.currentTarget.style.borderColor = "var(--ink)";
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.color = "var(--muted)";
+              e.currentTarget.style.borderColor = "transparent";
+            }}>
+              view all experiments →
+            </Link>
+          </div>
+        </Reveal>
       </div>
 
       <Footer />
