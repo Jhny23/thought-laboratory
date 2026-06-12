@@ -320,7 +320,7 @@ export default function HomePage() {
             letterSpacing: "0.15em", color: "var(--muted)",
             marginBottom: "1.8rem",
           }}>
-            experiment 016 · John Rawls · 1971
+            experiment 001 · Philosophy Experiments · 2002
           </p>
         </Reveal>
 
@@ -335,7 +335,7 @@ export default function HomePage() {
             letterSpacing: "-0.02em",
             maxWidth: "18ch",
           }}>
-            Veil of<br /><em>Ignorance</em>
+            Philosophical<br /><em>Health Test</em>
           </h2>
         </Reveal>
 
@@ -346,10 +346,10 @@ export default function HomePage() {
         <Reveal delay={180}>
           <div style={{ marginBottom: "4rem" }}>
             {[
-              ["domain",    "justice · society"],
-              ["duration",  "8 minutes"],
-              ["decisions", "6"],
-              ["thinker",   "John Rawls"],
+              ["domain",    "belief · consistency"],
+              ["duration",  "5 minutes"],
+              ["statements", "30"],
+              ["choices",   "agree / disagree"],
             ].map(([k, v]) => (
               <div key={k} style={{
                 display: "grid", gridTemplateColumns: "100px 1fr",
@@ -375,7 +375,7 @@ export default function HomePage() {
             color: "var(--ink)", marginBottom: "1.4rem",
             maxWidth: "58ch",
           }}>
-            Imagine you are about to be born into a world you must design — but you don't yet know who you will be in it. Rich or poor. Healthy or ill. Majority or minority.
+            Thirty statements. Two choices each. The test does not judge whether your beliefs are right or wrong — it finds where they contradict each other.
           </p>
         </Reveal>
 
@@ -386,13 +386,13 @@ export default function HomePage() {
             color: "var(--muted)", fontStyle: "italic",
             marginBottom: "4rem", maxWidth: "52ch",
           }}>
-            From behind this veil of ignorance, you have six decisions to make. The society you design is the one you will inhabit.
+            Most people are surprised by how many tensions their beliefs contain. The question is not whether you are consistent — but where you are not.
           </p>
         </Reveal>
 
         <Reveal delay={290}>
           <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-            <Link href="/experiments/veil-of-ignorance" style={{
+            <Link href="/experiments/philosophical-health-test" style={{
               fontFamily: "var(--mono)", fontSize: "0.6rem",
               letterSpacing: "0.12em", color: "var(--ink)",
               border: "1px solid var(--ink)", padding: "0.75rem 1.6rem",
