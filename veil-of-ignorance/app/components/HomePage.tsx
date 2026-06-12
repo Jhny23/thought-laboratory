@@ -110,6 +110,119 @@ function Hero() {
   );
 }
 
+function TempleSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const rightLines = [
+    { text: "我們並非各自獨立存在的實體", size: "1.1rem", opacity: 0.7, delay: 300 },
+    { text: "We are not separately existing entities", size: "0.52rem", opacity: 0.4, delay: 450, mono: true },
+    { text: "　", size: "1rem", opacity: 0, delay: 0 },
+    { text: "自我之幻覺", size: "0.95rem", opacity: 0.5, delay: 550 },
+    { text: "意識之流", size: "0.85rem", opacity: 0.4, delay: 650 },
+    { text: "時間之箭", size: "0.75rem", opacity: 0.3, delay: 750 },
+    { text: "　", size: "0.8rem", opacity: 0, delay: 0 },
+    { text: "道可道，非常道", size: "1rem", opacity: 0.45, delay: 850 },
+    { text: "知者不言，言者不知", size: "0.85rem", opacity: 0.35, delay: 950 },
+    { text: "　", size: "0.8rem", opacity: 0, delay: 0 },
+    { text: "Derek Parfit", size: "0.52rem", opacity: 0.3, delay: 1050, mono: true },
+    { text: "Reasons and Persons · 1984", size: "0.48rem", opacity: 0.22, delay: 1100, mono: true },
+    { text: "　", size: "0.8rem", opacity: 0, delay: 0 },
+    { text: "無常是諸行之本質", size: "0.9rem", opacity: 0.3, delay: 1150 },
+    { text: "因果之鏈", size: "0.8rem", opacity: 0.22, delay: 1250 },
+    { text: "理由與人格", size: "0.75rem", opacity: 0.18, delay: 1350 },
+  ];
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        borderTop: "1px solid var(--border)",
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+      }}
+    >
+      {/* LEFT — temple image */}
+      <div style={{
+        borderRight: "1px solid var(--border)",
+        backgroundColor: "#F0EDE8",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "4rem 2rem",
+        opacity: visible ? 1 : 0,
+        transition: "opacity 1.6s ease 0.2s",
+      }}>
+        <img
+          src="/images/temple.png"
+          alt=""
+          style={{
+            width: "100%",
+            maxWidth: "480px",
+            display: "block",
+            objectFit: "contain",
+            mixBlendMode: "multiply",
+          }}
+        />
+      </div>
+
+      {/* RIGHT — text cascade */}
+      <div style={{
+        padding: "6rem 3rem 6rem 3.5rem",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        gap: "0.1rem",
+        backgroundColor: "var(--white)",
+      }}>
+        {rightLines.map((line, i) => (
+          <p
+            key={i}
+            style={{
+              fontFamily: line.mono ? "var(--mono)" : "'Noto Serif SC', 'EB Garamond', serif",
+              fontSize: line.size,
+              color: `rgba(28,28,26,${line.opacity})`,
+              letterSpacing: line.mono ? "0.12em" : "0.08em",
+              lineHeight: line.text === "　" ? 1.2 : 1.7,
+              margin: 0,
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(12px)",
+              transition: `opacity 800ms ease ${line.delay}ms, transform 800ms ease ${line.delay}ms`,
+            }}
+          >
+            {line.text}
+          </p>
+        ))}
+
+        {/* Red seal */}
+        <div style={{
+          marginTop: "2.5rem",
+          width: "24px", height: "24px",
+          backgroundColor: "#8B1A1A",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          opacity: visible ? 0.75 : 0,
+          transition: "opacity 800ms ease 1600ms",
+        }}>
+          <span style={{
+            fontFamily: "'Noto Serif SC', serif",
+            fontSize: "0.55rem", color: "white", lineHeight: 1,
+          }}>思</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -329,6 +442,9 @@ export default function HomePage() {
           </div>
         </Reveal>
       </div>
+
+      {/* ── TEMPLE SECTION ── */}
+      <TempleSection />
 
       <Footer />
     </div>
