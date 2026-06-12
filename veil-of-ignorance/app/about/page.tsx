@@ -35,6 +35,7 @@ export default function About() {
           {[
             ["enquiries", "info@thoughtlaboratory.com"],
             ["instagram", "@inthiscult"],
+            ["Author", "John Kimeu"],
             ["newsletter", "(subscribe below)"],
           ].map(([k, v]) => (
             <div key={k} style={{ display: "grid", gridTemplateColumns: "100px 1fr" }}>

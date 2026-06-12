@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, use } from "react";
 import Link from "next/link";
 import { experiments } from "@/app/data/experiments";
 import Nav from "@/app/components/Nav";
@@ -535,8 +535,9 @@ function ExperimentDetail({ exp }: { exp: typeof experiments[0] }) {
 /* ─── ROOT ─── */
 type Stage = "intro" | "questions" | "demographics" | "results";
 
-export default function ExperimentPage({ params }: { params: { slug: string } }) {
-  const exp = experiments.find(e => e.slug === params.slug);
+export default function ExperimentPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
+  const exp = experiments.find(e => e.slug === slug);
   const [stage, setStage] = useState<Stage>("intro");
   const [qIndex, setQIndex] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
@@ -569,14 +570,15 @@ export default function ExperimentPage({ params }: { params: { slug: string } })
       <Nav />
       <div style={{ paddingTop: "3rem" }}>
         {stage === "intro" && <Intro onStart={() => setStage("questions")} />}
-        {stage === "questions" && (
-          <Question
-            statement={statements[qIndex]}
-            index={qIndex}
-            total={statements.length}
-            onAnswer={handleAnswer}
-          />
-        )}
+{stage === "questions" && (
+  <Question
+    key={qIndex}
+    statement={statements[qIndex]}
+    index={qIndex}
+    total={statements.length}
+    onAnswer={handleAnswer}
+  />
+)}
         {stage === "demographics" && (
           <Demographics onSubmit={() => setStage("results")} />
         )}
