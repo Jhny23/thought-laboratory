@@ -125,22 +125,22 @@ function TempleSection() {
   }, []);
 
   const rightLines = [
-    { text: "我們並非各自獨立存在的實體", size: "1.1rem", opacity: 0.7, delay: 300 },
-    { text: "We are not separately existing entities", size: "0.52rem", opacity: 0.4, delay: 450, mono: true },
-    { text: "　", size: "1rem", opacity: 0, delay: 0 },
-    { text: "自我之幻覺", size: "0.95rem", opacity: 0.5, delay: 550 },
-    { text: "意識之流", size: "0.85rem", opacity: 0.4, delay: 650 },
-    { text: "時間之箭", size: "0.75rem", opacity: 0.3, delay: 750 },
-    { text: "　", size: "0.8rem", opacity: 0, delay: 0 },
-    { text: "道可道，非常道", size: "1rem", opacity: 0.45, delay: 850 },
-    { text: "知者不言，言者不知", size: "0.85rem", opacity: 0.35, delay: 950 },
-    { text: "　", size: "0.8rem", opacity: 0, delay: 0 },
-    { text: "Derek Parfit", size: "0.52rem", opacity: 0.3, delay: 1050, mono: true },
-    { text: "Reasons and Persons · 1984", size: "0.48rem", opacity: 0.22, delay: 1100, mono: true },
-    { text: "　", size: "0.8rem", opacity: 0, delay: 0 },
-    { text: "無常是諸行之本質", size: "0.9rem", opacity: 0.3, delay: 1150 },
-    { text: "因果之鏈", size: "0.8rem", opacity: 0.22, delay: 1250 },
-    { text: "理由與人格", size: "0.75rem", opacity: 0.18, delay: 1350 },
+    { text: "我們並非各自獨立存在的實體", size: "1.1rem", color: "#2C3E6B", delay: 300 },
+    { text: "We are not separately existing entities", size: "0.52rem", color: "#7A6E5F", delay: 450, mono: true },
+    { text: "　", size: "1rem", color: "transparent", delay: 0 },
+    { text: "自我之幻覺", size: "0.95rem", color: "#4A3728", delay: 550 },
+    { text: "意識之流", size: "0.85rem", color: "#3D5A4A", delay: 650 },
+    { text: "時間之箭", size: "0.78rem", color: "#6B4E3D", delay: 750 },
+    { text: "　", size: "0.8rem", color: "transparent", delay: 0 },
+    { text: "道可道，非常道", size: "1rem", color: "#2C4A3E", delay: 850 },
+    { text: "知者不言，言者不知", size: "0.85rem", color: "#5C4A6E", delay: 950 },
+    { text: "　", size: "0.8rem", color: "transparent", delay: 0 },
+    { text: "Derek Parfit", size: "0.52rem", color: "#7A6E5F", delay: 1050, mono: true },
+    { text: "Reasons and Persons · 1984", size: "0.48rem", color: "#9A8E7F", delay: 1100, mono: true },
+    { text: "　", size: "0.8rem", color: "transparent", delay: 0 },
+    { text: "無常是諸行之本質", size: "0.9rem", color: "#3E4A5C", delay: 1150 },
+    { text: "因果之鏈", size: "0.82rem", color: "#5C3E2E", delay: 1250 },
+    { text: "理由與人格", size: "0.75rem", color: "#4A5C4A", delay: 1350 },
   ];
 
   return (
@@ -191,33 +191,19 @@ function TempleSection() {
             style={{
               fontFamily: line.mono ? "var(--mono)" : "'Noto Serif SC', 'EB Garamond', serif",
               fontSize: line.size,
-              color: `rgba(28,28,26,${line.opacity})`,
+              color: line.color,
               letterSpacing: line.mono ? "0.12em" : "0.08em",
               lineHeight: line.text === "　" ? 1.2 : 1.7,
               margin: 0,
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateY(0)" : "translateY(12px)",
-              transition: `opacity 800ms ease ${line.delay}ms, transform 800ms ease ${line.delay}ms`,
+              opacity: 1,
+              transform: "translateY(0)",
             }}
           >
             {line.text}
           </p>
         ))}
 
-        {/* Red seal */}
-        <div style={{
-          marginTop: "2.5rem",
-          width: "24px", height: "24px",
-          backgroundColor: "#8B1A1A",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          opacity: visible ? 0.75 : 0,
-          transition: "opacity 800ms ease 1600ms",
-        }}>
-          <span style={{
-            fontFamily: "'Noto Serif SC', serif",
-            fontSize: "0.55rem", color: "white", lineHeight: 1,
-          }}>思</span>
-        </div>
+
       </div>
     </div>
   );
