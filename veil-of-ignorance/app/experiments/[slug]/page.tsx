@@ -55,7 +55,7 @@ const tensions: Tension[] = [
     title: "Is morality relative?",
     stmtA: "There are no objective moral standards; moral judgements are merely an expression of the values of particular cultures.",
     stmtB: "Acts of genocide stand as a testament to man's ability to do great evil.",
-    explanation: "You hold that morality is merely cultural convention, yet you condemn genocide as objectively evil. If morality is purely relative, genocide can only be 'wrong from your culture's perspective' — which means the perpetrators' view is equally valid. Are you genuinely willing to accept that conclusion?",
+    explanation: "The tension between these two beliefs is that, on the one hand, you are saying that morality is just a matter of culture and convention, but on the other, you are prepared to condemn acts of genocide as 'evil'. But what does it mean to say 'genocide is evil'? To reconcile the tension, you could say that all you mean is that to say 'genocide is evil' is to express the values of your particular culture — it does not mean that genocide is evil for all cultures and for all times. However, are you really happy to say, for example, that the massacre of the Tutsi people in 1994 was evil from the point of view of your culture but not evil from the point of view of those who carried it out, and that there is no sense in which one moral judgement is superior to the other? If moral judgements really are merely the expression of the values of a particular culture, how are the values which reject genocide at all superior to those which do not?",
     prevalence: 49,
   },
   {
@@ -64,7 +64,7 @@ const tensions: Tension[] = [
     title: "Is there an all-good, all-powerful God?",
     stmtA: "There exists an all-powerful, loving and good God.",
     stmtB: "To allow an innocent child to suffer needlessly when one could easily prevent it is morally reprehensible.",
-    explanation: "This is the classical Problem of Evil. If God is all-powerful and all-good, he could prevent innocent children from suffering and would do so, since allowing it would be morally reprehensible. Yet children suffer from disease, famine, and disaster. The tension between these two beliefs has occupied philosophers and theologians for centuries.",
+    explanation: "These two beliefs together generate what is known as the Problem of Evil. If God is all-powerful, loving and good, that means he can do what he wants and will do what is morally right. But surely this means he would not allow an innocent child to suffer needlessly, as he could easily prevent it. Yet he does. Much infant suffering is the result of human action, but much is also due to natural causes — disease, flood, famine. In both cases, God could stop it, yet he does not. Attempts to explain this apparent contradiction are known as theodicies. Most conclude that God allows suffering to help us grow spiritually and to allow the greater good of human freedom. Whether these theodicies are adequate is a matter of continuing debate.",
     prevalence: 31,
   },
   {
@@ -73,7 +73,7 @@ const tensions: Tension[] = [
     title: "Are there any absolute truths?",
     stmtA: "There are no objective truths about matters of fact; 'truth' is always relative to particular cultures and individuals.",
     stmtB: "The holocaust is an historical reality, taking place more or less as the history books report.",
-    explanation: "If truth is always relative to cultures and individuals, then you cannot straightforwardly assert that the Holocaust is a historical fact. It would only be 'true for some people'. This gives intellectual ammunition to Holocaust deniers: on your view, their denial is as epistemically valid as your acceptance. This tension is one of the most politically serious in the test.",
+    explanation: "If truth is relative, then nothing is straightforwardly true or factual. Everything is 'true for someone' or 'a fact for them'. What then of the holocaust? Is it true that millions of Jews, Gypsies, homosexuals and other enemies of the Third Reich were systematically executed by the Nazis? If you believe there are no objective truths, you have to say there is no straight answer to this question. For some people, the holocaust is a fact; for others, it is not. So what can you say to those who deny it? Are they not as entitled to their view as you are to yours? How can one both assert the reality of the holocaust and deny that there is a single truth about it? Resolving this tension is a real challenge.",
     prevalence: 35,
   },
   {
@@ -82,7 +82,7 @@ const tensions: Tension[] = [
     title: "Can I make choices for my own body?",
     stmtA: "Individuals have sole rights over their own bodies.",
     stmtB: "Voluntary euthanasia should remain illegal.",
-    explanation: "If individuals have sole rights over their own bodies, on what grounds should voluntary euthanasia — a choice about what to do with one's own body — remain illegal? The tension is direct. Any attempt to resolve it must explain why the right to bodily autonomy stops short of decisions about dying.",
+    explanation: "Why, if individuals have sole rights over their own bodies, should voluntary euthanasia be illegal? This appears to be a direct contradiction. One way around it might be to add a condition to the first principle — 'except when it comes to decisions of life and death'. But what would justify that added condition? You might also think that euthanasia is different because it requires third-party assistance. Yet normally we do not think that the right a person has over their body is forfeited if a third party is involved. If you want a tattoo, you need third-party assistance — but this does not mean you lack sole right to decide whether or not you are tattooed.",
     prevalence: 19,
   },
   {
@@ -91,7 +91,7 @@ const tensions: Tension[] = [
     title: "Is killing always wrong?",
     stmtA: "It is always wrong to take another person's life.",
     stmtB: "The second world war was a just war.",
-    explanation: "A just war necessarily involves killing. If it is always wrong to take another person's life, then no war can be just — including one fought against Nazi Germany. To hold both beliefs, you must either abandon the 'always' or explain why the killing involved in a just war is not really 'taking a person's life' in the morally relevant sense.",
+    explanation: "It is clear here that you must either give up the idea of a just war or get rid of the 'always' in the principle that it is always wrong to take another person's life. It is actually very difficult to add to this principle a clause which starts 'except', so that it both allows in the kind of killing many feel is justified yet keeps out the kind of killing which is felt to be unjustified. For example, 'except in self-defence' might seem reasonable, but this would mean an army could only fight when attacked and could never risk civilian casualties. One also has to be careful that the 'except' clause is thought out and justifiable, and not merely an ad hoc device to justify what we feel is right and exclude what we don't like.",
     prevalence: 8,
   },
   {
@@ -100,7 +100,7 @@ const tensions: Tension[] = [
     title: "Is the future fixed?",
     stmtA: "Having made a choice, it is always possible that one might have chosen otherwise.",
     stmtB: "The future is fixed, how one's life unfolds is a matter of destiny.",
-    explanation: "If the future is fixed by destiny, then when you stand before two choices, only one outcome is ever possible. The feeling of genuine choice is an illusion. This directly contradicts the belief that you could always have chosen otherwise. Free will and determinism have coexisted uneasily in human thought for millennia — this tension captures exactly why.",
+    explanation: "Most people think that humans have free will. Yet many of the same people believe in fate or destiny. But how can both be true? If what will be will be no matter what we do, then how can we have freedom? Imagine you are in a shop deciding whether to buy one of two coats. If one believes in fate or destiny, then it must be true that it is inevitable which coat you buy. In which case, when you stand before them choosing, it must be an illusion that you have a genuine choice — fate has decreed that there is in fact only one choice you can make. You seem to be making up your own mind, but forces beyond your control have already determined which way you choose. This makes it untrue that having made a choice, it is always possible that one might have chosen otherwise.",
     prevalence: 17,
   },
   {
@@ -109,7 +109,7 @@ const tensions: Tension[] = [
     title: "Is the unnatural wrong?",
     stmtA: "Proper sanitation and medicines are generally good for a society.",
     stmtB: "Homosexuality is wrong because it is unnatural.",
-    explanation: "The argument that homosexuality is wrong because it is unnatural implies that natural equals good and unnatural equals bad. But sophisticated sewage systems and chemotherapy are profoundly unnatural — yet you hold them to be good. If 'unnatural' is not a reliable guide to wrongness in those cases, the argument against homosexuality on these grounds collapses.",
+    explanation: "You believe that something is wrong if it is unnatural. Yet you believe that sanitation and medicine are good. But aren't these also unnatural? What is natural about sophisticated modern sewage systems and the domestic supply of clean water? What is natural about chemotherapy or other sophisticated medical treatments? The first problem is that it is simply not true that most people think all things unnatural are bad — so being unnatural is no automatic reason for homosexuality to be considered wrong. The second problem is a logical one. Because something 'is' the case, it doesn't follow that it 'ought' to be. 'Cancer kills' is true, but that doesn't mean cancer should kill. There is a problem in trying to derive matters of moral value directly from matters of pure fact.",
     prevalence: 12,
   },
   {
@@ -118,7 +118,7 @@ const tensions: Tension[] = [
     title: "What is the seat of the self?",
     stmtA: "Severe brain-damage can rob a person of all consciousness and selfhood.",
     stmtB: "On bodily death, a person continues to exist in a non-physical form.",
-    explanation: "You accept that the self depends on brain function — severe brain damage can extinguish it. Yet you also believe the self survives bodily death, when the brain ceases functioning entirely. The tension is not a strict contradiction, but it implies two incompatible worldviews: one where consciousness is caused by brains, and one where it is independent of them.",
+    explanation: "These two beliefs are not strictly contradictory, but they do present an awkward mix of world-views. On the one hand, there is an acceptance that our consciousness and sense of self is in some way dependent on brain activity — which is why brain damage can in a real sense damage the self. Yet there is also the belief that the self is somehow independent of the body, that it can live on after the death of the brain. So it seems consciousness and selfhood both is and is not dependent on having a healthy brain. The deeper problem is not that it is impossible to reconcile the two beliefs, but that they seem to presume wider, contradictory world-views: one where consciousness is caused by brains, and one where it is caused by something non-physical.",
     prevalence: 38,
   },
   {
@@ -127,7 +127,7 @@ const tensions: Tension[] = [
     title: "How do we judge art?",
     stmtA: "Judgements about works of art are purely matters of taste.",
     stmtB: "Michelangelo is indisputably one of history's finest artists.",
-    explanation: "If artistic judgement is purely subjective, then no one can be 'indisputably' a great artist — anyone who disagrees is as entitled to their view as you are to yours. The word 'indisputably' implies an objective standard. To hold both, you must explain what makes Michelangelo's greatness more than a matter of personal taste.",
+    explanation: "The tension here is the result of the fact that you don't believe the status of Michelangelo is seriously in doubt. One can disagree about who is the best artist of all time, but surely Michelangelo is on the short list. Yet if this is true, how can judgements about works of art be purely matters of taste? If someone unskilled were to claim they were as good an artist as Michelangelo, you would probably think they were simply wrong — not just because your tastes differ, but because you believe Michelangelo's superiority is not just a matter of personal opinion. The tension is between a belief that works of art can be judged by some reasonably objective standards and the belief that, nonetheless, the final arbiter of taste is something subjective.",
     prevalence: 30,
   },
   {
@@ -136,7 +136,7 @@ const tensions: Tension[] = [
     title: "What should be permitted?",
     stmtA: "The government should not permit the sale of health treatments which have not been tested for efficacy and safety.",
     stmtB: "Alternative and complementary medicine is as valuable as mainstream medicine.",
-    explanation: "Most alternative and complementary treatments have not been subjected to the rigorous clinical trials required of conventional medicine. If you believe the government should prohibit untested treatments, this standard would apply to most alternative therapies. To hold both consistently, you must explain why alternative medicine deserves a different evidential standard.",
+    explanation: "Most alternative and complementary medicines have not been tested in trials as rigorously as conventional medicine. The popular herbal anti-depressant St John's Wort, for example, has been found to cause complications when taken alongside several common medicines — something that only came to light because of extensive testing. Yet the product is freely available without medical advice. The question that needs answering is: why do you believe alternative medicines need not be tested as extensively as conventional ones? The fact that they use natural ingredients is not itself a good reason, as there are plenty of naturally occurring toxins. And even if their long history shows them to be safe, that is not the same as showing them to be effective.",
     prevalence: 40,
   },
 ];
