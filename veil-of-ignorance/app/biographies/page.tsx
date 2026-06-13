@@ -5,28 +5,45 @@ import { biographies } from "@/app/data/biographies";
 import Nav from "@/app/components/Nav";
 import Footer from "@/app/components/Footer";
 
-/* Polaroid card positions radiating from center */
-const positions = [
-  { top: "2%",  left: "38%",  rotate: "-2deg"  },  // top center
-  { top: "18%", left: "68%",  rotate: "3deg"   },  // right top
-  { top: "52%", left: "72%",  rotate: "-4deg"  },  // right bottom
-  { top: "62%", left: "28%",  rotate: "2deg"   },  // left bottom
-  { top: "18%", left: "4%",   rotate: "-3deg"  },  // left top
+/* Each card: position, rotation, red string endpoints */
+const cards = [
+  { top: "4%",  left: "5%",   rotate: "-3deg", img: "/images/tony.jpg"    },
+  { top: "3%",  left: "58%",  rotate: "2deg",  img: "/images/walter.jpg"  },
+  { top: "44%", left: "72%",  rotate: "-2deg", img: "/images/dwight.jpg"  },
+  { top: "62%", left: "30%",  rotate: "3deg",  img: "/images/michael.jpg" },
+  { top: "42%", left: "-2%",  rotate: "-1deg", img: "/images/tony.jpg"    },
 ];
 
-/* SVG line endpoints from center (50%, 42%) to each card center */
-const lineTargets = [
-  { x2: "50%", y2: "10%"  },
-  { x2: "78%", y2: "26%"  },
-  { x2: "82%", y2: "60%"  },
-  { x2: "38%", y2: "72%"  },
-  { x2: "14%", y2: "26%"  },
+/* Red string paths — from each card toward center cluster */
+const strings = [
+  "M 18% 16%  Q 35% 28% 48% 38%",
+  "M 74% 14%  Q 62% 26% 52% 38%",
+  "M 84% 54%  Q 70% 48% 54% 42%",
+  "M 44% 74%  Q 46% 58% 49% 44%",
+  "M 10% 54%  Q 28% 48% 46% 42%",
 ];
 
-function PolaroidCard({ bio, index, pos }: {
+function Pin({ x, y }: { x: string; y: string }) {
+  return (
+    <g>
+      <circle cx={x} cy={y} r="6" fill="#CC1F1F" />
+      <circle cx={x} cy={y} r="3" fill="rgba(255,255,255,0.5)" />
+    </g>
+  );
+}
+
+const pinPositions = [
+  { x: "18%", y: "16%" },
+  { x: "74%", y: "14%" },
+  { x: "84%", y: "54%" },
+  { x: "44%", y: "74%" },
+  { x: "10%", y: "54%" },
+];
+
+function BoardCard({ bio, card, index }: {
   bio: typeof biographies[0];
+  card: typeof cards[0];
   index: number;
-  pos: typeof positions[0];
 }) {
   const [hovered, setHovered] = useState(false);
 
@@ -37,60 +54,84 @@ function PolaroidCard({ bio, index, pos }: {
       onMouseLeave={() => setHovered(false)}
       style={{
         position: "absolute",
-        top: pos.top, left: pos.left,
-        width: "clamp(140px, 16vw, 200px)",
+        top: card.top, left: card.left,
+        width: "clamp(130px, 15vw, 190px)",
         textDecoration: "none",
-        transform: `rotate(${pos.rotate}) translateY(${hovered ? "-6px" : "0"})`,
-        transition: "transform 0.4s ease, box-shadow 0.4s ease",
+        transform: `rotate(${card.rotate}) translateY(${hovered ? "-5px" : "0"})`,
+        transition: "transform 0.3s ease, box-shadow 0.3s ease",
         boxShadow: hovered
-          ? "0 16px 40px rgba(28,28,26,0.18)"
-          : "0 4px 20px rgba(28,28,26,0.10)",
-        zIndex: hovered ? 10 : 1,
+          ? "0 12px 36px rgba(0,0,0,0.28)"
+          : "0 4px 18px rgba(0,0,0,0.18)",
+        zIndex: hovered ? 20 : index + 1,
       }}
     >
-      {/* Photo area */}
+      {/* Pin dot at top center */}
       <div style={{
-        width: "100%",
-        aspectRatio: "1",
-        overflow: "hidden",
-        backgroundColor: "#C8C4BE",
+        position: "absolute", top: "-10px", left: "50%",
+        transform: "translateX(-50%)",
+        width: "14px", height: "14px", borderRadius: "50%",
+        backgroundColor: "#CC1F1F",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+        zIndex: 2,
       }}>
         <div style={{
-          width: "100%", height: "100%",
-          backgroundImage: `url(${bio.portrait})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
-          filter: hovered ? "grayscale(0%)" : "grayscale(100%)",
-          opacity: hovered ? 0.9 : 0.65,
-          transition: "filter 0.5s ease, opacity 0.5s ease",
+          position: "absolute", top: "50%", left: "50%",
+          transform: "translate(-50%,-50%)",
+          width: "5px", height: "5px", borderRadius: "50%",
+          backgroundColor: "rgba(255,255,255,0.5)",
         }} />
       </div>
 
-      {/* Polaroid bottom label */}
+      {/* Photo */}
       <div style={{
-        backgroundColor: "var(--white)",
-        padding: "0.7rem 0.8rem 0.8rem",
+        width: "100%", aspectRatio: "1",
+        overflow: "hidden",
+        backgroundColor: "#999",
+      }}>
+        <div style={{
+          width: "100%", height: "100%",
+          backgroundImage: `url(${card.img})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+          filter: hovered ? "grayscale(30%)" : "grayscale(80%)",
+          opacity: hovered ? 1 : 0.8,
+          transition: "filter 0.4s, opacity 0.4s",
+        }} />
+      </div>
+
+      {/* Polaroid label */}
+      <div style={{
+        backgroundColor: "#F9F6F0",
+        padding: "0.6rem 0.8rem 0.8rem",
+        borderTop: "none",
       }}>
         <p style={{
-          fontFamily: "var(--mono)", fontSize: "0.44rem",
-          letterSpacing: "0.1em", color: "var(--muted)",
-          marginBottom: "0.2rem",
+          fontFamily: "var(--mono)", fontSize: "0.4rem",
+          letterSpacing: "0.1em", color: "#888",
+          marginBottom: "0.2rem", textTransform: "uppercase",
         }}>
           {bio.years}
         </p>
         <p style={{
-          fontFamily: "var(--serif)", fontSize: "0.85rem",
-          fontStyle: "italic", fontWeight: 400,
-          color: "var(--ink)", lineHeight: 1.1,
+          fontFamily: "var(--serif)", fontSize: "0.8rem",
+          fontStyle: "italic", color: "#1A1918",
+          lineHeight: 1.1,
         }}>
           {bio.name}
+        </p>
+        <p style={{
+          fontFamily: "var(--mono)", fontSize: "0.38rem",
+          color: "#CC1F1F", letterSpacing: "0.08em",
+          marginTop: "0.2rem",
+        }}>
+          {bio.descriptor}
         </p>
       </div>
     </Link>
   );
 }
 
-function ConstellationMap() {
+function InvestigativeBoard() {
   const [visible, setVisible] = useState(false);
   useEffect(() => { const t = setTimeout(() => setVisible(true), 100); return () => clearTimeout(t); }, []);
 
@@ -98,68 +139,92 @@ function ConstellationMap() {
     <div style={{
       position: "relative",
       width: "100%",
-      minHeight: "90vh",
+      minHeight: "88vh",
+      backgroundColor: "#2A2420",
+      backgroundImage: `
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.03) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 40px)
+      `,
       overflow: "hidden",
     }}>
-      {/* SVG lines radiating from center */}
+
+      {/* Red string SVG */}
       <svg style={{
         position: "absolute", inset: 0,
         width: "100%", height: "100%",
         pointerEvents: "none", zIndex: 0,
         opacity: visible ? 1 : 0,
-        transition: "opacity 1.2s ease 0.4s",
-      }}>
-        {lineTargets.map((t, i) => (
-          <line
+        transition: "opacity 1s ease 0.5s",
+      }} preserveAspectRatio="none">
+        {strings.map((d, i) => (
+          <path
             key={i}
-            x1="50%" y1="42%"
-            x2={t.x2} y2={t.y2}
-            stroke="rgba(28,28,26,0.12)"
-            strokeWidth="0.8"
-            strokeDasharray="4 4"
+            d={d}
+            fill="none"
+            stroke="#CC1F1F"
+            strokeWidth="1.2"
+            strokeOpacity="0.65"
           />
         ))}
-        {/* Gold accent dots at junctions */}
-        {lineTargets.map((t, i) => (
-          <circle key={`dot-${i}`} cx={t.x2} cy={t.y2} r="3" fill="#B8922A" opacity="0.6" />
+        {/* Pin marks at card positions */}
+        {pinPositions.map((p, i) => (
+          <Pin key={i} x={p.x} y={p.y} />
         ))}
-        {/* Center dot */}
-        <circle cx="50%" cy="42%" r="6" fill="var(--ink)" />
       </svg>
 
-      {/* Center card — Tony Soprano */}
+      {/* Center evidence card */}
       <div style={{
         position: "absolute",
-        top: "28%", left: "50%",
-        transform: "translateX(-50%)",
+        top: "32%", left: "50%",
+        transform: "translateX(-50%) rotate(-1deg)",
         width: "clamp(160px, 18vw, 220px)",
-        zIndex: 2,
-        boxShadow: "0 8px 32px rgba(28,28,26,0.14)",
+        backgroundColor: "#F9F6F0",
+        boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+        zIndex: 10,
         opacity: visible ? 1 : 0,
-        transition: "opacity 0.8s ease 0.2s",
+        transition: "opacity 0.6s ease 0.2s",
       }}>
-        {/* Photo */}
+        {/* Red pin */}
         <div style={{
-          width: "100%", aspectRatio: "3 / 4",
-          overflow: "hidden", backgroundColor: "#C8C4BE",
+          position: "absolute", top: "-10px", left: "50%",
+          transform: "translateX(-50%)",
+          width: "16px", height: "16px", borderRadius: "50%",
+          backgroundColor: "#CC1F1F",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.4)",
+          zIndex: 2,
         }}>
           <div style={{
-            width: "100%", height: "100%",
-            backgroundImage: "url(/images/tony.jpg)",
-            backgroundSize: "cover",
-            backgroundPosition: "center top",
-            filter: "grayscale(100%)",
-            opacity: 0.75,
+            position: "absolute", top: "50%", left: "50%",
+            transform: "translate(-50%,-50%)",
+            width: "6px", height: "6px", borderRadius: "50%",
+            backgroundColor: "rgba(255,255,255,0.5)",
           }} />
         </div>
-        {/* Label */}
-        <div style={{ backgroundColor: "var(--white)", padding: "0.8rem 1rem 1rem" }}>
-          <p style={{ fontFamily: "var(--mono)", fontSize: "0.44rem", letterSpacing: "0.12em", color: "var(--muted)", marginBottom: "0.3rem" }}>
-            the examined life
+        <div style={{ padding: "1.2rem 1rem 1.4rem" }}>
+          <p style={{
+            fontFamily: "var(--mono)", fontSize: "0.4rem",
+            letterSpacing: "0.2em", color: "#CC1F1F",
+            marginBottom: "0.8rem", textTransform: "uppercase",
+          }}>
+            classified · thought laboratory
           </p>
-          <p style={{ fontFamily: "var(--serif)", fontSize: "0.95rem", fontStyle: "italic", color: "var(--ink)", lineHeight: 1.1 }}>
-            Biographies
+          <p style={{
+            fontFamily: "var(--serif)", fontSize: "1rem",
+            fontStyle: "italic", color: "#1A1918",
+            lineHeight: 1.2, marginBottom: "0.6rem",
+          }}>
+            The thinkers behind the experiments
           </p>
+          <div style={{ height: "1px", backgroundColor: "#E0DDD8", margin: "0.8rem 0" }} />
+          {biographies.map(b => (
+            <p key={b.slug} style={{
+              fontFamily: "var(--mono)", fontSize: "0.38rem",
+              letterSpacing: "0.06em", color: "#666",
+              lineHeight: 1.9,
+            }}>
+              — {b.name}
+            </p>
+          ))}
         </div>
       </div>
 
@@ -167,76 +232,87 @@ function ConstellationMap() {
       {biographies.map((bio, i) => (
         <div key={bio.slug} style={{
           opacity: visible ? 1 : 0,
-          transition: `opacity 0.8s ease ${0.3 + i * 0.12}s`,
+          transition: `opacity 0.7s ease ${0.25 + i * 0.1}s`,
         }}>
-          <PolaroidCard bio={bio} index={i} pos={positions[i]} />
+          <BoardCard bio={bio} card={cards[i]} index={i} />
         </div>
       ))}
+
+      {/* Corner label */}
+      <div style={{
+        position: "absolute", bottom: "1.5rem", right: "2rem",
+        fontFamily: "var(--mono)", fontSize: "0.45rem",
+        letterSpacing: "0.2em", color: "rgba(255,255,255,0.15)",
+        textTransform: "uppercase",
+      }}>
+        thought laboratory · biographies
+      </div>
     </div>
   );
 }
 
 export default function BiographiesPage() {
   return (
-    <div style={{ backgroundColor: "#EDEAE4", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#2A2420", minHeight: "100vh" }}>
       <Nav />
       <div style={{ paddingTop: "3rem" }}>
 
         {/* Header */}
         <div style={{
-          padding: "3.5rem 2.4rem 2.5rem",
-          borderBottom: "1px solid var(--border)",
-          backgroundColor: "var(--white)",
-          display: "flex", justifyContent: "space-between", alignItems: "flex-end",
+          padding: "2.5rem 2.4rem",
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
+          display: "flex", justifyContent: "space-between", alignItems: "center",
         }}>
           <div>
-            <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "0.8rem" }}>
+            <p style={{ fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.2em", color: "rgba(255,255,255,0.3)", marginBottom: "0.5rem" }}>
               biographies
             </p>
             <h1 style={{
-              fontFamily: "var(--serif)", fontSize: "clamp(1.8rem, 4vw, 3rem)",
-              fontWeight: 400, fontStyle: "italic", lineHeight: 1.05, color: "var(--ink)",
+              fontFamily: "var(--serif)", fontSize: "clamp(1.6rem, 3.5vw, 2.5rem)",
+              fontWeight: 400, fontStyle: "italic", color: "#F2EDE4", lineHeight: 1.05,
             }}>
               The thinkers behind<br />the experiments
             </h1>
           </div>
-          <p style={{ fontFamily: "var(--serif)", fontSize: "0.85rem", fontStyle: "italic", color: "var(--muted)", maxWidth: "28ch", textAlign: "right", lineHeight: 1.7 }}>
-            Five philosophers whose thought experiments changed how we reason.
-          </p>
+          <div style={{ textAlign: "right" }}>
+            <p style={{ fontFamily: "var(--mono)", fontSize: "0.45rem", letterSpacing: "0.15em", color: "#CC1F1F", marginBottom: "0.3rem" }}>
+              ● active investigation
+            </p>
+            <p style={{ fontFamily: "var(--mono)", fontSize: "0.45rem", letterSpacing: "0.1em", color: "rgba(255,255,255,0.2)" }}>
+              {biographies.length} subjects · thought laboratory
+            </p>
+          </div>
         </div>
 
-        {/* Constellation */}
-        <ConstellationMap />
+        {/* Board */}
+        <InvestigativeBoard />
 
-        {/* List fallback below */}
-        <div style={{
-          borderTop: "1px solid var(--border)",
-          backgroundColor: "var(--white)",
-        }}>
+        {/* List */}
+        <div style={{ backgroundColor: "#221E1B", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
           {biographies.map((bio, i) => (
             <Link key={bio.slug} href={`/biographies/${bio.slug}`} style={{
               display: "grid", gridTemplateColumns: "40px 1fr auto",
               padding: "1rem 2.4rem",
-              borderBottom: "1px solid var(--border)",
+              borderBottom: "1px solid rgba(255,255,255,0.05)",
               alignItems: "center", gap: "1.2rem",
               textDecoration: "none",
               transition: "background-color 0.2s",
             }}
-            onMouseEnter={e => e.currentTarget.style.backgroundColor = "var(--off)"}
+            onMouseEnter={e => e.currentTarget.style.backgroundColor = "rgba(204,31,31,0.06)"}
             onMouseLeave={e => e.currentTarget.style.backgroundColor = "transparent"}
             >
-              <span style={{ fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.1em", color: "var(--muted)" }}>
+              <span style={{ fontFamily: "var(--mono)", fontSize: "0.48rem", letterSpacing: "0.1em", color: "#CC1F1F" }}>
                 {String(i + 1).padStart(2, "0")}
               </span>
               <div>
-                <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontStyle: "italic", color: "var(--ink)", marginBottom: "0.1rem" }}>
+                <p style={{ fontFamily: "var(--serif)", fontSize: "0.95rem", fontStyle: "italic", color: "#F2EDE4", marginBottom: "0.15rem" }}>
                   {bio.name}
                 </p>
-                <p style={{ fontFamily: "var(--mono)", fontSize: "0.48rem", letterSpacing: "0.08em", color: "var(--muted)" }}>
+                <p style={{ fontFamily: "var(--mono)", fontSize: "0.45rem", letterSpacing: "0.08em", color: "rgba(255,255,255,0.3)" }}>
                   {bio.descriptor} · {bio.years}
                 </p>
               </div>
-              <span style={{ fontFamily: "var(--mono)", fontSize: "0.48rem", letterSpacing: "0.1em", color: "var(--muted)" }}>
+              <span style={{ fontFamily: "var(--mono)", fontSize: "0.45rem", letterSpacing: "0.1em", color: "rgba(255,255,255,0.25)" }}>
                 (read →)
               </span>
             </Link>
