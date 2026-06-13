@@ -409,7 +409,6 @@ function Results({ answers, onRetry }: { answers: Answers; onRetry: () => void }
             {/* Your score */}
             <div style={{
               position: "absolute", top: "-4px", left: `${score}%`,
-              transform: "translateX(-50%)",
               width: "9px", height: "9px",
               backgroundColor: "var(--ink)",
               transform: "translateX(-50%) rotate(45deg)",
@@ -417,7 +416,6 @@ function Results({ answers, onRetry }: { answers: Answers; onRetry: () => void }
             {/* Average */}
             <div style={{
               position: "absolute", top: "-3px", left: `${avgScore}%`,
-              transform: "translateX(-50%)",
               width: "7px", height: "7px",
               border: "1px solid var(--muted)", backgroundColor: "transparent",
               transform: "translateX(-50%) rotate(45deg)",
