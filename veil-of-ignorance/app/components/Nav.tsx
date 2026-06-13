@@ -10,7 +10,6 @@ export default function Nav() {
     { href: "/experiments", label: "experiments" },
     { href: "/biographies", label: "biographies" },
     { href: "/about", label: "about" },
-    { href: "/corner", label: "corner" },
   ];
 
   return (
