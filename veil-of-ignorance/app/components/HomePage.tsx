@@ -209,6 +209,104 @@ function TempleSection() {
   );
 }
 
+
+function FigureSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const leftLines = [
+    { text: "我們並非各自獨立存在的實體", size: "1.1rem", color: "#2C3E6B", delay: 300 },
+    { text: "We are not separately existing entities", size: "0.52rem", color: "#7A6E5F", delay: 450, mono: true },
+    { text: "　", size: "1rem", color: "transparent", delay: 0 },
+    { text: "自我之幻覺", size: "0.95rem", color: "#4A3728", delay: 550 },
+    { text: "意識之流", size: "0.85rem", color: "#3D5A4A", delay: 650 },
+    { text: "時間之箭", size: "0.78rem", color: "#6B4E3D", delay: 750 },
+    { text: "　", size: "0.8rem", color: "transparent", delay: 0 },
+    { text: "道可道，非常道", size: "1rem", color: "#2C4A3E", delay: 850 },
+    { text: "知者不言，言者不知", size: "0.85rem", color: "#5C4A6E", delay: 950 },
+    { text: "　", size: "0.8rem", color: "transparent", delay: 0 },
+    { text: "Derek Parfit", size: "0.52rem", color: "#7A6E5F", delay: 1050, mono: true },
+    { text: "Reasons and Persons · 1984", size: "0.48rem", color: "#9A8E7F", delay: 1100, mono: true },
+    { text: "　", size: "0.8rem", color: "transparent", delay: 0 },
+    { text: "無常是諸行之本質", size: "0.9rem", color: "#3E4A5C", delay: 1150 },
+    { text: "因果之鏈", size: "0.82rem", color: "#5C3E2E", delay: 1250 },
+    { text: "理由與人格", size: "0.75rem", color: "#4A5C4A", delay: 1350 },
+  ];
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        borderTop: "1px solid var(--border)",
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+      }}
+    >
+      {/* LEFT — text cascade */}
+      <div style={{
+        borderRight: "1px solid var(--border)",
+        padding: "6rem 3.5rem 6rem 3rem",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        gap: "0.1rem",
+        backgroundColor: "var(--white)",
+      }}>
+        {leftLines.map((line, i) => (
+          <p
+            key={i}
+            style={{
+              fontFamily: (line as any).mono ? "var(--mono)" : "'Noto Serif SC', 'EB Garamond', serif",
+              fontSize: line.size,
+              color: line.color,
+              letterSpacing: (line as any).mono ? "0.12em" : "0.08em",
+              lineHeight: line.text === "　" ? 1.2 : 1.7,
+              margin: 0,
+              opacity: 1,
+              transform: "translateY(0)",
+            }}
+          >
+            {line.text}
+          </p>
+        ))}
+      </div>
+
+      {/* RIGHT — figure image */}
+      <div style={{
+        backgroundColor: "#F0EDE8",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "4rem 2rem",
+        opacity: visible ? 1 : 0,
+        transition: "opacity 1.6s ease 0.2s",
+      }}>
+        <img
+          src="/images/figure.jpg"
+          alt=""
+          style={{
+            width: "100%",
+            maxWidth: "400px",
+            display: "block",
+            objectFit: "contain",
+            mixBlendMode: "multiply",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -431,6 +529,8 @@ export default function HomePage() {
 
       {/* ── TEMPLE SECTION ── */}
       <TempleSection />
+
+      <FigureSection />
 
       <Footer />
     </div>
