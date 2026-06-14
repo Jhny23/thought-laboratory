@@ -222,6 +222,44 @@ function Intro({ onStart }: { onStart: () => void }) {
 }
 
 /* ─── QUESTION ─── */
+/* ─── Rope SVG — elastic curve from left edge to card ─── */
+function Rope({ progress }: { progress: number }) {
+  // progress 0→1: rope goes from taut (card off screen) to slack (card landed)
+  const cardX = 120 + (1 - progress) * 800; // card x position
+  const slack = progress * 60; // how much the rope droops when card arrives
+  const cp1x = cardX * 0.3;
+  const cp1y = 50 + slack;
+  const cp2x = cardX * 0.7;
+  const cp2y = 50 + slack * 1.4;
+
+  return (
+    <svg
+      style={{
+        position: "fixed", top: "50%", left: 0,
+        width: `${cardX + 20}px`, height: "120px",
+        transform: "translateY(-50%)",
+        pointerEvents: "none", zIndex: 50,
+        overflow: "visible",
+        opacity: progress < 0.98 ? 1 : 0,
+        transition: "opacity 0.3s ease",
+      }}
+    >
+      <path
+        d={`M 0,50 C ${cp1x},${cp1y} ${cp2x},${cp2y} ${cardX},50`}
+        fill="none"
+        stroke="var(--ink)"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        opacity="0.35"
+      />
+      {/* Knot at card end */}
+      <circle cx={cardX} cy={50} r="3" fill="var(--ink)" opacity="0.4" />
+      {/* Left anchor */}
+      <circle cx={0} cy={50} r="4" fill="var(--ink)" opacity="0.5" />
+    </svg>
+  );
+}
+
 function Question({
   statement, index, total, onAnswer,
 }: {
@@ -230,6 +268,30 @@ function Question({
   onAnswer: (agree: boolean) => void;
 }) {
   const [chosen, setChosen] = useState<boolean | null>(null);
+  const [progress, setProgress] = useState(0);
+  const rafRef = useRef<number>(0);
+  const startRef = useRef<number>(0);
+
+  // Spring animation — elastic pull
+  useEffect(() => {
+    setProgress(0);
+    startRef.current = performance.now();
+
+    const duration = 900; // ms total
+    const animate = (now: number) => {
+      const t = Math.min((now - startRef.current) / duration, 1);
+      // Spring easing — overshoot then settle
+      const spring = t < 0.6
+        ? (t / 0.6) * 1.12   // accelerate (overshoot)
+        : 1.12 - (t - 0.6) / 0.4 * 0.12; // settle back
+      const clamped = Math.min(spring, 1);
+      setProgress(clamped);
+      if (t < 1) rafRef.current = requestAnimationFrame(animate);
+      else setProgress(1);
+    };
+    rafRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [index]);
 
   const handle = (agree: boolean) => {
     if (chosen !== null) return;
@@ -237,55 +299,66 @@ function Question({
     setTimeout(() => onAnswer(agree), 500);
   };
 
+  // Card slides in from right with spring
+  const translateX = (1 - progress) * 110; // % offscreen → 0
+
   return (
-    <div style={{
-      minHeight: "100vh", display: "flex", flexDirection: "column",
-      justifyContent: "center", maxWidth: "700px",
-      margin: "0 auto", padding: "6rem 1.8rem",
-      opacity: 1,
-    }}>
-      {/* Progress */}
+    <div style={{ minHeight: "100vh", overflow: "hidden", position: "relative" }}>
+      {/* Progress bar */}
       <div style={{ position: "fixed", top: "3rem", left: 0, right: 0, height: "1px", backgroundColor: "var(--border)", zIndex: 99 }}>
         <div style={{ height: "100%", backgroundColor: "var(--ink)", width: `${(index / total) * 100}%`, transition: "width 0.6s ease" }} />
       </div>
 
-      <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "2rem" }}>
-        statement {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-      </p>
+      {/* Rope */}
+      <Rope progress={progress} />
 
-      <h2 style={{
-        fontFamily: "var(--serif)", fontSize: "clamp(1.3rem, 3vw, 1.9rem)",
-        fontWeight: 400, lineHeight: 1.4, color: "var(--ink)",
-        marginBottom: "4rem", maxWidth: "52ch",
+      {/* Card being pulled in */}
+      <div style={{
+        transform: `translateX(${translateX}%)`,
+        transition: "none",
+        display: "flex", flexDirection: "column",
+        justifyContent: "center", maxWidth: "700px",
+        margin: "0 auto", padding: "6rem 1.8rem",
+        minHeight: "100vh",
       }}>
-        {statement.text}
-      </h2>
+        <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "2rem" }}>
+          statement {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </p>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-        {[{ label: "agree", value: true }, { label: "disagree", value: false }].map(opt => {
-          const isChosen = chosen === opt.value;
-          const isDimmed = chosen !== null && !isChosen;
-          return (
-            <button
-              key={opt.label}
-              onClick={() => handle(opt.value)}
-              style={{
-                textAlign: "left", padding: "1.2rem 1.4rem",
-                backgroundColor: isChosen ? "var(--ink)" : "transparent",
-                border: `1px solid ${isChosen ? "var(--ink)" : "var(--border)"}`,
-                color: isChosen ? "var(--white)" : "var(--ink)",
-                fontFamily: "var(--serif)", fontSize: "1rem",
-                fontStyle: "italic", cursor: chosen !== null ? "default" : "pointer",
-                opacity: isDimmed ? 0.2 : 1,
-                transition: "all 0.25s ease",
-              }}
-              onMouseEnter={e => { if (chosen === null) { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.backgroundColor = "var(--hover)"; } }}
-              onMouseLeave={e => { if (chosen === null) { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.backgroundColor = "transparent"; } }}
-            >
-              {opt.label}
-            </button>
-          );
-        })}
+        <h2 style={{
+          fontFamily: "var(--serif)", fontSize: "clamp(1.3rem, 3vw, 1.9rem)",
+          fontWeight: 400, lineHeight: 1.4, color: "var(--ink)",
+          marginBottom: "4rem", maxWidth: "52ch",
+        }}>
+          {statement.text}
+        </h2>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+          {[{ label: "agree", value: true }, { label: "disagree", value: false }].map(opt => {
+            const isChosen = chosen === opt.value;
+            const isDimmed = chosen !== null && !isChosen;
+            return (
+              <button
+                key={opt.label}
+                onClick={() => handle(opt.value)}
+                style={{
+                  textAlign: "left", padding: "1.2rem 1.4rem",
+                  backgroundColor: isChosen ? "var(--ink)" : "transparent",
+                  border: `1px solid ${isChosen ? "var(--ink)" : "var(--border)"}`,
+                  color: isChosen ? "var(--white)" : "var(--ink)",
+                  fontFamily: "var(--serif)", fontSize: "1rem",
+                  fontStyle: "italic", cursor: chosen !== null ? "default" : "pointer",
+                  opacity: isDimmed ? 0.2 : 1,
+                  transition: "all 0.25s ease",
+                }}
+                onMouseEnter={e => { if (chosen === null) { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.backgroundColor = "var(--hover)"; } }}
+                onMouseLeave={e => { if (chosen === null) { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.backgroundColor = "transparent"; } }}
+              >
+                {opt.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
