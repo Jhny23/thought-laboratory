@@ -222,40 +222,157 @@ function Intro({ onStart }: { onStart: () => void }) {
 }
 
 /* ─── QUESTION ─── */
-/* ─── Rope SVG — elastic curve from left edge to card ─── */
-function Rope({ progress }: { progress: number }) {
-  // progress 0→1: rope goes from taut (card off screen) to slack (card landed)
-  const cardX = 120 + (1 - progress) * 800; // card x position
-  const slack = progress * 60; // how much the rope droops when card arrives
-  const cp1x = cardX * 0.3;
-  const cp1y = 50 + slack;
-  const cp2x = cardX * 0.7;
-  const cp2y = 50 + slack * 1.4;
+/* ─── Stickman + rope pull animation ─── */
+function StickmanPull({ onDone }: { onDone: () => void }) {
+  const [t, setT] = useState(0);
+  const rafRef = useRef<number>(0);
+  const startRef = useRef<number>(0);
+  const DURATION = 1800;
+
+  useEffect(() => {
+    setT(0);
+    startRef.current = performance.now();
+    const tick = (now: number) => {
+      const progress = Math.min((now - startRef.current) / DURATION, 1);
+      setT(progress);
+      if (progress < 1) rafRef.current = requestAnimationFrame(tick);
+      else { setTimeout(onDone, 100); }
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  const W = 600;
+  const H = 120;
+
+  // Stickman walks in from right, stops at 80px from left, pulls, walks off left
+  // Phase 0-0.3: stickman walks in from right edge
+  // Phase 0.3-0.7: stickman pulls rope (leaning back)
+  // Phase 0.7-1.0: stickman walks off left, card fully in
+  const phase = t < 0.3 ? "walkin" : t < 0.7 ? "pulling" : "walkout";
+
+  // Stickman x position
+  let stickX: number;
+  if (phase === "walkin") {
+    stickX = W - (t / 0.3) * (W - 80);
+  } else if (phase === "pulling") {
+    stickX = 80;
+  } else {
+    stickX = 80 - ((t - 0.7) / 0.3) * 120;
+  }
+
+  // Leg swing for walking — alternating
+  const walkCycle = Math.sin(t * 28) * 18;
+  const isWalking = phase === "walkin" || phase === "walkout";
+  const leg1Angle = isWalking ? walkCycle : 0;
+  const leg2Angle = isWalking ? -walkCycle : 0;
+  const arm1Angle = isWalking ? -walkCycle * 0.6 : 0;
+  const arm2Angle = isWalking ? walkCycle * 0.6 : 0;
+
+  // Body lean when pulling
+  const bodyLean = phase === "pulling" ? -18 : 0;
+
+  // Rope — from stickman hand to right edge (card)
+  const ropeStartX = stickX + (phase === "pulling" ? -20 : 10);
+  const ropeStartY = 52;
+  const cardOffset = phase === "pulling"
+    ? Math.max(0, 1 - (t - 0.3) / 0.4)  // card comes in as pulling progresses
+    : phase === "walkout" ? 0 : 1;
+  const ropeEndX = W + cardOffset * W * 0.8;
+  const slack = (1 - cardOffset) * 30;
+  const cpx = (ropeStartX + ropeEndX) / 2;
+  const cpy = ropeStartY + slack;
+
+  const stickmanTransform = `rotate(${bodyLean}, ${stickX}, 60)`;
+  const headY = 28;
+  const bodyY1 = 38;
+  const bodyY2 = 68;
+  const hipY = 68;
 
   return (
     <svg
+      viewBox={`0 0 ${W} ${H}`}
       style={{
-        position: "fixed", top: "50%", left: 0,
-        width: `${cardX + 20}px`, height: "120px",
-        transform: "translateY(-50%)",
-        pointerEvents: "none", zIndex: 50,
+        position: "fixed",
+        bottom: "8%",
+        left: 0, right: 0,
+        width: "100%",
+        height: "120px",
+        pointerEvents: "none",
+        zIndex: 50,
         overflow: "visible",
-        opacity: progress < 0.98 ? 1 : 0,
-        transition: "opacity 0.3s ease",
       }}
     >
-      <path
-        d={`M 0,50 C ${cp1x},${cp1y} ${cp2x},${cp2y} ${cardX},50`}
-        fill="none"
-        stroke="var(--ink)"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        opacity="0.35"
-      />
-      {/* Knot at card end */}
-      <circle cx={cardX} cy={50} r="3" fill="var(--ink)" opacity="0.4" />
-      {/* Left anchor */}
-      <circle cx={0} cy={50} r="4" fill="var(--ink)" opacity="0.5" />
+      {/* Rope */}
+      {phase !== "walkin" && (
+        <path
+          d={`M ${ropeStartX},${ropeStartY} Q ${cpx},${cpy} ${Math.min(ropeEndX, W + 50)},${ropeStartY}`}
+          fill="none"
+          stroke="var(--ink)"
+          strokeWidth="1.2"
+          strokeLinecap="round"
+          opacity="0.4"
+        />
+      )}
+
+      {/* Stickman */}
+      <g transform={stickmanTransform}>
+        {/* Head */}
+        <circle cx={stickX} cy={headY} r="9" fill="none" stroke="var(--ink)" strokeWidth="2" />
+
+        {/* Body */}
+        <line x1={stickX} y1={bodyY1} x2={stickX} y2={bodyY2} stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
+
+        {/* Left leg */}
+        <line
+          x1={stickX} y1={hipY}
+          x2={stickX + Math.sin((leg1Angle * Math.PI) / 180) * 22}
+          y2={hipY + Math.cos((leg1Angle * Math.PI) / 180) * 22}
+          stroke="var(--ink)" strokeWidth="2" strokeLinecap="round"
+        />
+        {/* Right leg */}
+        <line
+          x1={stickX} y1={hipY}
+          x2={stickX + Math.sin((leg2Angle * Math.PI) / 180) * 22}
+          y2={hipY + Math.cos((leg2Angle * Math.PI) / 180) * 22}
+          stroke="var(--ink)" strokeWidth="2" strokeLinecap="round"
+        />
+
+        {/* Left arm — reaches toward rope when pulling */}
+        <line
+          x1={stickX} y1={bodyY1 + 8}
+          x2={phase === "pulling"
+            ? stickX - 24
+            : stickX + Math.sin((arm1Angle * Math.PI) / 180) * 20}
+          y2={phase === "pulling"
+            ? bodyY1 + 2
+            : bodyY1 + 8 + Math.cos((arm1Angle * Math.PI) / 180) * 16}
+          stroke="var(--ink)" strokeWidth="2" strokeLinecap="round"
+        />
+        {/* Right arm */}
+        <line
+          x1={stickX} y1={bodyY1 + 8}
+          x2={phase === "pulling"
+            ? stickX - 18
+            : stickX + Math.sin((arm2Angle * Math.PI) / 180) * 20}
+          y2={phase === "pulling"
+            ? bodyY1 + 16
+            : bodyY1 + 8 + Math.cos((arm2Angle * Math.PI) / 180) * 16}
+          stroke="var(--ink)" strokeWidth="2" strokeLinecap="round"
+        />
+
+        {/* Effort lines when pulling */}
+        {phase === "pulling" && (
+          <>
+            <line x1={stickX + 12} y1={headY - 6} x2={stickX + 20} y2={headY - 14} stroke="var(--ink)" strokeWidth="1" opacity="0.3" />
+            <line x1={stickX + 14} y1={headY} x2={stickX + 24} y2={headY - 4} stroke="var(--ink)" strokeWidth="1" opacity="0.3" />
+            <line x1={stickX + 12} y1={headY + 6} x2={stickX + 22} y2={headY + 8} stroke="var(--ink)" strokeWidth="1" opacity="0.3" />
+          </>
+        )}
+      </g>
+
+      {/* Ground line */}
+      <line x1={0} y1={H - 8} x2={W} y2={H - 8} stroke="var(--border)" strokeWidth="0.8" />
     </svg>
   );
 }
@@ -268,29 +385,32 @@ function Question({
   onAnswer: (agree: boolean) => void;
 }) {
   const [chosen, setChosen] = useState<boolean | null>(null);
-  const [progress, setProgress] = useState(0);
+  const [animDone, setAnimDone] = useState(false);
+  const [cardProgress, setCardProgress] = useState(0);
   const rafRef = useRef<number>(0);
   const startRef = useRef<number>(0);
 
-  // Spring animation — elastic pull
   useEffect(() => {
-    setProgress(0);
-    startRef.current = performance.now();
+    setAnimDone(false);
+    setCardProgress(0);
+  }, [index]);
 
-    const duration = 900; // ms total
-    const animate = (now: number) => {
-      const t = Math.min((now - startRef.current) / duration, 1);
-      // Spring easing — overshoot then settle
-      const spring = t < 0.6
-        ? (t / 0.6) * 1.12   // accelerate (overshoot)
-        : 1.12 - (t - 0.6) / 0.4 * 0.12; // settle back
-      const clamped = Math.min(spring, 1);
-      setProgress(clamped);
-      if (t < 1) rafRef.current = requestAnimationFrame(animate);
-      else setProgress(1);
-    };
-    rafRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafRef.current);
+  // Card spring in after stickman starts pulling (after 0.3 * 1800ms = 540ms)
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      startRef.current = performance.now();
+      const CARD_DUR = 900;
+      const tick = (now: number) => {
+        const t = Math.min((now - startRef.current) / CARD_DUR, 1);
+        // Spring overshoot
+        const spring = t < 0.7 ? t / 0.7 * 1.08 : 1.08 - ((t - 0.7) / 0.3) * 0.08;
+        setCardProgress(Math.min(spring, 1));
+        if (t < 1) rafRef.current = requestAnimationFrame(tick);
+        else setCardProgress(1);
+      };
+      rafRef.current = requestAnimationFrame(tick);
+    }, 500);
+    return () => { clearTimeout(delay); cancelAnimationFrame(rafRef.current); };
   }, [index]);
 
   const handle = (agree: boolean) => {
@@ -299,8 +419,7 @@ function Question({
     setTimeout(() => onAnswer(agree), 500);
   };
 
-  // Card slides in from right with spring
-  const translateX = (1 - progress) * 110; // % offscreen → 0
+  const translateX = (1 - cardProgress) * 105;
 
   return (
     <div style={{ minHeight: "100vh", overflow: "hidden", position: "relative" }}>
@@ -309,10 +428,10 @@ function Question({
         <div style={{ height: "100%", backgroundColor: "var(--ink)", width: `${(index / total) * 100}%`, transition: "width 0.6s ease" }} />
       </div>
 
-      {/* Rope */}
-      <Rope progress={progress} />
+      {/* Stickman */}
+      {!animDone && <StickmanPull onDone={() => setAnimDone(true)} />}
 
-      {/* Card being pulled in */}
+      {/* Card */}
       <div style={{
         transform: `translateX(${translateX}%)`,
         transition: "none",
