@@ -27,18 +27,18 @@ export const experiments: Experiment[] = [
       "The Philosophical Health Check was developed by Philosophy Experiments. It identifies logical tensions between pairs of beliefs you hold simultaneously.",
   },
   {
-    slug: "experience-machine",
-    thinker: "Robert Nozick",
-    name: "Experience Machine",
-    year: "1974",
-    status: "soon",
-    domain: "pleasure · reality",
-    duration: "6 min · 5 decisions",
+    slug: "trolley-problem",
+    thinker: "Philippa Foot · Judith Jarvis Thomson",
+    name: "Should You Kill the Fat Man?",
+    year: "1967",
+    status: "available",
+    domain: "moral intuition · consequentialism",
+    duration: "6 min · 8 questions",
     hue: "#C9CDD4",
     description:
-      "A machine can give you any experience you desire — indistinguishable from reality, permanently satisfying. Would you plug in? And if not, what does your refusal reveal about what you actually value?",
+      "A runaway train. Five people on the track. One person on a bridge above. The scenarios get harder. Your answers will be tested for consistency.",
     subtext:
-      "Robert Nozick introduced the Experience Machine in Anarchy, State, and Utopia (1974) to challenge hedonism — the view that pleasure is the only intrinsic good.",
+      "The Trolley Problem was first outlined by Philippa Foot in 1967 and developed by Judith Jarvis Thomson. It remains the most discussed thought experiment in moral philosophy.",
   },
   {
     slug: "moral-luck",
