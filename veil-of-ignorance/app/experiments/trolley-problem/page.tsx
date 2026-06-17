@@ -4,7 +4,12 @@ import Link from "next/link";
 import Nav from "@/app/components/Nav";
 import Footer from "@/app/components/Footer";
 
-/* ─── DATA ─── */
+/* ─── DATA ───
+   Sourced from Philippa Foot, "The Problem of Abortion and the Doctrine of
+   Double Effect" (1967), and Judith Jarvis Thomson, "Killing, Letting Die,
+   and the Trolley Problem" (The Monist, 1976) and "The Trolley Problem"
+   (Yale Law Journal, 1985). Wording below is original. */
+
 const preliminary = [
   { id: "torture", text: "Torture, as a matter of principle, is always morally wrong.", avgYes: 60 },
   { id: "maximise", text: "The morality of an action is determined by whether it maximises total happiness compared with the alternatives.", avgYes: 43 },
@@ -17,26 +22,45 @@ type ScenarioChoice = { label: string; killCount: string };
 const scenarios: {
   id: string;
   title: string;
+  source: string;
+  principle: string;
   intro?: string;
   text: string;
-  choices: [ScenarioChoice, ScenarioChoice]; // [action, inaction]
+  choices: [ScenarioChoice, ScenarioChoice];
   avgAction: number;
 }[] = [
   {
-    id: "divert",
-    title: "The Runaway Train",
-    text: "A train's brakes have failed. Five people are on the track ahead, with no way to escape in time. A side track leads off to the right, with one person standing on it. The driver can divert the train onto the siding, killing one — or do nothing, and let it continue toward the five.",
+    id: "driver",
+    title: "The Driver",
+    source: "Foot, 1967",
+    principle: "killing vs. letting die",
+    text: "You are driving a trolley whose brakes have just failed. Five workmen are on the track ahead, with no way to escape in time. A side track branches off to the right, where a single workman is standing. You can steer onto the side track, killing one — or stay on course, killing five.",
     choices: [
-      { label: "Divert the train", killCount: "1 dead" },
-      { label: "Let it continue", killCount: "5 dead" },
+      { label: "Steer onto the side track", killCount: "1 dead" },
+      { label: "Stay on course", killCount: "5 dead" },
+    ],
+    avgAction: 89,
+  },
+  {
+    id: "bystander",
+    title: "The Bystander at the Switch",
+    source: "Thomson, 1976",
+    principle: "agent's prior role in the threat",
+    intro: "Same outcome, same numbers — but you're no longer driving.",
+    text: "The trolley is the same runaway trolley, heading for the same five workmen. This time you are not the driver. You are a bystander standing beside a switch that would divert the trolley onto a side track, where it would kill one workman instead of five. You have no other connection to the trolley or the track.",
+    choices: [
+      { label: "Throw the switch", killCount: "1 dead" },
+      { label: "Do nothing", killCount: "5 dead" },
     ],
     avgAction: 83,
   },
   {
-    id: "fatman",
-    title: "The Man on the Bridge",
-    intro: "Same arithmetic, different mechanism.",
-    text: "A train is about to hit five people stuck on the track. You are on a footbridge above the track, standing next to a very large man. The only way to stop the train in time is to push him onto the track — his body would derail it, killing him but saving the five. Or you do nothing, and the five die.",
+    id: "footbridge",
+    title: "The Footbridge",
+    source: "Thomson, 1976 / 1985",
+    principle: "doctrine of double effect",
+    intro: "Same five lives at stake. A different kind of act.",
+    text: "You are standing on a footbridge over the track, watching the runaway trolley approach the five workmen below. Next to you is a stranger, large enough that his body would stop the trolley if it fell onto the track. There is no switch, no side track — the only way to save the five is to push him off the bridge, where his body will derail the trolley and kill him.",
     choices: [
       { label: "Push him onto the track", killCount: "1 dead" },
       { label: "Do nothing", killCount: "5 dead" },
@@ -44,26 +68,43 @@ const scenarios: {
     avgAction: 37,
   },
   {
-    id: "saboteur",
-    title: "The Saboteur",
-    intro: "Same bridge. Different person.",
-    text: "Same scenario — except this time, the large man on the bridge is the one who sabotaged the train's brakes in the first place, deliberately setting this entire chain of events in motion. Pushing him onto the track will still save the five. Doing nothing will still mean they die.",
+    id: "loop",
+    title: "The Loop",
+    source: "Thomson, 1985",
+    principle: "using a person as a means",
+    intro: "The bystander case again — with one change to the track.",
+    text: "You're back at the switch. The runaway trolley is heading for five workmen, and there's a side track with one workman on it. But this side track is not a simple spur — it loops back around and rejoins the main track further along, exactly where the five are standing. If you divert the trolley, it will only stop reaching the five because the one workman's body derails it on the loop. Without his body in the way, the trolley would simply rejoin the main track and kill the five anyway.",
     choices: [
-      { label: "Push him onto the track", killCount: "1 dead" },
+      { label: "Divert onto the loop", killCount: "1 dead" },
       { label: "Do nothing", killCount: "5 dead" },
     ],
-    avgAction: 78,
+    avgAction: 64,
   },
   {
-    id: "torture",
-    title: "The Ticking Clock",
-    intro: "A different kind of dilemma.",
-    text: "The man from the bridge has been arrested. He has hidden a bomb in a city center, set to detonate in 24 hours and kill a million people. He cannot be persuaded or tricked into revealing its location. Experts estimate that torturing him gives a 75% chance of extracting the location in time. Without it, the bomb explodes and a million people die.",
+    id: "transplant",
+    title: "The Transplant",
+    source: "Thomson, 1976 / 1985",
+    principle: "doing vs. allowing",
+    intro: "No trolley this time. Same arithmetic.",
+    text: "You are a surgeon with five patients, each dying from the failure of a different organ. A healthy young man has come in for a routine check-up, and you discover he is a perfect match for all five. He has not consented to anything beyond a check-up. If you remove his organs and distribute them, you can save all five patients. If you don't, he walks out healthy and the five die waiting for organs that never come.",
     choices: [
-      { label: "Torture him for the location", killCount: "75% chance of saving 1,000,000" },
-      { label: "Do not torture him", killCount: "bomb explodes" },
+      { label: "Operate without his consent", killCount: "1 dead" },
+      { label: "Let him go, treat no one", killCount: "5 dead" },
     ],
-    avgAction: 83,
+    avgAction: 3,
+  },
+  {
+    id: "dropthrough",
+    title: "The Trapdoor",
+    source: "after Kamm; Thomson's footbridge variant",
+    principle: "personal vs. impersonal force",
+    intro: "The footbridge case again — with one change to how the harm happens.",
+    text: "You're back on the footbridge with the large stranger, the same runaway trolley bearing down on the same five workmen. This time there's a lever beside you, wired to a trapdoor under the stranger's feet. Pulling the lever drops him through the floor and onto the track below, where his body will stop the trolley, exactly as before. You never have to touch him — the mechanism does it for you.",
+    choices: [
+      { label: "Pull the lever", killCount: "1 dead" },
+      { label: "Do nothing", killCount: "5 dead" },
+    ],
+    avgAction: 54,
   },
 ];
 
@@ -113,7 +154,7 @@ function Intro({ onStart }: { onStart: () => void }) {
       </Reveal>
       <Reveal delay={180}>
         <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.9, color: "var(--ink)", marginBottom: "1.4rem", maxWidth: "58ch" }}>
-          This experiment is built on the trolley problem — first outlined by Philippa Foot, later developed by Judith Jarvis Thomson and others. Before the scenarios, four short questions about how you think morality works in general.
+          This experiment draws on the trolley problem literature — Philippa Foot's original driver case, and the bystander, footbridge, loop, and transplant variants developed by Judith Jarvis Thomson. Before the six scenarios, four short questions about how you think morality works in general.
         </p>
       </Reveal>
       <Reveal delay={220}>
@@ -123,7 +164,7 @@ function Intro({ onStart }: { onStart: () => void }) {
       </Reveal>
       <Reveal delay={260}>
         <div style={{ marginBottom: "3rem" }}>
-          {[["preliminary questions", "4"], ["scenarios", "4"], ["estimated time", "6 minutes"], ["what it measures", "moral consistency"]].map(([k, v]) => (
+          {[["preliminary questions", "4"], ["scenarios", "6"], ["estimated time", "9 minutes"], ["what it measures", "moral consistency"]].map(([k, v]) => (
             <div key={k} style={{ display: "grid", gridTemplateColumns: "180px 1fr", borderTop: "1px solid var(--border)", padding: "0.6rem 0" }}>
               <span style={{ fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.1em", color: "var(--muted)" }}>{k}</span>
               <span style={{ fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.06em", color: "var(--ink)" }}>{v}</span>
@@ -221,7 +262,7 @@ function Scenario({
       </div>
 
       <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "1.4rem" }}>
-        scenario {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        scenario {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")} — {scenario.source}
       </p>
 
       {scenario.intro && (
@@ -230,9 +271,13 @@ function Scenario({
         </p>
       )}
 
-      <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(1.5rem, 3.5vw, 2.2rem)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.15, color: "var(--ink)", marginBottom: "1.8rem" }}>
+      <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(1.5rem, 3.5vw, 2.2rem)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.15, color: "var(--ink)", marginBottom: "0.8rem" }}>
         {scenario.title}
       </h2>
+
+      <p style={{ fontFamily: "var(--mono)", fontSize: "0.46rem", letterSpacing: "0.1em", color: "var(--muted)", marginBottom: "1.8rem", textTransform: "uppercase" }}>
+        tests: {scenario.principle}
+      </p>
 
       <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.85, color: "var(--ink)", marginBottom: "3rem", maxWidth: "56ch" }}>
         {scenario.text}
@@ -270,18 +315,29 @@ function Results({ prelim, scenarioAnswers, onRetry }: {
   scenarioAnswers: Answers;
   onRetry: () => void;
 }) {
-  // Consistency logic: utilitarian-leaning if "maximise" = yes.
-  // If you take action in divert + fatman + saboteur consistently (all same), high consistency.
-  // Simplified: consistency = how many of {divert, fatman, saboteur} match each other (all act or all don't),
-  // weighted against whether "maximise happiness" belief aligns with that pattern.
-  const actionCount = ["divert", "fatman", "saboteur"].filter(k => scenarioAnswers[k]).length;
-  const consistency = actionCount === 3 || actionCount === 0 ? 100 : actionCount === 1 || actionCount === 2 ? 50 : 0;
+  // Consistency check: driver, bystander, and loop are structurally similar
+  // (diverting a threat onto one to save five). Footbridge and trapdoor involve
+  // a person as the means of stopping the trolley. Transplant has no trolley
+  // at all but the same five-for-one arithmetic.
+  const divertGroup = ["driver", "bystander", "loop"];
+  const meansGroup = ["footbridge", "dropthrough"];
 
-  // Are they utilitarian (maximise=yes) but inconsistent in fatman vs divert?
+  const divertActions = divertGroup.filter(k => scenarioAnswers[k]).length;
+  const meansActions = meansGroup.filter(k => scenarioAnswers[k]).length;
+
+  const divertConsistent = divertActions === divertGroup.length || divertActions === 0;
+  const meansConsistent = meansActions === meansGroup.length || meansActions === 0;
+
+  const consistency = Math.round(
+    ((divertConsistent ? 1 : 0.5) + (meansConsistent ? 1 : 0.5)) / 2 * 100
+  );
+
   const isUtilitarian = prelim["maximise"] === true;
-  const divertedButNotFatman = scenarioAnswers["divert"] === true && scenarioAnswers["fatman"] === false;
+  const divertedButNotFootbridge = scenarioAnswers["driver"] === true && scenarioAnswers["footbridge"] === false;
+  const footbridgeButNotTrapdoor = scenarioAnswers["footbridge"] === false && scenarioAnswers["dropthrough"] === true;
+  const sameAsTransplant = scenarioAnswers["driver"] === true && scenarioAnswers["transplant"] === true;
 
-  const avgConsistency = 66;
+  const avgConsistency = 61;
 
   return (
     <div style={{ maxWidth: "700px", margin: "0 auto", padding: "8rem 1.8rem 10rem" }}>
@@ -325,11 +381,31 @@ function Results({ prelim, scenarioAnswers, onRetry }: {
         </p>
       </Reveal>
 
-      {isUtilitarian && divertedButNotFatman && (
+      {isUtilitarian && divertedButNotFootbridge && (
         <Reveal delay={220}>
-          <div style={{ borderLeft: "1px solid var(--ink)", paddingLeft: "1.4rem", marginBottom: "3rem" }}>
+          <div style={{ borderLeft: "1px solid var(--ink)", paddingLeft: "1.4rem", marginBottom: "2rem" }}>
             <p style={{ fontFamily: "var(--serif)", fontSize: "0.95rem", fontWeight: 300, lineHeight: 1.85, color: "var(--ink)", fontStyle: "italic" }}>
-              You said morality is about maximising total happiness — yet you diverted the train but wouldn't push the man off the bridge. Both save five lives at the cost of one. If pure utilitarian arithmetic were really driving your judgement, both cases should land the same way. Something else is doing the work here — probably the difference between killing someone as a side effect versus killing them as the means.
+              You said morality is about maximising total happiness — yet you'd steer the trolley but wouldn't push the man off the footbridge. Both trade one life for five. If pure arithmetic were driving your judgement, the two cases should land the same way. Something else is doing the work — most likely the distinction between killing someone as a side effect of redirecting an existing threat, and killing them by using their body as the means.
+            </p>
+          </div>
+        </Reveal>
+      )}
+
+      {footbridgeButNotTrapdoor && (
+        <Reveal delay={240}>
+          <div style={{ borderLeft: "1px solid var(--ink)", paddingLeft: "1.4rem", marginBottom: "2rem" }}>
+            <p style={{ fontFamily: "var(--serif)", fontSize: "0.95rem", fontWeight: 300, lineHeight: 1.85, color: "var(--ink)", fontStyle: "italic" }}>
+              You wouldn't push him with your hands, but you would pull a lever that drops him through a trapdoor. The outcome is identical — one man dies, his body stops the trolley, five live. If what's doing the moral work is the use of his body as a means, the mechanism shouldn't matter. If it does matter to you, the question is why physical contact carries weight that a switch doesn't.
+            </p>
+          </div>
+        </Reveal>
+      )}
+
+      {sameAsTransplant && (
+        <Reveal delay={260}>
+          <div style={{ borderLeft: "1px solid var(--ink)", paddingLeft: "1.4rem", marginBottom: "2rem" }}>
+            <p style={{ fontFamily: "var(--serif)", fontSize: "0.95rem", fontWeight: 300, lineHeight: 1.85, color: "var(--ink)", fontStyle: "italic" }}>
+              You'd steer the trolley, and you'd also let the surgeon operate on the unconsenting visitor. Almost no one answers both of those the same way — the numbers are identical, but cutting someone open for their organs feels nothing like flipping a switch. Worth sitting with what that difference actually is.
             </p>
           </div>
         </Reveal>
@@ -360,9 +436,24 @@ function Results({ prelim, scenarioAnswers, onRetry }: {
       </Reveal>
 
       <Reveal delay={320}>
-        <p style={{ fontFamily: "var(--serif)", fontSize: "0.9rem", fontWeight: 300, lineHeight: 1.85, color: "var(--muted)", fontStyle: "italic", marginBottom: "5rem", maxWidth: "55ch" }}>
-          One pattern worth noting: across thousands of responses, most people happily divert the train but refuse to push the man off the bridge — even though both kill one to save five. That asymmetry is one of the hardest things for purely consequentialist ethics to explain.
+        <p style={{ fontFamily: "var(--serif)", fontSize: "0.9rem", fontWeight: 300, lineHeight: 1.85, color: "var(--muted)", fontStyle: "italic", marginBottom: "2.5rem", maxWidth: "55ch" }}>
+          One pattern that holds up across most people who take this: nearly everyone steers the trolley in the driver and bystander cases, far fewer will push the man off the footbridge, and almost no one will let the surgeon operate. The numbers are identical in every case — one dies, five live. What changes is how the one person's death comes about.
         </p>
+      </Reveal>
+
+      <Reveal delay={350}>
+        <div style={{ marginBottom: "5rem" }}>
+          <p style={{ fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.15em", color: "var(--muted)", marginBottom: "1.4rem" }}>
+            what each case tests
+          </p>
+          {scenarios.map(s => (
+            <div key={s.id} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", borderTop: "1px solid var(--border)", padding: "0.7rem 0" }}>
+              <span style={{ fontFamily: "var(--serif)", fontSize: "0.85rem", fontStyle: "italic", color: "var(--ink)" }}>{s.title}</span>
+              <span style={{ fontFamily: "var(--mono)", fontSize: "0.46rem", letterSpacing: "0.06em", color: "var(--muted)" }}>{s.principle}</span>
+            </div>
+          ))}
+          <div style={{ borderTop: "1px solid var(--border)" }} />
+        </div>
       </Reveal>
 
       <Reveal delay={360}>
