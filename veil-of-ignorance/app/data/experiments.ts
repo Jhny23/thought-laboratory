@@ -13,6 +13,20 @@ export type Experiment = {
 
 export const experiments: Experiment[] = [
   {
+    slug: "trolley-problem",
+    thinker: "Philippa Foot · Judith Jarvis Thomson",
+    name: "Should You Kill the Fat Man?",
+    year: "1967",
+    status: "available",
+    domain: "ethics · life and death",
+    duration: "6 min · 4 scenarios",
+    hue: "#C9CDD4",
+    description:
+      "A runaway train. Five people on the track. One person who could be sacrificed to save them. The same underlying logic, dressed in four different scenarios — and most people don't answer them the same way twice.",
+    subtext:
+      "Originating with Philippa Foot and developed further by Judith Jarvis Thomson, the trolley problem remains one of the most discussed thought experiments in moral philosophy. It tests whether your intuitions actually follow the principles you claim to hold.",
+  },
+  {
     slug: "philosophical-health-test",
     thinker: "Philosophy Experiments",
     name: "Philosophical Health Test",
