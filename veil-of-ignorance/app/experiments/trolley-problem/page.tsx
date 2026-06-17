@@ -431,6 +431,7 @@ export default function TrolleyProblemPage() {
         {stage === "intro" && <Intro onStart={() => setStage("preliminary")} />}
         {stage === "preliminary" && (
           <YesNoQuestion
+            key={prelimIndex}
             text={preliminary[prelimIndex].text}
             index={prelimIndex}
             total={preliminary.length}
@@ -439,6 +440,7 @@ export default function TrolleyProblemPage() {
         )}
         {stage === "scenarios" && (
           <Scenario
+            key={scenarioIndex}
             scenario={scenarios[scenarioIndex]}
             index={scenarioIndex}
             total={scenarios.length}
