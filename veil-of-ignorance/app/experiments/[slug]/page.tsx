@@ -431,8 +431,35 @@ function Results({ answers, onRetry }: { answers: Answers; onRetry: () => void }
       <Reveal delay={180}>
         <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.9, color: "var(--ink)", marginBottom: "1.4rem", maxWidth: "58ch" }}>
           {found.length === 0
-            ? "Your beliefs form a remarkably consistent set — either through careful thinking, familiarity with the test, or luck. Consider trying again with different responses to see what tensions you avoided."
+            ? "As you've probably already worked out, the PHC has identified no tensions in your beliefs. Roughly 3% of people who complete this activity land here too."
             : `The PHC has identified ${found.length} tension${found.length === 1 ? "" : "s"} in your beliefs. Where beliefs are in tension, either one should be given up, or a coherent way of reconciling them needs to be found.`}
+        </p>
+      </Reveal>
+
+      {found.length === 0 && (
+        <Reveal delay={200}>
+          <div style={{ marginBottom: "2.5rem" }}>
+            <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.9, color: "var(--ink)", marginBottom: "1rem", maxWidth: "55ch" }}>
+              There are a few ways to end up here:
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+              {[
+                "Your beliefs genuinely form a consistent set.",
+                "You've seen a version of this test before and answered with that in mind.",
+                "You got lucky — the test only catches pre-selected pairs, not every possible tension.",
+              ].map((line, i) => (
+                <p key={i} style={{ fontFamily: "var(--serif)", fontSize: "0.95rem", fontStyle: "italic", color: "var(--muted)", lineHeight: 1.7, paddingLeft: "1.4rem", borderLeft: "1px solid var(--border)" }}>
+                  {i + 1}. {line}
+                </p>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      )}
+
+      <Reveal delay={210}>
+        <p style={{ fontFamily: "var(--serif)", fontSize: "0.92rem", fontWeight: 300, lineHeight: 1.85, color: "var(--muted)", fontStyle: "italic", marginBottom: "2rem", maxWidth: "55ch" }}>
+          Think of tension as a kind of balancing act. Where two beliefs sit comfortably together, no real effort is needed to hold both at once. Where the tension is severe, you're left with three options: drop one of the beliefs, do the intellectual work to reconcile them, or carry on holding both without resolving the contradiction.
         </p>
       </Reveal>
 
