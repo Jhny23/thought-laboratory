@@ -88,7 +88,7 @@ function Hero() {
     return () => clearInterval(t);
   }, []);
   return (
-    <div style={{
+    <div className="hero-wrapper" style={{
       position: "relative", width: "100%",
       aspectRatio: "16 / 7", overflow: "hidden",
       borderBottom: "1px solid var(--border)",
@@ -148,6 +148,7 @@ function TempleSection() {
   return (
     <div
       ref={ref}
+      className="temple-section-grid"
       style={{
         borderTop: "1px solid var(--border)",
         display: "grid",
@@ -155,7 +156,7 @@ function TempleSection() {
       }}
     >
       {/* LEFT — temple image */}
-      <div style={{
+      <div className="temple-section-image" style={{
         borderRight: "1px solid var(--border)",
         backgroundColor: "#F0EDE8",
         display: "flex",
@@ -179,7 +180,7 @@ function TempleSection() {
       </div>
 
       {/* RIGHT — text cascade */}
-      <div style={{
+      <div className="temple-section-text" style={{
         padding: "6rem 3rem 6rem 3.5rem",
         display: "flex",
         flexDirection: "column",
@@ -434,6 +435,17 @@ export default function HomePage() {
 
       <Footer />
     </div>
+    <style jsx global>{`
+      @media (max-width: 768px) {
+        .hero-wrapper { aspect-ratio: 4 / 5 !important; }
+        .temple-section-grid { grid-template-columns: 1fr !important; }
+        .temple-section-image { border-right: none !important; border-bottom: 1px solid var(--border) !important; padding: 2.5rem 1.5rem !important; }
+        .temple-section-text { padding: 3rem 1.8rem !important; }
+      }
+      @media (max-width: 480px) {
+        .hero-wrapper { aspect-ratio: 3 / 4 !important; }
+      }
+    `}</style>
     </Preloader>
   );
 }
