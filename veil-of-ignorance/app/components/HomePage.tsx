@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Nav from "@/app/components/Nav";
 import Footer from "@/app/components/Footer";
+import Preloader from "@/app/components/Preloader";
 
 const slides = [
   {
@@ -231,6 +232,7 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 
 export default function HomePage() {
   return (
+    <Preloader>
     <div style={{ backgroundColor: "var(--white)", minHeight: "100vh" }}>
       <Nav />
 
@@ -432,5 +434,6 @@ export default function HomePage() {
 
       <Footer />
     </div>
+    </Preloader>
   );
 }
