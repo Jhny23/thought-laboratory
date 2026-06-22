@@ -522,6 +522,7 @@ export default function TrolleyProblemPage() {
 
         {current.kind === "proposition" && (
           <PropositionScreen
+            key={current.index}
             index={current.index}
             progress={current.index / (config.propositions.length + config.scenarios.length + 5)}
             onAnswer={(yes) => answer(config.propositions[current.index].id, yes, "propositions")}
@@ -534,6 +535,7 @@ export default function TrolleyProblemPage() {
 
         {current.kind === "scenario" && (
           <ScenarioScreen
+            key={current.index}
             index={current.index}
             progress={(config.propositions.length + 1 + current.index) / (config.propositions.length + config.scenarios.length + 5)}
             answers={answers}
