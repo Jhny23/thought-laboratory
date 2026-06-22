@@ -276,8 +276,13 @@ function AnalysisPage1({ score, onContinue }: { score: number; onContinue: () =>
         </p>
       </Reveal>
       <Reveal delay={220}>
-        <p style={{ fontFamily: "var(--serif)", fontSize: "0.95rem", fontWeight: 300, lineHeight: 1.9, color: "var(--muted)", fontStyle: "italic", marginBottom: "5rem", maxWidth: "55ch" }}>
+        <p style={{ fontFamily: "var(--serif)", fontSize: "0.95rem", fontWeight: 300, lineHeight: 1.9, color: "var(--muted)", fontStyle: "italic", marginBottom: "2rem", maxWidth: "55ch" }}>
           Say you think diverting the train is right purely because it maximises happiness, but you don't think that justification carries over to the man on the bridge. Unless you can name a morally relevant difference between the two cases, that justification wasn't really doing the work you thought it was.
+        </p>
+      </Reveal>
+      <Reveal delay={250}>
+        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.9, color: "var(--ink)", marginBottom: "5rem", maxWidth: "58ch" }}>
+          If your score came out above average, that's worth noting, but it's not a finish line — most people, if they're honest, haven't thought all the way through their own moral commitments. There's more in the next page worth sitting with before you draw any final conclusions about yourself.
         </p>
       </Reveal>
       <Reveal delay={260}>
