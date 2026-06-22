@@ -127,7 +127,7 @@ export default function ExperimentsPage() {
       <Nav />
       <div style={{ paddingTop: "3rem" }}>
 
-        <div style={{
+        <div className="experiments-header" style={{
           padding: "4rem 2.4rem 3rem",
           borderBottom: "1px solid var(--border)",
           backgroundColor: "var(--white)",
@@ -149,7 +149,7 @@ export default function ExperimentsPage() {
           </span>
         </div>
 
-        <div style={{
+        <div className="experiments-grid" style={{
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
           gap: "1.5rem",
@@ -163,6 +163,15 @@ export default function ExperimentsPage() {
 
       </div>
       <Footer />
+      <style jsx global>{`
+        @media (max-width: 900px) {
+          .experiments-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 580px) {
+          .experiments-grid { grid-template-columns: 1fr !important; padding: 2rem 1.4rem 4rem !important; }
+          .experiments-header { flex-direction: column !important; align-items: flex-start !important; gap: 1rem; padding: 3rem 1.4rem 2rem !important; }
+        }
+      `}</style>
     </div>
   );
 }

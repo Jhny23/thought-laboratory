@@ -539,8 +539,8 @@ function ExperimentDetail({ exp }: { exp: typeof experiments[0] }) {
     <div style={{ backgroundColor: "var(--white)", minHeight: "100vh" }}>
       <Nav />
       <div style={{ paddingTop: "3rem" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "calc(100vh - 3rem)", borderBottom: "1px solid var(--border)" }}>
-          <div style={{ borderRight: "1px solid var(--border)", backgroundColor: exp.hue, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className="exp-detail-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "calc(100vh - 3rem)", borderBottom: "1px solid var(--border)" }}>
+          <div className="exp-detail-image" style={{ borderRight: "1px solid var(--border)", backgroundColor: exp.hue, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.15em", color: "rgba(28,28,26,0.4)" }}>soon</p>
           </div>
           <div style={{ padding: "3rem 2rem", overflowY: "auto" }}>
@@ -553,6 +553,12 @@ function ExperimentDetail({ exp }: { exp: typeof experiments[0] }) {
         </div>
       </div>
       <Footer />
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .exp-detail-grid { grid-template-columns: 1fr !important; }
+          .exp-detail-image { border-right: none !important; border-bottom: 1px solid var(--border) !important; min-height: 220px; }
+        }
+      `}</style>
     </div>
   );
 }

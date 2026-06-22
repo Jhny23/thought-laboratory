@@ -128,7 +128,7 @@ function Board() {
   useEffect(() => { const t = setTimeout(() => setVisible(true), 120); return () => clearTimeout(t); }, []);
 
   return (
-    <div style={{
+    <div className="biographies-board" style={{
       position: "relative",
       width: "100%",
       minHeight: "88vh",
@@ -252,7 +252,7 @@ export default function BiographiesPage() {
       <div style={{ paddingTop: "3rem" }}>
 
         {/* Header */}
-        <div style={{
+        <div className="bios-header" style={{
           padding: "3.5rem 2.4rem 2.5rem",
           borderBottom: "1px solid var(--border)",
           backgroundColor: "var(--white)",
@@ -278,7 +278,7 @@ export default function BiographiesPage() {
           </p>
         </div>
 
-        {/* Board */}
+        {/* Board — constellation layout, desktop only. Mobile relies on the list below. */}
         <Board />
 
         {/* List */}
@@ -315,6 +315,13 @@ export default function BiographiesPage() {
 
       </div>
       <Footer />
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .biographies-board { display: none !important; }
+          .bios-header { flex-direction: column !important; align-items: flex-start !important; gap: 1.2rem; padding: 2.5rem 1.4rem 2rem !important; }
+          .bios-header p { text-align: left !important; max-width: none !important; }
+        }
+      `}</style>
     </div>
   );
 }
