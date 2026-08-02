@@ -1,16 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@300;400&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --white:   #FAFAF8;
-  --off:     #F2F0EC;
-  --ink:     #1A1918;
-  --muted:   #888480;
-  --border:  #E4E2DE;
-  --hover:   #F5F3EF;
+  /* Wabi-sabi palette — aged paper, not crisp white */
+  --white:   #F7F4EF;
+  --off:     #EDE9E2;
+  --ink:     #1C1A17;
+  --muted:   #8C8279;
+  --border:  #D9D4CC;
+  --hover:   #F0EDE7;
 
   --serif: 'EB Garamond', Georgia, serif;
   --mono:  'Space Mono', monospace;
@@ -25,11 +26,55 @@ html {
   font-size: 16px;
 }
 
+/* Grain texture layer — sits over everything, pointer-events off */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+}
+
 body { overflow-x: hidden; }
 
+/* Slightly irregular text rendering — feels handset */
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  letter-spacing: 0.01em;
+}
+
+/* Scrollbar — barely visible, aged */
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--off); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 0; }
+
+/* Selection — ink reverse, the only moment of sharpness */
 ::selection { background: var(--ink); color: var(--white); }
-::-webkit-scrollbar { width: 1px; }
-::-webkit-scrollbar-thumb { background: var(--border); }
 
 a { color: inherit; text-decoration: none; }
 button { cursor: pointer; background: none; border: none; color: inherit; font: inherit; }
+
+/* Wabi-sabi border utility — slightly warm, never pure */
+.ws-border { border-color: var(--border) !important; }
+
+/* Wabi-sabi type scale — give everything a touch more air */
+p, h1, h2, h3 { line-height: 1.75; }
+
+/* Imperfect horizontal rule — not perfectly centered, slightly off */
+hr {
+  border: none;
+  height: 1px;
+  background: var(--border);
+  margin: 0;
+}
+
+/* Images — slightly aged, never oversaturated */
+img {
+  max-width: 100%;
+  height: auto;
+  filter: sepia(6%) contrast(0.96);
+}
