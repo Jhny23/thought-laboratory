@@ -161,7 +161,7 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
     <div ref={ref} style={{
       opacity: visible ? 1 : 0,
       transform: visible ? "translateY(0)" : "translateY(14px)",
-      transition: `opacity 800ms ease ${delay}ms, transform 800ms ease ${delay}ms`,
+      transition: `opacity 1100ms ease ${delay}ms, transform 1100ms ease ${delay}ms`,
     }}>
       {children}
     </div>
@@ -171,7 +171,7 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 /* ─── INTRO ─── */
 function Intro({ onStart }: { onStart: () => void }) {
   return (
-    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "8rem 1.8rem 10rem" }}>
+    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "9rem 2.2rem 11rem" }}>
       <Reveal>
         <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "3rem" }}>
           philosophical health test
@@ -307,7 +307,7 @@ function Demographics({ onSubmit }: { onSubmit: (d: Demographics) => void }) {
   const complete = Object.values(form).every(v => v !== "");
 
   return (
-    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "8rem 1.8rem 10rem" }}>
+    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "9rem 2.2rem 11rem" }}>
       <Reveal>
         <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "3rem" }}>
           about you
@@ -380,7 +380,7 @@ function Results({ answers, onRetry }: { answers: Answers; onRetry: () => void }
   const avgScore = 29;
 
   return (
-    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "8rem 1.8rem 10rem" }}>
+    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "9rem 2.2rem 11rem" }}>
       <Reveal>
         <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "3rem" }}>
           your results

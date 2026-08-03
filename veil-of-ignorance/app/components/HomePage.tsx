@@ -38,9 +38,9 @@ function HeroSlide({ slide, active }: { slide: typeof slides[0]; active: boolean
       position: "absolute", inset: 0,
       backgroundColor: slide.bg,
       opacity: active ? 1 : 0,
-      transition: "opacity 2s ease",
+      transition: "opacity 2.8s ease",
       display: "flex", alignItems: "flex-end",
-      padding: "2.8rem",
+      padding: "3.2rem 3rem",
     }}>
       {slide.image && (
         <div style={{
@@ -48,31 +48,37 @@ function HeroSlide({ slide, active }: { slide: typeof slides[0]; active: boolean
           backgroundImage: `url(${slide.image})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 0.55,
-          transform: active ? "scale(1.06)" : "scale(1)",
-          transition: "transform 8s ease, opacity 2s ease",
+          opacity: 0.48,
+          transform: active ? "scale(1.05)" : "scale(1)",
+          transition: "transform 10s ease, opacity 2.8s ease",
         }} />
       )}
-      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.04 }} preserveAspectRatio="none">
-        {Array.from({ length: 18 }).map((_, i) => (
-          <line key={i} x1="0" y1={`${(i / 18) * 100}%`} x2="100%" y2={`${(i / 18) * 100}%`}
-            stroke="white" strokeWidth="0.5" />
-        ))}
-      </svg>
-      <div style={{ position: "relative", zIndex: 1 }}>
+      {/* Grain over hero image */}
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")",
+        backgroundSize: "200px 200px",
+        opacity: 0.06,
+        mixBlendMode: "overlay",
+        pointerEvents: "none",
+      }} />
+      <div style={{ position: "relative", zIndex: 1, maxWidth: "520px" }}>
         <p style={{
           fontFamily: "var(--serif)",
-          fontSize: "clamp(1.1rem, 2.2vw, 1.5rem)",
+          fontSize: "clamp(1.15rem, 2.4vw, 1.65rem)",
           fontStyle: "italic", fontWeight: 400,
-          color: "rgba(250,250,248,0.85)",
-          marginBottom: "0.3rem", lineHeight: 1.3,
+          color: "rgba(247,244,239,0.82)",
+          marginBottom: "0.9rem",
+          lineHeight: 1.45,
+          letterSpacing: "0.005em",
         }}>
           {slide.caption}
         </p>
         <p style={{
-          fontFamily: "var(--mono)", fontSize: "0.55rem",
-          letterSpacing: "0.12em",
-          color: "rgba(250,250,248,0.45)",
+          fontFamily: "var(--mono)", fontSize: "0.54rem",
+          letterSpacing: "0.14em",
+          color: "rgba(247,244,239,0.38)",
+          lineHeight: 1.8,
         }}>
           {slide.sub}
         </p>
@@ -84,7 +90,7 @@ function HeroSlide({ slide, active }: { slide: typeof slides[0]; active: boolean
 function Hero() {
   const [current, setCurrent] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setCurrent(c => (c + 1) % slides.length), 7000);
+    const t = setInterval(() => setCurrent(c => (c + 1) % slides.length), 8000);
     return () => clearInterval(t);
   }, []);
   return (
@@ -95,15 +101,15 @@ function Hero() {
     }}>
       {slides.map((s, i) => <HeroSlide key={i} slide={s} active={i === current} />)}
       <div style={{
-        position: "absolute", bottom: "1.2rem", right: "1.8rem",
-        display: "flex", gap: "6px", zIndex: 2,
+        position: "absolute", bottom: "1.4rem", right: "2rem",
+        display: "flex", gap: "8px", zIndex: 2,
       }}>
         {slides.map((_, i) => (
           <button key={i} onClick={() => setCurrent(i)} style={{
-            width: "5px", height: "5px", borderRadius: "50%",
-            backgroundColor: i === current ? "rgba(250,250,248,0.8)" : "rgba(250,250,248,0.25)",
+            width: "4px", height: "4px", borderRadius: "50%",
+            backgroundColor: i === current ? "rgba(247,244,239,0.75)" : "rgba(247,244,239,0.2)",
             border: "none", padding: 0, cursor: "pointer",
-            transition: "background-color 0.3s",
+            transition: "background-color 0.5s",
           }} />
         ))}
       </div>
@@ -111,6 +117,28 @@ function Hero() {
   );
 }
 
+function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.05, rootMargin: "0px 0px -40px 0px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <div ref={ref} style={{
+      opacity: visible ? 1 : 0,
+      transform: visible ? "translateY(0)" : "translateY(16px)",
+      transition: `opacity 1100ms ease ${delay}ms, transform 1100ms ease ${delay}ms`,
+    }}>
+      {children}
+    </div>
+  );
+}
 
 function TempleSection() {
   const ref = useRef<HTMLDivElement>(null);
@@ -155,16 +183,15 @@ function TempleSection() {
         gridTemplateColumns: "1fr 1fr",
       }}
     >
-      {/* LEFT — temple image */}
       <div className="temple-section-image" style={{
         borderRight: "1px solid var(--border)",
-        backgroundColor: "#F0EDE8",
+        backgroundColor: "#EDE9E2",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "4rem 2rem",
+        padding: "5rem 2.5rem",
         opacity: visible ? 1 : 0,
-        transition: "opacity 1.6s ease 0.2s",
+        transition: "opacity 2s ease 0.2s",
       }}>
         <img
           src="/images/temple.png"
@@ -179,54 +206,27 @@ function TempleSection() {
         />
       </div>
 
-      {/* RIGHT — text cascade */}
       <div className="temple-section-text" style={{
-        padding: "6rem 3rem 6rem 3.5rem",
+        padding: "7rem 3.5rem 7rem 4rem",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        gap: "0.1rem",
+        gap: "0.05rem",
         backgroundColor: "var(--white)",
       }}>
         {rightLines.map((line, i) => (
-          <p
-            key={i}
-            style={{
-              fontFamily: (line as any).mono ? "var(--mono)" : "'Noto Serif SC', 'EB Garamond', serif",
-              fontSize: line.size,
-              color: line.color,
-              letterSpacing: (line as any).mono ? "0.12em" : "0.08em",
-              lineHeight: line.text === "　" ? 1.2 : 1.7,
-              margin: 0,
-            }}
-          >
+          <p key={i} style={{
+            fontFamily: (line as any).mono ? "var(--mono)" : "'Noto Serif SC', 'EB Garamond', serif",
+            fontSize: line.size,
+            color: line.color,
+            letterSpacing: (line as any).mono ? "0.12em" : "0.08em",
+            lineHeight: line.text === "　" ? 1.6 : 1.85,
+            margin: 0,
+          }}>
             {line.text}
           </p>
         ))}
       </div>
-    </div>
-  );
-}
-
-function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return (
-    <div ref={ref} style={{
-      opacity: visible ? 1 : 0,
-      transform: visible ? "translateY(0)" : "translateY(18px)",
-      transition: `opacity 900ms ease ${delay}ms, transform 900ms ease ${delay}ms`,
-    }}>
-      {children}
     </div>
   );
 }
@@ -243,16 +243,16 @@ export default function HomePage() {
 
       {/* ── ABOUT THE LAB ── */}
       <div style={{
-        maxWidth: "700px",
+        maxWidth: "680px",
         margin: "0 auto",
-        padding: "8rem 1.8rem 8rem",
+        padding: "9rem 1.8rem 9rem 2.2rem",
         borderBottom: "1px solid var(--border)",
       }}>
         <Reveal>
           <p style={{
-            fontFamily: "var(--mono)", fontSize: "0.52rem",
-            letterSpacing: "0.2em", color: "var(--muted)",
-            marginBottom: "3rem",
+            fontFamily: "var(--mono)", fontSize: "0.5rem",
+            letterSpacing: "0.22em", color: "var(--muted)",
+            marginBottom: "3.5rem",
           }}>
             thought laboratory
           </p>
@@ -261,54 +261,56 @@ export default function HomePage() {
         <Reveal delay={80}>
           <h2 style={{
             fontFamily: "var(--serif)",
-            fontSize: "clamp(1.8rem, 4vw, 3rem)",
+            fontSize: "clamp(1.9rem, 4.5vw, 3.2rem)",
             fontWeight: 400, fontStyle: "italic",
-            lineHeight: 1.1, color: "var(--ink)",
-            marginBottom: "3rem",
+            lineHeight: 1.15, color: "var(--ink)",
+            marginBottom: "3.5rem",
             letterSpacing: "-0.01em",
+            maxWidth: "22ch",
           }}>
-            Philosophy is not something<br />you observe from a distance.
+            Philosophy is not something you observe from a distance.
           </h2>
         </Reveal>
 
         <Reveal delay={140}>
-          <div style={{ height: "1px", backgroundColor: "var(--border)", marginBottom: "3rem" }} />
+          {/* Deliberately short divider — not full width, feels handmade */}
+          <div style={{ width: "48px", height: "1px", backgroundColor: "var(--border)", marginBottom: "3.5rem" }} />
         </Reveal>
 
         <Reveal delay={180}>
           <p style={{
-            fontFamily: "var(--serif)", fontSize: "1rem",
-            fontWeight: 300, lineHeight: 1.9,
-            color: "var(--ink)", marginBottom: "1.6rem",
-            maxWidth: "58ch",
+            fontFamily: "var(--serif)", fontSize: "1.05rem",
+            fontWeight: 400, lineHeight: 2.0,
+            color: "var(--ink)", marginBottom: "2rem",
+            maxWidth: "54ch",
           }}>
             Thought Laboratory is a collection of interactive experiments built on canonical philosophy. Not essays to read. Not arguments to follow at arm's length. Positions to take, under conditions that make taking them difficult.
           </p>
         </Reveal>
 
-        <Reveal delay={220}>
+        <Reveal delay={240}>
           <p style={{
             fontFamily: "var(--serif)", fontSize: "1rem",
-            fontWeight: 300, lineHeight: 1.9,
+            fontWeight: 400, lineHeight: 2.0,
             color: "var(--muted)", fontStyle: "italic",
-            maxWidth: "52ch",
+            maxWidth: "48ch",
           }}>
-            Each experiment is drawn from a thought experiment that changed how philosophers reason — and redesigned so that you have to reason through it yourself.
+            Each experiment is drawn from a thought experiment that changed how philosophers reason — and rebuilt so that you have to reason through it yourself.
           </p>
         </Reveal>
       </div>
 
       {/* ── FEATURED EXPERIMENT ── */}
       <div style={{
-        maxWidth: "700px",
+        maxWidth: "680px",
         margin: "0 auto",
-        padding: "8rem 1.8rem 10rem",
+        padding: "9rem 1.8rem 11rem 2.2rem",
       }}>
         <Reveal>
           <p style={{
-            fontFamily: "var(--mono)", fontSize: "0.52rem",
-            letterSpacing: "0.2em", color: "var(--muted)",
-            marginBottom: "5rem",
+            fontFamily: "var(--mono)", fontSize: "0.5rem",
+            letterSpacing: "0.22em", color: "var(--muted)",
+            marginBottom: "5.5rem",
           }}>
             now open
           </p>
@@ -316,9 +318,9 @@ export default function HomePage() {
 
         <Reveal delay={60}>
           <p style={{
-            fontFamily: "var(--mono)", fontSize: "0.52rem",
-            letterSpacing: "0.15em", color: "var(--muted)",
-            marginBottom: "1.8rem",
+            fontFamily: "var(--mono)", fontSize: "0.5rem",
+            letterSpacing: "0.14em", color: "var(--muted)",
+            marginBottom: "2rem",
           }}>
             experiment 001 · Philosophy Experiments · 2002
           </p>
@@ -327,39 +329,40 @@ export default function HomePage() {
         <Reveal delay={100}>
           <h2 style={{
             fontFamily: "var(--serif)",
-            fontSize: "clamp(2rem, 5vw, 3.8rem)",
+            fontSize: "clamp(2.2rem, 5.5vw, 4rem)",
             fontWeight: 400,
-            lineHeight: 1.05,
+            lineHeight: 1.1,
             color: "var(--ink)",
-            marginBottom: "3rem",
+            marginBottom: "3.5rem",
             letterSpacing: "-0.02em",
-            maxWidth: "18ch",
+            maxWidth: "20ch",
           }}>
             Philosophical<br /><em>Health Test</em>
           </h2>
         </Reveal>
 
         <Reveal delay={140}>
-          <div style={{ height: "1px", backgroundColor: "var(--border)", marginBottom: "3rem" }} />
+          {/* Short offset divider */}
+          <div style={{ width: "48px", height: "1px", backgroundColor: "var(--border)", marginBottom: "3.5rem" }} />
         </Reveal>
 
         <Reveal delay={180}>
-          <div style={{ marginBottom: "4rem" }}>
+          <div style={{ marginBottom: "4.5rem" }}>
             {[
-              ["domain",    "belief · consistency"],
-              ["duration",  "5 minutes"],
+              ["domain",     "belief · consistency"],
+              ["duration",   "5 minutes"],
               ["statements", "30"],
-              ["choices",   "agree / disagree"],
+              ["choices",    "agree / disagree"],
             ].map(([k, v]) => (
               <div key={k} style={{
-                display: "grid", gridTemplateColumns: "100px 1fr",
+                display: "grid", gridTemplateColumns: "110px 1fr",
                 borderTop: "1px solid var(--border)",
-                padding: "0.6rem 0",
+                padding: "0.75rem 0",
               }}>
-                <span style={{ fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.1em", color: "var(--muted)" }}>
+                <span style={{ fontFamily: "var(--mono)", fontSize: "0.48rem", letterSpacing: "0.1em", color: "var(--muted)" }}>
                   {k}
                 </span>
-                <span style={{ fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.06em", color: "var(--ink)" }}>
+                <span style={{ fontFamily: "var(--mono)", fontSize: "0.48rem", letterSpacing: "0.06em", color: "var(--ink)" }}>
                   {v}
                 </span>
               </div>
@@ -370,33 +373,33 @@ export default function HomePage() {
 
         <Reveal delay={220}>
           <p style={{
-            fontFamily: "var(--serif)", fontSize: "1rem",
-            fontWeight: 300, lineHeight: 1.9,
-            color: "var(--ink)", marginBottom: "1.4rem",
-            maxWidth: "58ch",
+            fontFamily: "var(--serif)", fontSize: "1.05rem",
+            fontWeight: 400, lineHeight: 2.0,
+            color: "var(--ink)", marginBottom: "1.8rem",
+            maxWidth: "54ch",
           }}>
             Thirty statements. Two choices each. The test does not judge whether your beliefs are right or wrong — it finds where they contradict each other.
           </p>
         </Reveal>
 
-        <Reveal delay={250}>
+        <Reveal delay={260}>
           <p style={{
             fontFamily: "var(--serif)", fontSize: "1rem",
-            fontWeight: 300, lineHeight: 1.9,
+            fontWeight: 400, lineHeight: 2.0,
             color: "var(--muted)", fontStyle: "italic",
-            marginBottom: "4rem", maxWidth: "52ch",
+            marginBottom: "4.5rem", maxWidth: "48ch",
           }}>
             Most people are surprised by how many tensions their beliefs contain. The question is not whether you are consistent — but where you are not.
           </p>
         </Reveal>
 
-        <Reveal delay={290}>
-          <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
+        <Reveal delay={300}>
+          <div style={{ display: "flex", alignItems: "center", gap: "2.5rem" }}>
             <Link href="/experiments/philosophical-health-test" style={{
-              fontFamily: "var(--mono)", fontSize: "0.6rem",
+              fontFamily: "var(--mono)", fontSize: "0.58rem",
               letterSpacing: "0.12em", color: "var(--ink)",
-              border: "1px solid var(--ink)", padding: "0.75rem 1.6rem",
-              textDecoration: "none", transition: "all 0.2s",
+              border: "1px solid var(--ink)", padding: "0.85rem 1.8rem",
+              textDecoration: "none", transition: "all 0.3s",
             }}
             onMouseEnter={e => {
               e.currentTarget.style.backgroundColor = "var(--ink)";
@@ -409,15 +412,15 @@ export default function HomePage() {
               (enter experiment)
             </Link>
             <Link href="/experiments" style={{
-              fontFamily: "var(--mono)", fontSize: "0.55rem",
+              fontFamily: "var(--mono)", fontSize: "0.52rem",
               letterSpacing: "0.1em", color: "var(--muted)",
               textDecoration: "none",
-              borderBottom: "1px solid transparent", paddingBottom: "1px",
-              transition: "all 0.2s",
+              borderBottom: "1px solid transparent", paddingBottom: "2px",
+              transition: "all 0.3s",
             }}
             onMouseEnter={e => {
               e.currentTarget.style.color = "var(--ink)";
-              e.currentTarget.style.borderColor = "var(--ink)";
+              e.currentTarget.style.borderColor = "var(--muted)";
             }}
             onMouseLeave={e => {
               e.currentTarget.style.color = "var(--muted)";
@@ -428,7 +431,6 @@ export default function HomePage() {
           </div>
         </Reveal>
       </div>
-
 
       {/* ── TEMPLE SECTION ── */}
       <TempleSection />

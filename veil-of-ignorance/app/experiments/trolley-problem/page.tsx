@@ -13,7 +13,7 @@ import { useState } from "react";
 /* ─── Intro ─── */
 function IntroScreen({ onStart }: { onStart: () => void }) {
   return (
-    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "8rem 1.8rem 10rem" }}>
+    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "9rem 2.2rem 11rem" }}>
       <Reveal>
         <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "3rem" }}>
           {config.title.toLowerCase()}
@@ -28,12 +28,12 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
         <div style={{ height: "1px", backgroundColor: "var(--border)", marginBottom: "3rem" }} />
       </Reveal>
       <Reveal delay={180}>
-        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.9, color: "var(--ink)", marginBottom: "1.4rem", maxWidth: "58ch" }}>
+        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 2.0, color: "var(--ink)", marginBottom: "2rem", maxWidth: "58ch" }}>
           {config.intro}
         </p>
       </Reveal>
       <Reveal delay={220}>
-        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.9, color: "var(--muted)", fontStyle: "italic", marginBottom: "4rem", maxWidth: "52ch" }}>
+        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 2.0, color: "var(--muted)", fontStyle: "italic", marginBottom: "4rem", maxWidth: "52ch" }}>
           {config.introNote}
         </p>
       </Reveal>
@@ -126,14 +126,14 @@ function PropositionScreen({
 /* ─── Preliminary comparison stats page ─── */
 function PreliminaryStatsScreen({ onContinue }: { onContinue: () => void }) {
   return (
-    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "8rem 1.8rem 10rem" }}>
+    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "9rem 2.2rem 11rem" }}>
       <Reveal>
         <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "2rem" }}>
           how others responded
         </p>
       </Reveal>
       <Reveal delay={60}>
-        <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.1, color: "var(--ink)", marginBottom: "1.4rem" }}>
+        <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.1, color: "var(--ink)", marginBottom: "2rem" }}>
           {config.totalRespondents.toLocaleString()} people have done this before you.
         </h2>
       </Reveal>
@@ -187,7 +187,7 @@ function ScenarioScreen({
         <div style={{ height: "100%", backgroundColor: "var(--ink)", width: `${progress * 100}%`, transition: "width 0.6s ease" }} />
       </div>
 
-      <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "1.4rem" }}>
+      <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "2rem" }}>
         scenario {String(index + 1).padStart(2, "0")} / {String(config.scenarios.length).padStart(2, "0")} — {scenario.source}
       </p>
 
@@ -239,7 +239,7 @@ function ScenarioScreen({
 function AnalysisPage1({ score, onContinue }: { score: number; onContinue: () => void }) {
   const avg = 66;
   return (
-    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "8rem 1.8rem 10rem" }}>
+    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "9rem 2.2rem 11rem" }}>
       <Reveal>
         <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "3rem" }}>
           analysis 01 / 04 — a matter of consistency
@@ -271,17 +271,17 @@ function AnalysisPage1({ score, onContinue }: { score: number; onContinue: () =>
         </div>
       </Reveal>
       <Reveal delay={180}>
-        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.9, color: "var(--ink)", marginBottom: "1.4rem", maxWidth: "58ch" }}>
+        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 2.0, color: "var(--ink)", marginBottom: "2rem", maxWidth: "58ch" }}>
           It's generally thought to be a good thing if your moral judgements are governed by a small number of consistently applied principles. If that's not the case, there's a worry that those judgements are arbitrary — intuition, or just making it up scenario by scenario.
         </p>
       </Reveal>
       <Reveal delay={220}>
-        <p style={{ fontFamily: "var(--serif)", fontSize: "0.95rem", fontWeight: 300, lineHeight: 1.9, color: "var(--muted)", fontStyle: "italic", marginBottom: "2rem", maxWidth: "55ch" }}>
+        <p style={{ fontFamily: "var(--serif)", fontSize: "0.95rem", fontWeight: 300, lineHeight: 2.0, color: "var(--muted)", fontStyle: "italic", marginBottom: "2rem", maxWidth: "55ch" }}>
           Say you think diverting the train is right purely because it maximises happiness, but you don't think that justification carries over to the man on the bridge. Unless you can name a morally relevant difference between the two cases, that justification wasn't really doing the work you thought it was.
         </p>
       </Reveal>
       <Reveal delay={250}>
-        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.9, color: "var(--ink)", marginBottom: "5rem", maxWidth: "58ch" }}>
+        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 2.0, color: "var(--ink)", marginBottom: "5rem", maxWidth: "58ch" }}>
           If your score came out above average, that's worth noting, but it's not a finish line — most people, if they're honest, haven't thought all the way through their own moral commitments. There's more in the next page worth sitting with before you draw any final conclusions about yourself.
         </p>
       </Reveal>
@@ -303,7 +303,7 @@ function AnalysisPage1({ score, onContinue }: { score: number; onContinue: () =>
 /* ─── Analysis page 2: scenario population breakdown ─── */
 function AnalysisPage2({ onContinue }: { onContinue: () => void }) {
   return (
-    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "8rem 1.8rem 10rem" }}>
+    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "9rem 2.2rem 11rem" }}>
       <Reveal>
         <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "3rem" }}>
           analysis 02 / 04 — the trolley problem
@@ -315,12 +315,12 @@ function AnalysisPage2({ onContinue }: { onContinue: () => void }) {
         </h2>
       </Reveal>
       <Reveal delay={100}>
-        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.9, color: "var(--ink)", marginBottom: "1.4rem", maxWidth: "58ch" }}>
+        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 2.0, color: "var(--ink)", marginBottom: "2rem", maxWidth: "58ch" }}>
           Straightforward utilitarianism — an act is right to the extent it maximises total happiness compared with the alternatives — would predict the same answer to every scenario above: act, every time, since the numbers never change. But that's not what happens.
         </p>
       </Reveal>
       <Reveal delay={140}>
-        <p style={{ fontFamily: "var(--serif)", fontSize: "0.95rem", fontWeight: 300, lineHeight: 1.9, color: "var(--muted)", fontStyle: "italic", marginBottom: "3.5rem", maxWidth: "55ch" }}>
+        <p style={{ fontFamily: "var(--serif)", fontSize: "0.95rem", fontWeight: 300, lineHeight: 2.0, color: "var(--muted)", fontStyle: "italic", marginBottom: "3.5rem", maxWidth: "55ch" }}>
           Very few people are willing to push the man off the bridge, even though the arithmetic is identical to diverting the train. That gap is one of the most discussed challenges to pure consequentialist ethics.
         </p>
       </Reveal>
@@ -348,7 +348,7 @@ function AnalysisPage2({ onContinue }: { onContinue: () => void }) {
 /* ─── Analysis page 3: is it because he's fat ─── */
 function AnalysisPage3({ onContinue }: { onContinue: () => void }) {
   return (
-    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "8rem 1.8rem 10rem" }}>
+    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "9rem 2.2rem 11rem" }}>
       <Reveal>
         <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "3rem" }}>
           analysis 03 / 04 — a confounding variable
@@ -360,17 +360,17 @@ function AnalysisPage3({ onContinue }: { onContinue: () => void }) {
         </h2>
       </Reveal>
       <Reveal delay={100}>
-        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.9, color: "var(--ink)", marginBottom: "1.4rem", maxWidth: "58ch" }}>
+        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 2.0, color: "var(--ink)", marginBottom: "2rem", maxWidth: "58ch" }}>
           The original version of this thought experiment, going back to Thomson, specifies a man large enough that his body alone can stop a train. That detail has drawn criticism over the years — the worry being that singling out a "fat man" smuggles in a bias that has nothing to do with the philosophical point being tested.
         </p>
       </Reveal>
       <Reveal delay={140}>
-        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.9, color: "var(--ink)", marginBottom: "1.4rem", maxWidth: "58ch" }}>
+        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 2.0, color: "var(--ink)", marginBottom: "2rem", maxWidth: "58ch" }}>
           It's a fair concern to raise, and worth taking seriously rather than dismissing. The honest answer is that no single experiment like this one can rule it out definitively. But there are a couple of patterns in how people respond that suggest the weight of the man isn't carrying much of the moral judgement on its own.
         </p>
       </Reveal>
       <Reveal delay={180}>
-        <p style={{ fontFamily: "var(--serif)", fontSize: "0.95rem", fontWeight: 300, lineHeight: 1.9, color: "var(--muted)", fontStyle: "italic", marginBottom: "3.5rem", maxWidth: "55ch" }}>
+        <p style={{ fontFamily: "var(--serif)", fontSize: "0.95rem", fontWeight: 300, lineHeight: 2.0, color: "var(--muted)", fontStyle: "italic", marginBottom: "3.5rem", maxWidth: "55ch" }}>
           People who say morality is about maximising happiness are noticeably more willing to push him off the bridge than people who reject that view — which tracks their stated principles, not any attitude toward body size.
         </p>
       </Reveal>
@@ -381,7 +381,7 @@ function AnalysisPage3({ onContinue }: { onContinue: () => void }) {
         <StatsBar yesPct={27} leftLabel="everyone else who'd push" rightLabel="" />
       </Reveal>
       <Reveal delay={300}>
-        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 1.9, color: "var(--ink)", marginBottom: "3.5rem", maxWidth: "58ch" }}>
+        <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontWeight: 300, lineHeight: 2.0, color: "var(--ink)", marginBottom: "3.5rem", maxWidth: "58ch" }}>
           The second pattern: among people who wouldn't even divert the train in the very first scenario — the least controversial case — almost none of them are willing to push the man off the bridge either. If the man's size were the thing actually driving the judgement, you'd expect at least some of that group to make an exception for him regardless of their general view on diverting. That's not what the data shows.
         </p>
       </Reveal>
@@ -410,14 +410,14 @@ function OverallResults({
   onRetry: () => void;
 }) {
   return (
-    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "8rem 1.8rem 10rem" }}>
+    <div style={{ maxWidth: "700px", margin: "0 auto", padding: "9rem 2.2rem 11rem" }}>
       <Reveal>
         <p style={{ fontFamily: "var(--mono)", fontSize: "0.52rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "3rem" }}>
           analysis 04 / 04 — overall results
         </p>
       </Reveal>
       <Reveal delay={60}>
-        <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.05, color: "var(--ink)", marginBottom: "1.4rem" }}>
+        <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.05, color: "var(--ink)", marginBottom: "2rem" }}>
           Your responses, in full
         </h2>
       </Reveal>
@@ -463,7 +463,7 @@ function OverallResults({
       {violated.length > 0 && (
         <Reveal delay={220}>
           <div style={{ marginBottom: "4rem" }}>
-            <p style={{ fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.15em", color: "var(--muted)", marginBottom: "1.4rem" }}>
+            <p style={{ fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.15em", color: "var(--muted)", marginBottom: "2rem" }}>
               tensions found
             </p>
             {violated.map(v => (
