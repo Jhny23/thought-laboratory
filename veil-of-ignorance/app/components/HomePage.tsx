@@ -136,13 +136,14 @@ function TaoSection() {
       ref={ref}
       style={{
         position: "relative",
-        backgroundColor: "var(--off)",
+        backgroundColor: "#F9EEE8",
         overflow: "hidden",
-        borderTop: "1px solid var(--border)",
-        borderBottom: "1px solid var(--border)",
+        borderTop: "1px solid #E8C8BE",
+        borderBottom: "1px solid #E8C8BE",
         minHeight: "80vh",
         display: "flex",
         alignItems: "center",
+        backgroundImage: "radial-gradient(ellipse at 80% 20%, rgba(220,160,148,0.18) 0%, transparent 60%), radial-gradient(ellipse at 10% 80%, rgba(210,140,130,0.12) 0%, transparent 50%)",
       }}
     >
       {/* Diagonal composition lines — like the reference image */}
@@ -158,13 +159,13 @@ function TaoSection() {
       >
         {/* Main diagonal — top-right to bottom-left */}
         <line x1="100%" y1="0" x2="0" y2="100%"
-          stroke="var(--border)" strokeWidth="0.6" />
+          stroke="#D4917A" strokeWidth="0.6" opacity="0.5" />
         {/* Secondary diagonal — offset */}
         <line x1="85%" y1="0" x2="0" y2="76%"
-          stroke="var(--border)" strokeWidth="0.4" strokeDasharray="3 8" />
+          stroke="#C4837E" strokeWidth="0.4" strokeDasharray="3 8" opacity="0.35" />
         {/* Faint cross line */}
         <line x1="0" y1="28%" x2="100%" y2="62%"
-          stroke="var(--border)" strokeWidth="0.3" strokeDasharray="2 12" />
+          stroke="#C4837E" strokeWidth="0.3" strokeDasharray="2 12" opacity="0.25" />
       </svg>
 
       {/* Ink sketch — pagoda / tower SVG, hand-drawn feel */}
@@ -173,7 +174,7 @@ function TaoSection() {
         right: "-2%",
         bottom: 0,
         width: "clamp(180px, 32vw, 420px)",
-        opacity: visible ? 0.12 : 0,
+        opacity: visible ? 0.22 : 0,
         transition: "opacity 2.4s ease 0.6s",
         pointerEvents: "none",
       }}>
@@ -278,10 +279,10 @@ function TaoSection() {
           marginBottom: "3.5rem",
           display: "flex", alignItems: "center", gap: "1.2rem",
         }}>
-          <div style={{ width: "28px", height: "1px", backgroundColor: "var(--muted)", opacity: 0.5 }} />
+          <div style={{ width: "28px", height: "1px", backgroundColor: "#B87A72", opacity: 0.6 }} />
           <p style={{
             fontFamily: "var(--mono)", fontSize: "0.46rem",
-            letterSpacing: "0.22em", color: "var(--muted)",
+            letterSpacing: "0.22em", color: "#9C6B65",
             textTransform: "uppercase",
           }}>
             Laozi · Tao Te Ching · c. 400 BCE
@@ -302,7 +303,7 @@ function TaoSection() {
             <span key={i} style={{
               fontFamily: "'Noto Serif SC', serif",
               fontSize: "clamp(1.8rem, 4vw, 3rem)",
-              color: "var(--ink)",
+              color: "#7A2E2E",
               lineHeight: 1,
               opacity: 0.82,
               letterSpacing: 0,
@@ -326,7 +327,7 @@ function TaoSection() {
             fontSize: "clamp(1.1rem, 2.5vw, 1.6rem)",
             fontStyle: "italic",
             fontWeight: 400,
-            color: "var(--ink)",
+            color: "#5C2A2A",
             lineHeight: 1.6,
             maxWidth: "36ch",
           }}>
@@ -340,7 +341,7 @@ function TaoSection() {
           opacity: visible ? 1 : 0,
           transition: "opacity 1.4s ease 1.3s",
           marginTop: "3rem",
-          borderLeft: "1px solid var(--border)",
+          borderLeft: "1px solid #D4A09A",
           paddingLeft: "1.2rem",
           maxWidth: "42ch",
         }}>
@@ -348,7 +349,7 @@ function TaoSection() {
             fontFamily: "var(--mono)",
             fontSize: "0.46rem",
             letterSpacing: "0.08em",
-            color: "var(--muted)",
+            color: "#8C5A54",
             lineHeight: 2.2,
           }}>
             Chapter 33 · 勝人者有力，自勝者強
@@ -370,7 +371,7 @@ function TaoSection() {
           <p style={{
             fontFamily: "'Noto Serif SC', serif",
             fontSize: "0.7rem",
-            color: "var(--muted)",
+            color: "#B87A72",
             letterSpacing: "0.08em",
           }}>
             三十三
