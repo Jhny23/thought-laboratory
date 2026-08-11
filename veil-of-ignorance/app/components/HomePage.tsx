@@ -117,6 +117,271 @@ function Hero() {
   );
 }
 
+function TaoSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.08 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        position: "relative",
+        backgroundColor: "var(--off)",
+        overflow: "hidden",
+        borderTop: "1px solid var(--border)",
+        borderBottom: "1px solid var(--border)",
+        minHeight: "80vh",
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      {/* Diagonal composition lines — like the reference image */}
+      <svg
+        style={{
+          position: "absolute", inset: 0,
+          width: "100%", height: "100%",
+          pointerEvents: "none", zIndex: 0,
+          opacity: visible ? 1 : 0,
+          transition: "opacity 2s ease 0.3s",
+        }}
+        preserveAspectRatio="none"
+      >
+        {/* Main diagonal — top-right to bottom-left */}
+        <line x1="100%" y1="0" x2="0" y2="100%"
+          stroke="var(--border)" strokeWidth="0.6" />
+        {/* Secondary diagonal — offset */}
+        <line x1="85%" y1="0" x2="0" y2="76%"
+          stroke="var(--border)" strokeWidth="0.4" strokeDasharray="3 8" />
+        {/* Faint cross line */}
+        <line x1="0" y1="28%" x2="100%" y2="62%"
+          stroke="var(--border)" strokeWidth="0.3" strokeDasharray="2 12" />
+      </svg>
+
+      {/* Ink sketch — pagoda / tower SVG, hand-drawn feel */}
+      <div style={{
+        position: "absolute",
+        right: "-2%",
+        bottom: 0,
+        width: "clamp(180px, 32vw, 420px)",
+        opacity: visible ? 0.12 : 0,
+        transition: "opacity 2.4s ease 0.6s",
+        pointerEvents: "none",
+      }}>
+        <svg viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg"
+          style={{ width: "100%", height: "auto" }}>
+          {/* Pagoda — five tiers, ink-sketch style */}
+          {[
+            { y: 420, w: 180, h: 18, rx: 60 },
+            { y: 340, w: 140, h: 16, rx: 46 },
+            { y: 265, w: 108, h: 14, rx: 35 },
+            { y: 198, w: 82,  h: 12, rx: 26 },
+            { y: 138, w: 62,  h: 10, rx: 19 },
+          ].map((tier, i) => (
+            <g key={i}>
+              {/* Eave shape */}
+              <path
+                d={`M ${150 - tier.rx} ${tier.y}
+                    Q ${150 - tier.rx - 22} ${tier.y - 12} ${150 - tier.w/2} ${tier.y + tier.h}
+                    L ${150 + tier.w/2} ${tier.y + tier.h}
+                    Q ${150 + tier.rx + 22} ${tier.y - 12} ${150 + tier.rx} ${tier.y} Z`}
+                fill="none"
+                stroke="var(--ink)"
+                strokeWidth={1.2 - i * 0.08}
+                strokeLinejoin="round"
+              />
+              {/* Roof fill hint */}
+              <path
+                d={`M ${150 - tier.rx} ${tier.y}
+                    Q 150 ${tier.y - 18 - i * 2} ${150 + tier.rx} ${tier.y} Z`}
+                fill="none"
+                stroke="var(--ink)"
+                strokeWidth={0.6}
+                opacity={0.4}
+              />
+              {/* Body column below tier */}
+              {i < 4 && (
+                <rect
+                  x={150 - (tier.w * 0.22)}
+                  y={tier.y + tier.h}
+                  width={tier.w * 0.44}
+                  height={[60,58,55,52,0][i]}
+                  fill="none"
+                  stroke="var(--ink)"
+                  strokeWidth={0.7}
+                />
+              )}
+            </g>
+          ))}
+          {/* Finial spire */}
+          <line x1="150" y1="138" x2="150" y2="60" stroke="var(--ink)" strokeWidth="1" />
+          <circle cx="150" cy="58" r="4" fill="none" stroke="var(--ink)" strokeWidth="0.8" />
+          {/* Ground base */}
+          <rect x="60" y="438" width="180" height="8" fill="none" stroke="var(--ink)" strokeWidth="0.8" />
+          <rect x="40" y="446" width="220" height="6" fill="none" stroke="var(--ink)" strokeWidth="0.6" />
+          {/* Rough sketch hatching on shadow side */}
+          {[1,2,3,4,5].map(i => (
+            <line key={i}
+              x1={170 + i * 7} y1={140 + i * 60}
+              x2={185 + i * 7} y2={160 + i * 60}
+              stroke="var(--ink)" strokeWidth="0.4" opacity="0.3"
+            />
+          ))}
+        </svg>
+      </div>
+
+      {/* Small figure silhouette — walking, bottom left */}
+      <div style={{
+        position: "absolute",
+        left: "6%",
+        bottom: "8%",
+        opacity: visible ? 0.18 : 0,
+        transition: "opacity 2s ease 1s",
+        pointerEvents: "none",
+      }}>
+        <svg viewBox="0 0 24 48" width="18" height="36">
+          {/* Head */}
+          <circle cx="12" cy="5" r="4" fill="none" stroke="var(--ink)" strokeWidth="1.2" />
+          {/* Body */}
+          <line x1="12" y1="9" x2="12" y2="28" stroke="var(--ink)" strokeWidth="1.2" />
+          {/* Arms — slightly asymmetric, mid-stride */}
+          <line x1="12" y1="14" x2="4" y2="22" stroke="var(--ink)" strokeWidth="1" />
+          <line x1="12" y1="14" x2="20" y2="19" stroke="var(--ink)" strokeWidth="1" />
+          {/* Legs — walking */}
+          <line x1="12" y1="28" x2="6" y2="44" stroke="var(--ink)" strokeWidth="1.2" />
+          <line x1="12" y1="28" x2="17" y2="42" stroke="var(--ink)" strokeWidth="1.2" />
+        </svg>
+      </div>
+
+      {/* Main content */}
+      <div style={{
+        position: "relative", zIndex: 1,
+        maxWidth: "680px",
+        margin: "0 auto",
+        padding: "8rem 2.2rem 8rem",
+      }}>
+
+        {/* Source label */}
+        <div style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 1.2s ease 0.4s, transform 1.2s ease 0.4s",
+          marginBottom: "3.5rem",
+          display: "flex", alignItems: "center", gap: "1.2rem",
+        }}>
+          <div style={{ width: "28px", height: "1px", backgroundColor: "var(--muted)", opacity: 0.5 }} />
+          <p style={{
+            fontFamily: "var(--mono)", fontSize: "0.46rem",
+            letterSpacing: "0.22em", color: "var(--muted)",
+            textTransform: "uppercase",
+          }}>
+            Laozi · Tao Te Ching · c. 400 BCE
+          </p>
+        </div>
+
+        {/* Chinese characters — vertical feel, large */}
+        <div style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(24px)",
+          transition: "opacity 1.4s ease 0.6s, transform 1.4s ease 0.6s",
+          marginBottom: "2.5rem",
+          display: "flex",
+          gap: "0.6rem",
+          alignItems: "flex-start",
+        }}>
+          {"知人者智自知者明".split("").map((char, i) => (
+            <span key={i} style={{
+              fontFamily: "'Noto Serif SC', serif",
+              fontSize: "clamp(1.8rem, 4vw, 3rem)",
+              color: "var(--ink)",
+              lineHeight: 1,
+              opacity: 0.82,
+              letterSpacing: 0,
+              display: "block",
+            }}>
+              {char}
+            </span>
+          ))}
+        </div>
+
+        {/* English translation */}
+        <div style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 1.4s ease 0.9s, transform 1.4s ease 0.9s",
+          marginBottom: "1.4rem",
+          paddingLeft: "0.2rem",
+        }}>
+          <p style={{
+            fontFamily: "var(--serif)",
+            fontSize: "clamp(1.1rem, 2.5vw, 1.6rem)",
+            fontStyle: "italic",
+            fontWeight: 400,
+            color: "var(--ink)",
+            lineHeight: 1.6,
+            maxWidth: "36ch",
+          }}>
+            Knowing others is wisdom.
+            <br />Knowing yourself is enlightenment.
+          </p>
+        </div>
+
+        {/* Annotation — like the editorial notes in the reference image */}
+        <div style={{
+          opacity: visible ? 1 : 0,
+          transition: "opacity 1.4s ease 1.3s",
+          marginTop: "3rem",
+          borderLeft: "1px solid var(--border)",
+          paddingLeft: "1.2rem",
+          maxWidth: "42ch",
+        }}>
+          <p style={{
+            fontFamily: "var(--mono)",
+            fontSize: "0.46rem",
+            letterSpacing: "0.08em",
+            color: "var(--muted)",
+            lineHeight: 2.2,
+          }}>
+            Chapter 33 · 勝人者有力，自勝者強
+            <br />
+            Overcoming others requires force.
+            <br />
+            Overcoming yourself requires strength.
+          </p>
+        </div>
+
+        {/* Chapter mark — bottom right, like a printer's mark */}
+        <div style={{
+          marginTop: "4rem",
+          opacity: visible ? 0.4 : 0,
+          transition: "opacity 1.6s ease 1.5s",
+          textAlign: "right",
+          paddingRight: "2rem",
+        }}>
+          <p style={{
+            fontFamily: "'Noto Serif SC', serif",
+            fontSize: "0.7rem",
+            color: "var(--muted)",
+            letterSpacing: "0.08em",
+          }}>
+            三十三
+          </p>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -431,6 +696,9 @@ export default function HomePage() {
           </div>
         </Reveal>
       </div>
+
+      {/* ── TAO SECTION ── */}
+      <TaoSection />
 
       {/* ── TEMPLE SECTION ── */}
       <TempleSection />
