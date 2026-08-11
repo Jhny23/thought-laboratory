@@ -134,6 +134,7 @@ function TaoSection() {
   return (
     <div
       ref={ref}
+      className="tao-section"
       style={{
         position: "relative",
         backgroundColor: "#F9EEE8",
@@ -169,7 +170,7 @@ function TaoSection() {
       </svg>
 
       {/* Ink sketch — pagoda / tower SVG, hand-drawn feel */}
-      <div style={{
+      <div className="tao-pagoda" style={{
         position: "absolute",
         right: "-2%",
         bottom: 0,
@@ -241,7 +242,7 @@ function TaoSection() {
       </div>
 
       {/* Small figure silhouette — walking, bottom left */}
-      <div style={{
+      <div className="tao-figure" style={{
         position: "absolute",
         left: "6%",
         bottom: "8%",
@@ -264,7 +265,7 @@ function TaoSection() {
       </div>
 
       {/* Main content */}
-      <div style={{
+      <div className="tao-content" style={{
         position: "relative", zIndex: 1,
         maxWidth: "680px",
         margin: "0 auto",
@@ -290,7 +291,7 @@ function TaoSection() {
         </div>
 
         {/* Chinese characters — vertical feel, large */}
-        <div style={{
+        <div className="tao-chars" style={{
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(24px)",
           transition: "opacity 1.4s ease 0.6s, transform 1.4s ease 0.6s",
@@ -322,7 +323,7 @@ function TaoSection() {
           marginBottom: "1.4rem",
           paddingLeft: "0.2rem",
         }}>
-          <p style={{
+          <p className="tao-quote" style={{
             fontFamily: "var(--serif)",
             fontSize: "clamp(1.1rem, 2.5vw, 1.6rem)",
             fontStyle: "italic",
@@ -503,12 +504,12 @@ export default function HomePage() {
     <div style={{ backgroundColor: "var(--white)", minHeight: "100vh" }}>
       <Nav />
 
-      <div style={{ paddingTop: "3rem" }}>
+      <div className="hero-pad" style={{ paddingTop: "3rem" }}>
         <Hero />
       </div>
 
       {/* ── ABOUT THE LAB ── */}
-      <div style={{
+      <div className="home-section" style={{
         maxWidth: "680px",
         margin: "0 auto",
         padding: "9rem 1.8rem 9rem 2.2rem",
@@ -567,7 +568,7 @@ export default function HomePage() {
       </div>
 
       {/* ── FEATURED EXPERIMENT ── */}
-      <div style={{
+      <div className="home-section home-section-experiment" style={{
         maxWidth: "680px",
         margin: "0 auto",
         padding: "9rem 1.8rem 11rem 2.2rem",
@@ -709,12 +710,26 @@ export default function HomePage() {
     <style jsx global>{`
       @media (max-width: 768px) {
         .hero-wrapper { aspect-ratio: 4 / 5 !important; }
+        .hero-pad { padding-top: 3.4rem !important; }
+        .home-section { padding: 4rem 1.4rem !important; }
+        .home-section-experiment { padding: 4rem 1.4rem 5rem !important; }
         .temple-section-grid { grid-template-columns: 1fr !important; }
         .temple-section-image { border-right: none !important; border-bottom: 1px solid var(--border) !important; padding: 2.5rem 1.5rem !important; }
-        .temple-section-text { padding: 3rem 1.8rem !important; }
+        .temple-section-text { padding: 3rem 1.4rem !important; }
+        .tao-section { min-height: auto !important; }
+        .tao-pagoda { display: none !important; }
+        .tao-figure { display: none !important; }
+        .tao-content { padding: 4rem 1.4rem !important; }
+        .tao-chars { flex-wrap: wrap !important; gap: 0.3rem !important; }
+        .tao-chars span { font-size: 1.8rem !important; }
+        .tao-quote { font-size: 1.1rem !important; }
       }
       @media (max-width: 480px) {
-        .hero-wrapper { aspect-ratio: 3 / 4 !important; }
+        .hero-wrapper { aspect-ratio: 1 / 1 !important; }
+        .hero-pad { padding-top: 3.4rem !important; }
+        .home-section { padding: 3rem 1.2rem !important; }
+        .home-section-experiment { padding: 3rem 1.2rem 4rem !important; }
+        .tao-content { padding: 3rem 1.2rem !important; }
       }
     `}</style>
     </Preloader>
