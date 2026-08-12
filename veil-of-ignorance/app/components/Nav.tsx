@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AudioPlayer from "@/app/components/AudioPlayer";
@@ -7,6 +7,17 @@ import AudioPlayer from "@/app/components/AudioPlayer";
 export default function Nav() {
   const path = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const isHome = path === "/";
+
+  useEffect(() => {
+    if (!isHome) return;
+    const handleScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isHome]);
+
+  const transparent = isHome && !scrolled && !menuOpen;
 
   const links = [
     { href: "/experiments", label: "experiments" },
@@ -20,15 +31,17 @@ export default function Nav() {
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
         display: "flex", alignItems: "center", justifyContent: "space-between",
         padding: "1.1rem 1.8rem",
-        backgroundColor: "var(--white)",
-        borderBottom: "1px solid var(--border)",
+        backgroundColor: transparent ? "transparent" : "var(--white)",
+        borderBottom: transparent ? "1px solid transparent" : "1px solid var(--border)",
+        transition: "background-color 0.4s ease, border-color 0.4s ease",
       }}>
         <Link href="/" onClick={() => setMenuOpen(false)} style={{
           fontFamily: "var(--serif)",
           fontSize: "0.95rem",
           fontStyle: "italic",
           letterSpacing: "0.01em",
-          color: "var(--ink)",
+          color: transparent ? "rgba(247,244,239,0.85)" : "var(--ink)",
+          transition: "color 0.4s ease",
         }}>
           thought laboratory
         </Link>
@@ -40,13 +53,17 @@ export default function Nav() {
               fontFamily: "var(--mono)",
               fontSize: "0.62rem",
               letterSpacing: "0.08em",
-              color: path.startsWith(l.href) ? "var(--ink)" : "var(--muted)",
-              transition: "color 0.2s",
+              color: transparent
+                ? "rgba(247,244,239,0.6)"
+                : path.startsWith(l.href) ? "var(--ink)" : "var(--muted)",
+              transition: "color 0.4s ease",
             }}>
               {l.label}
             </Link>
           ))}
-          <AudioPlayer />
+          <div style={{ opacity: transparent ? 0.6 : 1, transition: "opacity 0.4s ease" }}>
+            <AudioPlayer />
+          </div>
         </div>
 
         {/* Mobile toggle */}
@@ -61,13 +78,15 @@ export default function Nav() {
           }}
         >
           <span style={{
-            width: "18px", height: "1px", backgroundColor: "var(--ink)",
-            display: "block", transition: "transform 0.25s ease",
+            width: "18px", height: "1px",
+            backgroundColor: transparent ? "rgba(247,244,239,0.85)" : "var(--ink)",
+            display: "block", transition: "transform 0.25s ease, background-color 0.4s ease",
             transform: menuOpen ? "translateY(3px) rotate(45deg)" : "none",
           }} />
           <span style={{
-            width: "18px", height: "1px", backgroundColor: "var(--ink)",
-            display: "block", transition: "transform 0.25s ease",
+            width: "18px", height: "1px",
+            backgroundColor: transparent ? "rgba(247,244,239,0.85)" : "var(--ink)",
+            display: "block", transition: "transform 0.25s ease, background-color 0.4s ease",
             transform: menuOpen ? "translateY(-3px) rotate(-45deg)" : "none",
           }} />
         </button>

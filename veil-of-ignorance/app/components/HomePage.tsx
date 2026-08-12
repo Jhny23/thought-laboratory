@@ -94,9 +94,10 @@ function Hero() {
     return () => clearInterval(t);
   }, []);
   return (
-    <div className="hero-wrapper" style={{
+    <div style={{
       position: "relative", width: "100%",
-      aspectRatio: "16 / 7", overflow: "hidden",
+      height: "100vh",
+      overflow: "hidden",
       borderBottom: "1px solid var(--border)",
     }}>
       {slides.map((s, i) => <HeroSlide key={i} slide={s} active={i === current} />)}
@@ -504,9 +505,7 @@ export default function HomePage() {
     <div style={{ backgroundColor: "var(--white)", minHeight: "100vh" }}>
       <Nav />
 
-      <div className="hero-pad" style={{ paddingTop: "3rem" }}>
-        <Hero />
-      </div>
+      <Hero />
 
       {/* ── ABOUT THE LAB ── */}
       <div className="home-section" style={{
@@ -709,8 +708,6 @@ export default function HomePage() {
     </div>
     <style jsx global>{`
       @media (max-width: 768px) {
-        .hero-wrapper { aspect-ratio: 4 / 5 !important; }
-        .hero-pad { padding-top: 3.4rem !important; }
         .home-section { padding: 4rem 1.4rem !important; }
         .home-section-experiment { padding: 4rem 1.4rem 5rem !important; }
         .temple-section-grid { grid-template-columns: 1fr !important; }
@@ -725,8 +722,6 @@ export default function HomePage() {
         .tao-quote { font-size: 1.1rem !important; }
       }
       @media (max-width: 480px) {
-        .hero-wrapper { aspect-ratio: 1 / 1 !important; }
-        .hero-pad { padding-top: 3.4rem !important; }
         .home-section { padding: 3rem 1.2rem !important; }
         .home-section-experiment { padding: 3rem 1.2rem 4rem !important; }
         .tao-content { padding: 3rem 1.2rem !important; }
