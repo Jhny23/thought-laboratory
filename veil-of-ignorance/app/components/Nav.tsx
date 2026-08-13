@@ -22,6 +22,7 @@ export default function Nav() {
   const links = [
     { href: "/experiments", label: "experiments" },
     { href: "/biographies", label: "biographies" },
+    { href: "/poetry", label: "poetry" },
     { href: "/about", label: "about" },
   ];
 
