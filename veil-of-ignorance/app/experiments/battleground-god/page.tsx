@@ -219,36 +219,28 @@ function BattleResponse({
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", maxWidth: "700px", margin: "0 auto", padding: "6rem 2.2rem" }}>
-      {outcome ? (
-        <>
-          <div style={{ marginBottom: "2.5rem" }}>
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: "0.7rem",
-              padding: "0.5rem 1rem",
-              border: `1px solid ${isHit ? "#B01C1C" : "#8C5A00"}`,
-              marginBottom: "2rem",
-            }}>
-              <span style={{ fontSize: "1rem" }}>{isHit ? "⚔" : "💊"}</span>
-              <span style={{
-                fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.14em",
-                color: isHit ? "#B01C1C" : "#8C5A00",
-                textTransform: "uppercase",
-              }}>
-                {isHit ? "direct hit!" : "bullet bitten"}
-              </span>
-            </div>
-            <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(1.3rem, 3vw, 2rem)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.3, color: "var(--ink)", marginBottom: "2rem" }}>
-              {outcome.title}
-            </h2>
-            <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", lineHeight: 2.0, color: "var(--ink)", maxWidth: "54ch" }}>
-              {outcome.explanation}
-            </p>
-          </div>
-        </>
-      ) : (
+      {outcome && (
         <div style={{ marginBottom: "2.5rem" }}>
-          <p style={{ fontFamily: "var(--serif)", fontSize: "1.1rem", fontStyle: "italic", color: "var(--muted)", marginBottom: "1rem" }}>
-            You're doing well so far. Keep going.
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: "0.7rem",
+            padding: "0.5rem 1rem",
+            border: `1px solid ${isHit ? "#B01C1C" : "#8C5A00"}`,
+            marginBottom: "2rem",
+          }}>
+            <span style={{ fontSize: "1rem" }}>{isHit ? "⚔" : "💊"}</span>
+            <span style={{
+              fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.14em",
+              color: isHit ? "#B01C1C" : "#8C5A00",
+              textTransform: "uppercase",
+            }}>
+              {isHit ? "direct hit!" : "bullet bitten"}
+            </span>
+          </div>
+          <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(1.3rem, 3vw, 2rem)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.3, color: "var(--ink)", marginBottom: "2rem" }}>
+            {outcome.title}
+          </h2>
+          <p style={{ fontFamily: "var(--serif)", fontSize: "1rem", lineHeight: 2.0, color: "var(--ink)", maxWidth: "54ch" }}>
+            {outcome.explanation}
           </p>
         </div>
       )}
@@ -476,8 +468,11 @@ export default function BattlegroundGodPage() {
       } else {
         setStage("results");
       }
-    } else {
+    } else if (latestOutcome) {
       setStage("response");
+    } else {
+      setQIndex(i => i + 1);
+      // stay on question stage
     }
   };
 
