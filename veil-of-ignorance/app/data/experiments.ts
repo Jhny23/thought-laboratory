@@ -13,6 +13,20 @@ export type Experiment = {
 
 export const experiments: Experiment[] = [
   {
+    slug: "battleground-god",
+    thinker: "Philosophy Experiments",
+    name: "Battleground God",
+    year: "2003",
+    status: "available",
+    domain: "religion · consistency",
+    duration: "8 min · 18 questions",
+    hue: "#C4C9C4",
+    description:
+      "Eighteen questions about God and religion. The aim is not to judge whether your answers are correct — the battlefield is one of rational consistency. To cross unscathed, your answers must not contradict each other.",
+    subtext:
+      "Developed by PhilosophyExperiments. Each contradiction earns a direct hit. Each consistent-but-uncomfortable implication forces you to bite a bullet.",
+  },
+  {
     slug: "philosophical-health-test",
     thinker: "Philosophy Experiments",
     name: "Philosophical Health Test",
