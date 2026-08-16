@@ -49,16 +49,39 @@ export default function Nav() {
         {/* Desktop links */}
         <div className="nav-desktop-links" style={{ display: "flex", gap: "1.8rem", alignItems: "center" }}>
           {links.map(l => (
-            <Link key={l.href} href={l.href} style={{
-              fontFamily: "var(--mono)",
-              fontSize: "0.62rem",
-              letterSpacing: "0.08em",
-              color: transparent
-                ? "rgba(247,244,239,0.6)"
-                : path.startsWith(l.href) ? "var(--ink)" : "var(--muted)",
-              transition: "color 0.4s ease",
-            }}>
+            <Link key={l.href} href={l.href}
+              style={{
+                fontFamily: "var(--mono)",
+                fontSize: "0.62rem",
+                letterSpacing: "0.08em",
+                color: transparent ? "rgba(247,244,239,0.6)" : path.startsWith(l.href) ? "var(--ink)" : "var(--muted)",
+                transition: "color 0.4s ease",
+                position: "relative",
+                paddingBottom: "2px",
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget;
+                el.style.color = transparent ? "rgba(247,244,239,0.95)" : "var(--ink)";
+                const line = el.querySelector(".nav-ul") as HTMLElement;
+                if (line) line.style.transform = "scaleX(1)";
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget;
+                el.style.color = transparent ? "rgba(247,244,239,0.6)" : path.startsWith(l.href) ? "var(--ink)" : "var(--muted)";
+                const line = el.querySelector(".nav-ul") as HTMLElement;
+                if (line) line.style.transform = "scaleX(0)";
+              }}
+            >
               {l.label}
+              <span className="nav-ul" style={{
+                position: "absolute", bottom: 0, left: 0, right: 0,
+                height: "1px",
+                backgroundColor: transparent ? "rgba(247,244,239,0.7)" : "var(--ink)",
+                transform: path.startsWith(l.href) ? "scaleX(1)" : "scaleX(0)",
+                transformOrigin: "left",
+                transition: "transform 0.3s cubic-bezier(0.76,0,0.24,1)",
+                display: "block",
+              }} />
             </Link>
           ))}
           <div style={{ opacity: transparent ? 0.6 : 1, transition: "opacity 0.4s ease" }}>
