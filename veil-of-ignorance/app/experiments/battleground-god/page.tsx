@@ -4,7 +4,6 @@ import Link from "next/link";
 import Nav from "@/app/components/Nav";
 import Footer from "@/app/components/Footer";
 import { questions, outcomes, archetypes, type Answer } from "@/experiments/battleground-god/config";
-import { LightningHit, BulletBite, PhilosophyConfetti, ThinkingDots } from "@/app/components/MicroIllustrations";
 
 /* ─── Reveal ─── */
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
@@ -175,18 +174,9 @@ function QuestionScreen({
         </div>
       </div>
 
-      <p style={{ fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "1.2rem" }}>
+      <p style={{ fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.2em", color: "var(--muted)", marginBottom: "2rem" }}>
         question {String(index + 1).padStart(2, "0")} / {String(questions.length).padStart(2, "0")}
       </p>
-      {/* Footprint progress */}
-      <div style={{ display: "flex", gap: "4px", marginBottom: "2rem", flexWrap: "wrap", maxWidth: "240px" }}>
-        {Array.from({ length: questions.length }).map((_, i) => (
-          <span key={i} className={i <= index ? "footprint-active" : ""} style={{
-            fontSize: "9px", opacity: i < index ? 0.35 : i === index ? 0.7 : 0.1,
-            transition: "opacity 0.4s",
-          }}>👣</span>
-        ))}
-      </div>
 
       <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(1.2rem, 3vw, 1.8rem)", fontWeight: 400, lineHeight: 1.5, color: "var(--ink)", marginBottom: "4rem", maxWidth: "52ch" }}>
         {q.text}
@@ -206,8 +196,6 @@ function QuestionScreen({
               cursor: chosen ? "default" : "pointer",
               opacity: isDimmed ? 0.2 : 1, transition: "all 0.25s ease",
             }}
-            className="answer-btn"
-            data-emoji={opt.val === "true" ? "✝️" : opt.val === "false" ? "🤨" : "🌫️"}
             onMouseEnter={e => { if (!chosen) { e.currentTarget.style.borderColor = "var(--ink)"; } }}
             onMouseLeave={e => { if (!chosen) { e.currentTarget.style.borderColor = "var(--border)"; } }}>
               {opt.label}
@@ -239,7 +227,7 @@ function BattleResponse({
             border: `1px solid ${isHit ? "#B01C1C" : "#8C5A00"}`,
             marginBottom: "2rem",
           }}>
-            {isHit ? <LightningHit active={true} /> : <BulletBite active={true} />}
+            <span style={{ fontSize: "1rem" }}>{isHit ? "⚔" : "💊"}</span>
             <span style={{
               fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.14em",
               color: isHit ? "#B01C1C" : "#8C5A00",
@@ -284,11 +272,9 @@ function Results({
   const maxDamage = 15;
   const score = Math.max(0, Math.round(((maxDamage - damage) / maxDamage) * 100));
   const archetype = [...archetypes].reverse().find(a => score >= a.minScore) ?? archetypes[archetypes.length - 1];
-  const perfect = hitList.length === 0 && bulletList.length === 0;
 
   return (
     <div style={{ maxWidth: "700px", margin: "0 auto", padding: "9rem 2.2rem 11rem" }}>
-      <PhilosophyConfetti active={perfect} />
       <Reveal>
         <p style={{ fontFamily: "var(--mono)", fontSize: "0.5rem", letterSpacing: "0.22em", color: "var(--muted)", marginBottom: "3.5rem" }}>
           your results

@@ -223,8 +223,6 @@ function ScenarioScreen({
               opacity: isDimmed ? 0.2 : 1, transition: "all 0.25s ease",
               display: "flex", justifyContent: "space-between", alignItems: "baseline",
             }}
-            className="answer-btn"
-            data-emoji={i === 0 ? "⚡" : "🕊️"}
             onMouseEnter={e => { if (chosen === null) { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.backgroundColor = "var(--hover)"; } }}
             onMouseLeave={e => { if (chosen === null) { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.backgroundColor = "transparent"; } }}>
               <span style={{ fontFamily: "var(--serif)", fontSize: "1rem", fontStyle: "italic" }}>{choice.label}</span>

@@ -118,38 +118,3 @@ button:active, a:active {
 html {
   scroll-behavior: smooth;
 }
-
-/* ── Answer button hover reaction ── */
-.answer-btn { position: relative; overflow: visible; }
-.answer-btn::before {
-  content: attr(data-emoji);
-  position: absolute;
-  left: -2rem;
-  top: 50%;
-  transform: translateY(-50%) scale(0);
-  font-size: 0.9rem;
-  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
-  pointer-events: none;
-}
-.answer-btn:hover::before {
-  transform: translateY(-50%) scale(1);
-}
-
-/* ── Ink bloom entrance ── */
-@keyframes inkBloom {
-  0% { opacity: 0; filter: blur(8px); transform: scale(0.94); }
-  100% { opacity: 1; filter: blur(0); transform: scale(1); }
-}
-.ink-bloom {
-  animation: inkBloom 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
-}
-
-/* ── Footprint progress ── */
-.footprint-active {
-  animation: footprintLight 0.4s ease forwards;
-}
-@keyframes footprintLight {
-  0% { opacity: 0.1; transform: scale(0.8); }
-  60% { opacity: 0.55; transform: scale(1.1); }
-  100% { opacity: 0.35; transform: scale(1); }
-}
