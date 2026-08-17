@@ -158,7 +158,7 @@ export default function ExperimentsPage() {
           alignItems: "start",
         }}>
           {experiments.map((exp, i) => (
-            <ExperimentCard key={exp.slug} exp={exp} index={i} />
+            <div key={exp.slug} className="ink-bloom" style={{ animationDelay: `${i * 80}ms` }}><ExperimentCard exp={exp} index={i} /></div>
           ))}
         </div>
 

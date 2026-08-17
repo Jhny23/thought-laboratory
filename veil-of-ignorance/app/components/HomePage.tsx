@@ -4,6 +4,7 @@ import Link from "next/link";
 import Nav from "@/app/components/Nav";
 import Footer from "@/app/components/Footer";
 import Preloader from "@/app/components/Preloader";
+import { FloatingQuestionMark, TinyPhilosopher, TinyTortoise } from "@/app/components/MicroIllustrations";
 
 const slides = [
   {
@@ -727,6 +728,7 @@ export default function HomePage() {
         .tao-content { padding: 3rem 1.2rem !important; }
       }
     `}</style>
+      <FloatingQuestionMark />
     </Preloader>
   );
 }
