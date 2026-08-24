@@ -52,10 +52,8 @@ function ExperimentCard({ exp, index }: { exp: typeof experiments[0]; index: num
             backgroundImage: `url(${image})`,
             backgroundSize: "cover",
             backgroundPosition: "center top",
-            opacity: hovered ? 0.35 : 0.2,
-            mixBlendMode: "multiply",
+            opacity: hovered ? 1 : 0.88,
             transition: "opacity 0.6s ease",
-            filter: "grayscale(100%)",
           }} />
         )}
 
@@ -63,7 +61,7 @@ function ExperimentCard({ exp, index }: { exp: typeof experiments[0]; index: num
         <div style={{
           position: "absolute", inset: 0,
           backgroundColor: exp.hue,
-          opacity: hovered ? 0.15 : 0.45,
+          opacity: hovered ? 0.08 : 0.18,
           transition: "opacity 0.6s ease",
         }} />
 

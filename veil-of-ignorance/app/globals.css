@@ -76,5 +76,4 @@ hr {
 img {
   max-width: 100%;
   height: auto;
-  filter: sepia(6%) contrast(0.96);
 }
