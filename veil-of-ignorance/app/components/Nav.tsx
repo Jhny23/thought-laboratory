@@ -23,6 +23,8 @@ export default function Nav() {
     { href: "/experiments", label: "experiments" },
     { href: "/biographies", label: "biographies" },
     { href: "/about", label: "about" },
+    { href: "/80s", label: "80s" },
+    { href: "/80s", label: "80s" },
   ];
 
   return (
