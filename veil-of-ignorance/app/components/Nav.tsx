@@ -25,6 +25,7 @@ export default function Nav() {
     { href: "/about", label: "about" },
     { href: "/80s", label: "80s" },
     { href: "/80s", label: "80s" },
+    { href: "/80s", label: "80s" },
   ];
 
   return (
