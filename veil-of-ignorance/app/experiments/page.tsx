@@ -8,7 +8,7 @@ import Footer from "@/app/components/Footer";
 /* One background image per experiment — add more as you build them */
 const cardImages: Record<string, string> = {
   "battleground-god":          "/images/battleground.jpg",
-  "philosophical-health-test": "/images/angel.jpg",
+  "philosophical-health-test": "/images/phc.jpg",
   "experience-machine":        "/images/figure.jpg",
   "moral-luck":                "/images/temple.png",
   "the-absurd":                "/images/angel.jpg",
