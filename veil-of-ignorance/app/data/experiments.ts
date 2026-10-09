@@ -55,6 +55,20 @@ export const experiments: Experiment[] = [
       "The Trolley Problem was first outlined by Philippa Foot in 1967 and developed by Judith Jarvis Thomson. It remains the most discussed thought experiment in moral philosophy.",
   },
   {
+    slug: "talking-with-god",
+    thinker: "Plato",
+    name: "Talking with God",
+    year: "c. 380 BC",
+    status: "available",
+    domain: "religion · the foundations of morality",
+    duration: "4 min · a branching conversation",
+    hue: "#C9C4D4",
+    description:
+      "Is an action good because God commands it, or does God command it because it is good? Answer for a God who is all-powerful, all-knowing and perfectly good, and see what each answer costs you.",
+    subtext:
+      "The Euthyphro dilemma comes from Plato's dialogue Euthyphro. Each answer carries a price: either morality is arbitrary, or God is not the source of it. Inspired by the Talking with God experiment on Philosophy Experiments.",
+  },
+  {
     slug: "moral-luck",
     thinker: "Thomas Nagel",
     name: "Moral Luck",
