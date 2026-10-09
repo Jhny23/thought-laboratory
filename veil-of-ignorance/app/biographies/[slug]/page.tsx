@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, use } from "react";
 import Link from "next/link";
 import { biographies } from "@/app/data/biographies";
 import Nav from "@/app/components/Nav";
@@ -31,8 +31,9 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 }
 
-export default function BiographyPage({ params }: { params: { slug: string } }) {
-  const bio = biographies.find(b => b.slug === params.slug);
+export default function BiographyPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
+  const bio = biographies.find(b => b.slug === slug);
   const [entered, setEntered] = useState(false);
 
   useEffect(() => {
