@@ -9,6 +9,7 @@ import Footer from "@/app/components/Footer";
 const cardImages: Record<string, string> = {
   "battleground-god":          "/images/battleground.jpg",
   "philosophical-health-test": "/images/phc.jpg",
+  "talking-with-god":          "/images/angel.jpg",
   "experience-machine":        "/images/figure.jpg",
   "moral-luck":                "/images/temple.png",
   "the-absurd":                "/images/angel.jpg",
