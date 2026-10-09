@@ -22,6 +22,7 @@ export default function Nav() {
   const links = [
     { href: "/experiments", label: "experiments" },
     { href: "/biographies", label: "biographies" },
+    { href: "/metamorphosis", label: "metamorphosis" },
     { href: "/about", label: "about" },
   ];
 
@@ -97,7 +98,7 @@ export default function Nav() {
         position: "fixed", top: "3.2rem", left: 0, right: 0, zIndex: 99,
         backgroundColor: "var(--white)",
         borderBottom: "1px solid var(--border)",
-        maxHeight: menuOpen ? "240px" : "0px",
+        maxHeight: menuOpen ? "300px" : "0px",
         overflow: "hidden",
         transition: "max-height 0.3s ease",
         display: "none",
