@@ -61,6 +61,17 @@ function TextPage({ section }: { section: Section }) {
   return (
     <>
       <h2 id={`mm-h-${section.id}`} className="mm-headline">{section.headline}</h2>
+      {section.image && (
+        <figure className="mm-figure">
+          <div
+            className="mm-figure__img"
+            role="img"
+            aria-label={section.image.alt}
+            style={{ backgroundImage: `url(${section.image.src})` }}
+          />
+          <figcaption>{section.image.caption}</figcaption>
+        </figure>
+      )}
       <div className="mm-body">
         {section.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
       </div>
@@ -311,6 +322,26 @@ export default function Metamorphosis() {
           text-wrap: balance;
           margin: 0 0 3rem;
         }
+        /* A picture between headline and text: offset to the outer edge, and
+           printed into the paper where the page is paper-toned. */
+        .mm-figure {
+          margin: auto 0 2rem;
+          align-self: flex-end;
+          width: min(clamp(9rem, 17vw, 16rem), 100%);
+        }
+        .mm-figure__img {
+          aspect-ratio: 4 / 5;
+          background-size: cover;
+          background-position: center;
+          background-color: transparent;
+        }
+        .mm-tone-paper .mm-figure__img { mix-blend-mode: multiply; }
+        .mm-figure figcaption {
+          margin-top: 0.6rem;
+          font-size: 0.72rem;
+          line-height: 1.4;
+          color: var(--mm-mute);
+        }
         .mm-body {
           margin-top: auto;
           max-width: 33rem;
@@ -369,6 +400,7 @@ export default function Metamorphosis() {
           .mm-page--right .mm-plate--vertical { align-self: flex-start; }
 
           .mm-headline { max-width: none; margin-bottom: 2rem; }
+          .mm-figure { margin: 0 0 2rem; align-self: flex-start; width: min(100%, 22rem); }
           .mm-body { margin-top: 0; max-width: none; }
           .mm-byline { width: 8.5rem; }
           .mm-lead--closing { margin-top: 0; }
