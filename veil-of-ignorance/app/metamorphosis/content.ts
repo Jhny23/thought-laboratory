@@ -18,6 +18,8 @@ export interface Section {
   caption: string;
   headline: string;
   paragraphs: string[];
+  /** Optional picture set between the headline and the text on the text page. */
+  image?: { src: string; alt: string; caption: string };
 }
 
 export const cover = {
@@ -44,6 +46,11 @@ export const sections: Section[] = [
     caption:
       "(This page) The paper-knife, Sartre’s example of a thing whose purpose is settled before it exists.",
     headline: "A made object has a purpose before it exists. A person has none.",
+    image: {
+      src: "/images/dore-balaam-and-the-angel.jpg",
+      alt: "Black-and-white engraving: a winged angel on a rocky ledge points a sword at a hooded traveller seated on a donkey, under a stormy, moonlit sky.",
+      caption: "(This page) Gustave Doré, Balaam and the Angel, 1866.",
+    },
     paragraphs: [
       "Sartre says the word covers two groups: Christian thinkers such as Karl Jaspers and Gabriel Marcel, and atheists such as Martin Heidegger and himself. What they share is the claim usually put as existence before essence.",
       "To see what it means, he asks us to picture a paper-knife. Someone designed it for a job, so the idea of it existed in a craftsman’s mind before the object did. For centuries people imagined God as that craftsman, with every human being made to a plan. Even the eighteenth-century thinkers who dropped God kept the plan, in the form of a fixed human nature.",
