@@ -21,6 +21,10 @@ export interface Section {
 }
 
 export const cover = {
+  photo: {
+    src: "/images/metamorphosis-cover.jpg",
+    alt: "A single white sheep stands on a rounded, dark green hill, with more hills rolling away under a pale grey sky.",
+  },
   title: ["Existentialism", "Is a", "Humanism"],
   caption:
     "(This page) A lecture given in Paris and published in 1946, in which Sartre answers the critics of existentialism.",

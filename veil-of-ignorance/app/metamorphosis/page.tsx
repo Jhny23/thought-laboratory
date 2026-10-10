@@ -8,12 +8,13 @@ import { cover, sections, closing, type Section, type Tone } from "@/app/metamor
 /* ─── Page furniture ─── */
 
 type Kind = "cover" | "lead" | "plate" | "text" | "colophon";
+type PageTone = Tone | "photo";
 
 function Page({
   side, tone, kind, folio, children,
 }: {
   side: "left" | "right";
-  tone: Tone;
+  tone: PageTone;
   kind: Kind;
   folio: number;
   children: ReactNode;
@@ -104,7 +105,13 @@ export default function Metamorphosis() {
       <main className="mm">
         {/* Cover spread: title plate facing the oversized opening text */}
         <Spread id="cover" labelledBy="mm-title">
-          <Page side="left" tone="paper" kind="cover" folio={2}>
+          <Page side="left" tone="photo" kind="cover" folio={2}>
+            <div
+              className="mm-photo"
+              role="img"
+              aria-label={cover.photo.alt}
+              style={{ backgroundImage: `url(${cover.photo.src})` }}
+            />
             <p className="mm-caption">{cover.caption}</p>
             <h1 id="mm-title" className="mm-title">
               {cover.title.map((line, i) => (
@@ -176,6 +183,7 @@ export default function Metamorphosis() {
         .mm-tone-graphite { background: var(--mm-graphite); color: var(--mm-bone); --mm-mute: #a29e94; --mm-shade: 0.24; }
         .mm-tone-paper    { background: var(--mm-paper);    color: var(--mm-ink);  --mm-mute: #5b5750; --mm-shade: 0.09; }
         .mm-tone-sky      { background: var(--mm-sky);      color: var(--mm-ink);  --mm-mute: #39404a; --mm-shade: 0.11; }
+        .mm-tone-photo    { background: #1f3326;            color: var(--mm-bone); --mm-mute: rgba(239, 235, 227, 0.86); --mm-shade: 0.3; }
 
         .mm-page {
           position: relative;
@@ -223,13 +231,30 @@ export default function Metamorphosis() {
 
         /* ── Cover ── */
         .mm-title {
-          margin-top: auto;
+          margin-top: 2.4rem;
           font-weight: 500;
           line-height: 0.9;
           letter-spacing: -0.05em;
-          font-size: min(calc((var(--mm-pw) - 6.5rem) / (14 * 0.56)), 11rem);
+          font-size: min(calc((var(--mm-pw) - 6.5rem) / (14 * 0.47)), 11rem);
         }
         .mm-title__line { display: block; }
+
+        /* The photo fills the page; the caption and title sit above it. */
+        .mm-photo {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          background-size: cover;
+          background-position: center 70%;       /* keeps the sheep in the lower third */
+        }
+        .mm-photo::after {                        /* a soft shade so the type stays legible */
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to bottom, rgba(10, 20, 14, 0.62), rgba(10, 20, 14, 0) 50%);
+        }
+        .mm-page--cover .mm-caption,
+        .mm-page--cover .mm-title { position: relative; z-index: 1; }
 
         /* ── Oversized running text ── */
         .mm-page--lead { display: block; }
@@ -326,13 +351,13 @@ export default function Metamorphosis() {
           .mm-page--left,
           .mm-page--right { min-height: 0; padding: 2.2rem 1.4rem 4.2rem; }
           .mm-page + .mm-page { border-top: 1px solid rgba(128, 128, 128, 0.35); }
-          .mm-page--plate,
-          .mm-page--cover { min-height: 20rem; }
+          .mm-page--plate { min-height: 20rem; }
+          .mm-page--cover { min-height: min(80vh, 42rem); min-height: min(80svh, 42rem); }
           .mm-page--left::after, .mm-page--right::after { display: none; }
           .mm-page--left .mm-folio,
           .mm-page--right .mm-folio { left: 1.4rem; bottom: 1.3rem; }
 
-          .mm-title { font-size: min(calc((100vw - 2.8rem) / (14 * 0.6)), 7rem); }
+          .mm-title { margin-top: 1.8rem; font-size: min(calc((100vw - 2.8rem) / (14 * 0.5)), 7rem); }
           .mm-plate--horizontal,
           .mm-plate--vertical {
             writing-mode: horizontal-tb;
