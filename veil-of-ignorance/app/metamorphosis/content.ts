@@ -23,6 +23,12 @@ export interface Section {
       ink: "light" | "dark";
       /** CSS background-position, to keep the subject clear of the type. */
       position?: string;
+      /** A soft shade on one side of the photo, to keep the type legible where the photo is busy. */
+      shade?: "left" | "bottom";
+      /** Colour of the caption alone, when it sits over a different part of the photo than the word. */
+      captionInk?: "light" | "dark";
+      /** On phones the caption and word sit at the top by default; "bottom" moves them to the foot of the page. */
+      mobileText?: "top" | "bottom";
     };
   };
   /** Background of the text page, which sits opposite the plate. */
@@ -57,13 +63,14 @@ export const sections: Section[] = [
     plate: {
       word: "Essence",
       side: "left",
-      orientation: "horizontal",
+      orientation: "vertical",
       tone: "graphite",
       photo: {
         src: "/images/metamorphosis-essence-wave.jpg",
         alt: "A large wave curls and breaks at sunset under an orange sky, while a flock of gulls wheels over the water to its left.",
-        ink: "dark",
+        ink: "light",
         position: "center 40%",
+        shade: "left",
       },
     },
     textTone: "paper",
@@ -173,7 +180,20 @@ export const sections: Section[] = [
   },
   {
     id: "judgement",
-    plate: { word: "Judgement", side: "left", orientation: "horizontal", tone: "paper" },
+    plate: {
+      word: "Judgement",
+      side: "left",
+      orientation: "horizontal",
+      tone: "paper",
+      photo: {
+        src: "/images/metamorphosis-justice.jpg",
+        alt: "A bronze statue of blindfolded Lady Justice, one arm raised and holding a balance with two empty pans, against a warm sepia background that fades to black.",
+        ink: "light",
+        captionInk: "dark",
+        position: "center top",
+        mobileText: "bottom",
+      },
+    },
     textTone: "graphite",
     caption:
       "(This page) Maggie Tulliver and La Sanseverina choose opposite things, yet Sartre counts both as acting for freedom.",
