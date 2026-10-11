@@ -24,7 +24,7 @@ export interface Section {
       /** CSS background-position, to keep the subject clear of the type. */
       position?: string;
       /** A soft shade on one side of the photo, to keep the type legible where the photo is busy. */
-      shade?: "left" | "bottom";
+      shade?: "left" | "bottom" | "top";
       /** Colour of the caption alone, when it sits over a different part of the photo than the word. */
       captionInk?: "light" | "dark";
       /** On phones the caption and word sit at the top by default; "bottom" moves them to the foot of the page. */
@@ -90,7 +90,7 @@ export const sections: Section[] = [
   },
   {
     id: "choice",
-    plate: { word: "Choice", side: "right", orientation: "horizontal", tone: "sky" },
+    plate: { word: "Choice", side: "right", orientation: "horizontal", tone: "sky", photo: { src: "/images/metamorphosis-choice.jpg", alt: "White dotted figures holding hands above rippling water under a starfield", ink: "light", mobileText: "bottom" } },
     textTone: "graphite",
     caption:
       "(This page) Joining a union and marrying are Sartre’s own examples of private choices that speak for everyone.",
@@ -103,7 +103,7 @@ export const sections: Section[] = [
   },
   {
     id: "anguish",
-    plate: { word: "Anguish", side: "left", orientation: "vertical", tone: "paper" },
+    plate: { word: "Anguish", side: "left", orientation: "vertical", tone: "paper", photo: { src: "/images/metamorphosis-anguish.jpg", alt: "A golden angel against a black sky", ink: "light", position: "center 58%", shade: "left" } },
     textTone: "graphite",
     caption:
       "(This page) Kierkegaard’s Abraham and a field commander: Sartre’s two figures for the weight of deciding.",
@@ -116,7 +116,7 @@ export const sections: Section[] = [
   },
   {
     id: "abandonment",
-    plate: { word: "Abandonment", side: "right", orientation: "horizontal", tone: "graphite" },
+    plate: { word: "Abandonment", side: "right", orientation: "horizontal", tone: "graphite", photo: { src: "/images/metamorphosis-abandonment.jpg", alt: "A ram peering over red rock under a deep blue sky", ink: "light", shade: "bottom", mobileText: "bottom" } },
     textTone: "paper",
     caption:
       "(This page) The word comes from Heidegger. For Sartre it means only that there is no one left to appeal to.",
@@ -128,7 +128,7 @@ export const sections: Section[] = [
   },
   {
     id: "student",
-    plate: { word: "Stay or go", side: "left", orientation: "horizontal", tone: "sky" },
+    plate: { word: "Stay or go", side: "left", orientation: "horizontal", tone: "sky", photo: { src: "/images/metamorphosis-student.jpg", alt: "A shepherd in a conical hat among sheep beneath a blue sky", ink: "light", shade: "bottom", mobileText: "bottom" } },
     textTone: "paper",
     caption:
       "(This page) The student appears in the lecture without a name. His situation is Sartre’s test case for ethics without rules.",
@@ -141,7 +141,7 @@ export const sections: Section[] = [
   },
   {
     id: "despair",
-    plate: { word: "Despair", side: "right", orientation: "vertical", tone: "paper" },
+    plate: { word: "Despair", side: "right", orientation: "vertical", tone: "paper", photo: { src: "/images/metamorphosis-despair.jpg", alt: "A bald man walking beside a white camel against black", ink: "light", shade: "top", mobileText: "bottom" } },
     textTone: "graphite",
     caption:
       "(This page) Sartre’s despair is modest: it means counting only on what lies within your own power.",

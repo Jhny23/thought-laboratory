@@ -289,6 +289,8 @@ export default function Metamorphosis() {
         .mm-photo--plate::after { background: none; }
         .mm-photo--shade-left::after   { background: linear-gradient(to right, rgba(16, 8, 4, 0.62), rgba(16, 8, 4, 0) 62%); }
         .mm-photo--shade-bottom::after { background: linear-gradient(to top,   rgba(16, 8, 4, 0.62), rgba(16, 8, 4, 0) 55%); }
+        .mm-photo--shade-top::after { background: linear-gradient(to bottom, rgba(16, 8, 4, 0.5), rgba(16, 8, 4, 0) 30%); }
+        .mm-tone-photo .mm-photo--plate ~ .mm-caption { text-shadow: 0 0 6px rgba(0,0,0,.85), 0 0 2px rgba(0,0,0,.9); }
         .mm-tone-photo-dark .mm-photo::after { background: none; }   /* warm photos need no shade under dark type */
         .mm-tone-photo-dark .mm-folio { color: rgba(247, 244, 239, 0.92); }  /* the foot of the photo is dark water */
         .mm-page--cover .mm-caption,
