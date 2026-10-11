@@ -24,9 +24,11 @@ export interface Section {
       /** CSS background-position, to keep the subject clear of the type. */
       position?: string;
       /** A soft shade on one side of the photo, to keep the type legible where the photo is busy. */
-      shade?: "left" | "bottom" | "top";
+      shade?: "left" | "bottom" | "top" | "both";
       /** Colour of the caption alone, when it sits over a different part of the photo than the word. */
       captionInk?: "light" | "dark";
+           /** Invert the type over the photo so it reads on both light and dark areas. */
+           blend?: boolean;
       /** On phones the caption and word sit at the top by default; "bottom" moves them to the foot of the page. */
       mobileText?: "top" | "bottom";
     };
@@ -154,7 +156,7 @@ export const sections: Section[] = [
   },
   {
     id: "action",
-    plate: { word: "Action", side: "left", orientation: "horizontal", tone: "graphite" },
+    plate: { word: "Action", side: "left", orientation: "horizontal", tone: "graphite", photo: { src: "/images/metamorphosis-action.jpg", alt: "A knight in a dark fur cloak bows his head over a sword planted in rocky ground", ink: "light", position: "center 30%", shade: "both", mobileText: "bottom" } },
     textTone: "sky",
     caption:
       "(This page) Proust, Racine and the coward: three cases of a person being defined by what he did.",
@@ -167,7 +169,7 @@ export const sections: Section[] = [
   },
   {
     id: "others",
-    plate: { word: "Others", side: "right", orientation: "vertical", tone: "graphite" },
+    plate: { word: "Others", side: "right", orientation: "vertical", tone: "graphite", photo: { src: "/images/metamorphosis-others.jpg", alt: "An ink drawing of a crowd of faceless dark silhouettes on cream paper", ink: "dark", blend: true } },
     textTone: "paper",
     caption:
       "(This page) Sartre swaps human nature for a human condition: the limits every life meets in some form.",
@@ -207,7 +209,7 @@ export const sections: Section[] = [
   },
   {
     id: "humanism",
-    plate: { word: "Humanism", side: "right", orientation: "vertical", tone: "sky" },
+    plate: { word: "Humanism", side: "right", orientation: "vertical", tone: "sky", photo: { src: "/images/metamorphosis-humanism.jpg", alt: "A galloping horse blurred into streaks of orange light against a deep blue sky", ink: "light", position: "center 45%" } },
     textTone: "graphite",
     caption:
       "(This page) Auguste Comte, who founded a religion of humanity, is Sartre’s example of the humanism he rejects.",
@@ -221,6 +223,10 @@ export const sections: Section[] = [
 ];
 
 export const closing = {
+  photo: {
+    src: "/images/metamorphosis-closing.jpg",
+    alt: "Hundreds of fine white lines radiating from a single point at the centre.",
+  },
   lead: [
     "Nothing in the lecture hands you an answer, and that is the point. The answer has to be made by you, in a situation you did not pick, in a way you could bear to see everyone copy.",
     "Sartre meant that as a demand. He also meant it as good news.",
