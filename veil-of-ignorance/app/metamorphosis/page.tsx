@@ -48,7 +48,7 @@ function PlatePage({ section }: { section: Section }) {
     <>
       {plate.photo && (
         <div
-          className="mm-photo mm-photo--plate"
+          className={`mm-photo mm-photo--plate${plate.photo.shade ? ` mm-photo--shade-${plate.photo.shade}` : ""}${plate.photo.mobileText === "bottom" ? " mm-photo--mobile-bottom" : ""}`}
           role="img"
           aria-label={plate.photo.alt}
           style={{
@@ -57,9 +57,14 @@ function PlatePage({ section }: { section: Section }) {
           }}
         />
       )}
-      <p className="mm-caption">{caption}</p>
+      <p
+        className="mm-caption"
+        style={plate.photo?.captionInk ? { color: plate.photo.captionInk === "dark" ? "rgba(27, 26, 24, 0.85)" : "rgba(239, 235, 227, 0.9)" } : undefined}
+      >
+        {caption}
+      </p>
       <div
-        className={`mm-plate mm-plate--${plate.orientation}${plate.photo ? " mm-plate--onphoto" : ""}`}
+        className={`mm-plate mm-plate--${plate.orientation}`}
         style={{ "--chars": plate.word.length } as CSSProperties}
         aria-hidden="true"
       >
@@ -280,6 +285,10 @@ export default function Metamorphosis() {
           inset: 0;
           background: linear-gradient(to bottom, rgba(10, 20, 14, 0.62), rgba(10, 20, 14, 0) 50%);
         }
+        /* Plate photos get no shade unless content.ts asks for one on a side. */
+        .mm-photo--plate::after { background: none; }
+        .mm-photo--shade-left::after   { background: linear-gradient(to right, rgba(16, 8, 4, 0.62), rgba(16, 8, 4, 0) 62%); }
+        .mm-photo--shade-bottom::after { background: linear-gradient(to top,   rgba(16, 8, 4, 0.62), rgba(16, 8, 4, 0) 55%); }
         .mm-tone-photo-dark .mm-photo::after { background: none; }   /* warm photos need no shade under dark type */
         .mm-tone-photo-dark .mm-folio { color: rgba(247, 244, 239, 0.92); }  /* the foot of the photo is dark water */
         .mm-page--cover .mm-caption,
@@ -331,8 +340,6 @@ export default function Metamorphosis() {
           font-size: min(calc((var(--mm-ph) - 13rem) / (var(--chars) * 0.56)), 12rem);
         }
         .mm-page--right .mm-plate--vertical { align-self: flex-end; }
-        /* Over a photo the word sits high, under the caption, clear of the lower subject. */
-        .mm-plate--horizontal.mm-plate--onphoto { margin-top: 2.4rem; }
 
         /* ── Text pages ── */
         .mm-headline {
@@ -407,7 +414,13 @@ export default function Metamorphosis() {
           .mm-page--plate { min-height: 20rem; }
           .mm-page--plate.mm-tone-photo,
           .mm-page--plate.mm-tone-photo-dark { min-height: min(75vh, 38rem); min-height: min(75svh, 38rem); }
-          .mm-plate--horizontal.mm-plate--onphoto { margin-top: 1.8rem; }
+          /* Photos whose subject fills the top: caption and word drop into the dark foot of the page. */
+          .mm-photo--mobile-bottom ~ .mm-caption {
+            margin-top: auto;
+            max-width: none;
+            color: var(--mm-mute) !important;      /* beats the inline caption colour set for desktop */
+          }
+          .mm-photo--mobile-bottom ~ .mm-plate { margin-top: 0.8rem; }
           .mm-page--cover { min-height: min(80vh, 42rem); min-height: min(80svh, 42rem); }
           .mm-page--left::after, .mm-page--right::after { display: none; }
           .mm-page--left .mm-folio,
