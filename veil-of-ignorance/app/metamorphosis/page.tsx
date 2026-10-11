@@ -8,7 +8,8 @@ import { cover, sections, closing, type Section, type Tone } from "@/app/metamor
 /* ─── Page furniture ─── */
 
 type Kind = "cover" | "lead" | "plate" | "text" | "colophon";
-type PageTone = Tone | "photo";
+/** "photo" pages carry light type; "photo-dark" pages carry dark type (for light or warm photos). */
+type PageTone = Tone | "photo" | "photo-dark";
 
 function Page({
   side, tone, kind, folio, children,
@@ -45,9 +46,20 @@ function PlatePage({ section }: { section: Section }) {
   const { plate, caption } = section;
   return (
     <>
+      {plate.photo && (
+        <div
+          className="mm-photo mm-photo--plate"
+          role="img"
+          aria-label={plate.photo.alt}
+          style={{
+            backgroundImage: `url(${plate.photo.src})`,
+            backgroundPosition: plate.photo.position,
+          }}
+        />
+      )}
       <p className="mm-caption">{caption}</p>
       <div
-        className={`mm-plate mm-plate--${plate.orientation}`}
+        className={`mm-plate mm-plate--${plate.orientation}${plate.photo ? " mm-plate--onphoto" : ""}`}
         style={{ "--chars": plate.word.length } as CSSProperties}
         aria-hidden="true"
       >
@@ -81,6 +93,9 @@ function TextPage({ section }: { section: Section }) {
 
 function SectionSpread({ section, index }: { section: Section; index: number }) {
   const plateLeft = section.plate.side === "left";
+  const plateTone: PageTone = section.plate.photo
+    ? section.plate.photo.ink === "dark" ? "photo-dark" : "photo"
+    : section.plate.tone;
   const left = 2 + index * 2;
   const plate = <PlatePage section={section} />;
   const text = <TextPage section={section} />;
@@ -90,14 +105,14 @@ function SectionSpread({ section, index }: { section: Section; index: number }) 
       <Page
         side="left" folio={left}
         kind={plateLeft ? "plate" : "text"}
-        tone={plateLeft ? section.plate.tone : section.textTone}
+        tone={plateLeft ? plateTone : section.textTone}
       >
         {plateLeft ? plate : text}
       </Page>
       <Page
         side="right" folio={left + 1}
         kind={plateLeft ? "text" : "plate"}
-        tone={plateLeft ? section.textTone : section.plate.tone}
+        tone={plateLeft ? section.textTone : plateTone}
       >
         {plateLeft ? text : plate}
       </Page>
@@ -195,6 +210,7 @@ export default function Metamorphosis() {
         .mm-tone-paper    { background: var(--mm-paper);    color: var(--mm-ink);  --mm-mute: #5b5750; --mm-shade: 0.09; }
         .mm-tone-sky      { background: var(--mm-sky);      color: var(--mm-ink);  --mm-mute: #39404a; --mm-shade: 0.11; }
         .mm-tone-photo    { background: #1f3326;            color: var(--mm-bone); --mm-mute: rgba(239, 235, 227, 0.86); --mm-shade: 0.3; }
+        .mm-tone-photo-dark { background: #d9764f;          color: var(--mm-ink);  --mm-mute: rgba(27, 26, 24, 0.82); --mm-shade: 0.2; }
 
         .mm-page {
           position: relative;
@@ -264,8 +280,12 @@ export default function Metamorphosis() {
           inset: 0;
           background: linear-gradient(to bottom, rgba(10, 20, 14, 0.62), rgba(10, 20, 14, 0) 50%);
         }
+        .mm-tone-photo-dark .mm-photo::after { background: none; }   /* warm photos need no shade under dark type */
+        .mm-tone-photo-dark .mm-folio { color: rgba(247, 244, 239, 0.92); }  /* the foot of the photo is dark water */
         .mm-page--cover .mm-caption,
-        .mm-page--cover .mm-title { position: relative; z-index: 1; }
+        .mm-page--cover .mm-title,
+        .mm-photo--plate ~ .mm-caption,
+        .mm-photo--plate ~ .mm-plate { position: relative; z-index: 1; }
 
         /* ── Oversized running text ── */
         .mm-page--lead { display: block; }
@@ -311,6 +331,8 @@ export default function Metamorphosis() {
           font-size: min(calc((var(--mm-ph) - 13rem) / (var(--chars) * 0.56)), 12rem);
         }
         .mm-page--right .mm-plate--vertical { align-self: flex-end; }
+        /* Over a photo the word sits high, under the caption, clear of the lower subject. */
+        .mm-plate--horizontal.mm-plate--onphoto { margin-top: 2.4rem; }
 
         /* ── Text pages ── */
         .mm-headline {
@@ -383,6 +405,9 @@ export default function Metamorphosis() {
           .mm-page--right { min-height: 0; padding: 2.2rem 1.4rem 4.2rem; }
           .mm-page + .mm-page { border-top: 1px solid rgba(128, 128, 128, 0.35); }
           .mm-page--plate { min-height: 20rem; }
+          .mm-page--plate.mm-tone-photo,
+          .mm-page--plate.mm-tone-photo-dark { min-height: min(75vh, 38rem); min-height: min(75svh, 38rem); }
+          .mm-plate--horizontal.mm-plate--onphoto { margin-top: 1.8rem; }
           .mm-page--cover { min-height: min(80vh, 42rem); min-height: min(80svh, 42rem); }
           .mm-page--left::after, .mm-page--right::after { display: none; }
           .mm-page--left .mm-folio,

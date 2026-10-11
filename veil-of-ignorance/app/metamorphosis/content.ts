@@ -10,8 +10,21 @@ export type Orientation = "vertical" | "horizontal";
 
 export interface Section {
   id: string;
-  /** The word set very large on the plate page. */
-  plate: { word: string; side: Side; orientation: Orientation; tone: Tone };
+  /** The word set very large on the plate page. An optional photo fills the page behind it. */
+  plate: {
+    word: string;
+    side: Side;
+    orientation: Orientation;
+    tone: Tone;
+    photo?: {
+      src: string;
+      alt: string;
+      /** Colour of the type over the photo: "dark" for light or warm photos, "light" for dark ones. */
+      ink: "light" | "dark";
+      /** CSS background-position, to keep the subject clear of the type. */
+      position?: string;
+    };
+  };
   /** Background of the text page, which sits opposite the plate. */
   textTone: Tone;
   /** A magazine-style caption, set small at the top of the plate page. */
@@ -41,7 +54,18 @@ export const cover = {
 export const sections: Section[] = [
   {
     id: "essence",
-    plate: { word: "Essence", side: "left", orientation: "vertical", tone: "graphite" },
+    plate: {
+      word: "Essence",
+      side: "left",
+      orientation: "horizontal",
+      tone: "graphite",
+      photo: {
+        src: "/images/metamorphosis-essence-wave.jpg",
+        alt: "A large wave curls and breaks at sunset under an orange sky, while a flock of gulls wheels over the water to its left.",
+        ink: "dark",
+        position: "center 40%",
+      },
+    },
     textTone: "paper",
     caption:
       "(This page) The paper-knife, Sartre’s example of a thing whose purpose is settled before it exists.",
