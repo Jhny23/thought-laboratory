@@ -297,7 +297,7 @@ export default function Metamorphosis() {
         .mm-photo--shade-bottom::after { background: linear-gradient(to top,   rgba(16, 8, 4, 0.62), rgba(16, 8, 4, 0) 55%); }
         .mm-photo--shade-top::after { background: linear-gradient(to bottom, rgba(16, 8, 4, 0.5), rgba(16, 8, 4, 0) 30%); }
         .mm-tone-photo .mm-photo--plate ~ .mm-caption { text-shadow: 0 0 6px rgba(0,0,0,.85), 0 0 2px rgba(0,0,0,.9); }
-        .mm-photo--scrim::after { background: rgba(8, 8, 8, 0.78); }   /* the radiating lines are busy: dim them under the text */
+        .mm-photo--scrim::after { background: linear-gradient(to bottom, rgba(6, 30, 32, 0.86), rgba(6, 30, 32, 0.72) 60%, rgba(6, 30, 32, 0.3)); }   /* deepen the teal under the closing text */
         .mm-photo--scrim ~ .mm-lead { position: relative; z-index: 1; }
         .mm-photo--shade-both::after   { background: linear-gradient(to bottom, rgba(16, 8, 4, 0.7), rgba(16, 8, 4, 0) 34%), linear-gradient(to top, rgba(16, 8, 4, 0.62), rgba(16, 8, 4, 0) 45%); }
         /* Dark type with a pale halo, so it stays readable where the picture goes black. */
