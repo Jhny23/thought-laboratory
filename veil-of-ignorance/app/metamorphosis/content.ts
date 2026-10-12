@@ -92,7 +92,7 @@ export const sections: Section[] = [
   },
   {
     id: "choice",
-    plate: { word: "Choice", side: "right", orientation: "horizontal", tone: "sky", photo: { src: "/images/metamorphosis-choice-tree.jpg", alt: "A weeping willow beside a red rock spire and a pale moon in a violet sky", ink: "light", shade: "bottom", mobileText: "bottom" } },
+    plate: { word: "Choice", side: "right", orientation: "horizontal", tone: "sky", photo: { src: "/images/metamorphosis-choice-surfer.jpg", alt: "A surfer carving across a wave, blurred into streaks of grey and cream", ink: "light", shade: "both" } },
     textTone: "graphite",
     caption:
       "(This page) Joining a union and marrying are Sartre’s own examples of private choices that speak for everyone.",
