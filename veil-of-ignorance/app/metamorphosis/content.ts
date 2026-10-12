@@ -224,8 +224,8 @@ export const sections: Section[] = [
 
 export const closing = {
   photo: {
-    src: "/images/metamorphosis-closing.jpg",
-    alt: "Hundreds of fine white lines radiating from a single point at the centre.",
+    src: "/images/metamorphosis-closing-building.jpg",
+    alt: "Kenzo Tange’s Yamanashi Broadcasting and Press Centre (1966), drawn in elevation on teal grid paper.",
   },
   lead: [
     "Nothing in the lecture hands you an answer, and that is the point. The answer has to be made by you, in a situation you did not pick, in a way you could bear to see everyone copy.",
