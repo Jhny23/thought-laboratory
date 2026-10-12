@@ -48,7 +48,7 @@ function PlatePage({ section }: { section: Section }) {
     <>
       {plate.photo && (
         <div
-          className={`mm-photo mm-photo--plate${plate.photo.shade ? ` mm-photo--shade-${plate.photo.shade}` : ""}${plate.photo.mobileText === "bottom" ? " mm-photo--mobile-bottom" : ""}`}
+          className={`mm-photo mm-photo--plate${plate.photo.shade ? ` mm-photo--shade-${plate.photo.shade}` : ""}${plate.photo.mobileText === "bottom" ? " mm-photo--mobile-bottom" : ""}${plate.photo.blend ? " mm-photo--blend" : ""}`}
           role="img"
           aria-label={plate.photo.alt}
           style={{
@@ -176,7 +176,13 @@ export default function Metamorphosis() {
               <a href="#cover">Back to the start</a>
             </div>
           </Page>
-          <Page side="right" tone="paper" kind="lead" folio={3 + closingIndex * 2}>
+          <Page side="right" tone="photo" kind="lead" folio={3 + closingIndex * 2}>
+            <div
+              className="mm-photo mm-photo--scrim"
+              role="img"
+              aria-label={closing.photo.alt}
+              style={{ backgroundImage: `url(${closing.photo.src})` }}
+            />
             <div id="mm-closing" className="mm-lead mm-lead--closing">
               {closing.lead.map((p, i) => <p key={i}>{p}</p>)}
             </div>
@@ -291,6 +297,17 @@ export default function Metamorphosis() {
         .mm-photo--shade-bottom::after { background: linear-gradient(to top,   rgba(16, 8, 4, 0.62), rgba(16, 8, 4, 0) 55%); }
         .mm-photo--shade-top::after { background: linear-gradient(to bottom, rgba(16, 8, 4, 0.5), rgba(16, 8, 4, 0) 30%); }
         .mm-tone-photo .mm-photo--plate ~ .mm-caption { text-shadow: 0 0 6px rgba(0,0,0,.85), 0 0 2px rgba(0,0,0,.9); }
+        .mm-photo--scrim::after { background: rgba(8, 8, 8, 0.78); }   /* the radiating lines are busy: dim them under the text */
+        .mm-photo--scrim ~ .mm-lead { position: relative; z-index: 1; }
+        .mm-photo--shade-both::after   { background: linear-gradient(to bottom, rgba(16, 8, 4, 0.7), rgba(16, 8, 4, 0) 34%), linear-gradient(to top, rgba(16, 8, 4, 0.62), rgba(16, 8, 4, 0) 45%); }
+        /* Dark type with a pale halo, so it stays readable where the picture goes black. */
+        .mm-photo--blend ~ .mm-caption,
+        .mm-photo--blend ~ .mm-plate {
+          color: #14130f !important;
+          text-shadow: 0 0 0.06em #f1e6c8, 0 0 0.14em #f1e6c8, 0 0 0.3em #f1e6c8, 0 0 0.5em rgba(241, 230, 200, 0.9);
+        }
+        .mm-photo--blend ~ .mm-caption { text-shadow: 0 0 3px #f1e6c8, 0 0 6px #f1e6c8, 0 0 12px #f1e6c8; }
+        .mm-page:has(.mm-photo--blend) .mm-folio { color: #14130f; text-shadow: 0 0 4px #f1e6c8, 0 0 8px #f1e6c8; }
         .mm-tone-photo-dark .mm-photo::after { background: none; }   /* warm photos need no shade under dark type */
         .mm-tone-photo-dark .mm-folio { color: rgba(247, 244, 239, 0.92); }  /* the foot of the photo is dark water */
         .mm-page--cover .mm-caption,
