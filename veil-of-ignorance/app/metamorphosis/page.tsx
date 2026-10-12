@@ -440,6 +440,8 @@ export default function Metamorphosis() {
             color: var(--mm-mute) !important;      /* beats the inline caption colour set for desktop */
           }
           .mm-photo--mobile-bottom ~ .mm-plate { margin-top: 0.8rem; }
+          /* ...and a soft shade under them, so the caption is never set straight over a busy picture. */
+          .mm-photo--mobile-bottom:not(.mm-photo--blend)::after { background: linear-gradient(to top, rgba(10, 8, 6, 0.7), rgba(10, 8, 6, 0.35) 30%, rgba(10, 8, 6, 0) 58%); }
           .mm-page--cover { min-height: min(80vh, 42rem); min-height: min(80svh, 42rem); }
           .mm-page--left::after, .mm-page--right::after { display: none; }
           .mm-page--left .mm-folio,
@@ -459,7 +461,9 @@ export default function Metamorphosis() {
           .mm-headline { max-width: none; margin-bottom: 2rem; }
           .mm-figure { margin: 0 0 2rem; align-self: flex-start; width: min(100%, 22rem); }
           .mm-body { margin-top: 0; max-width: none; }
-          .mm-byline { width: 8.5rem; }
+          /* The byline sits above the lead on a phone instead of floating beside it. */
+          .mm-byline { float: none; width: auto; margin: 0 0 1.3rem; font-size: 0.74rem; display: flex; flex-wrap: wrap; gap: 0.1rem 1.4rem; }
+          .mm-lead { font-size: clamp(1.15rem, 5.2vw, 1.5rem); line-height: 1.28; letter-spacing: -0.012em; }
           .mm-lead--closing { margin-top: 0; }
         }
       `}</style>
