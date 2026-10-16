@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Nav from "@/app/components/Nav";
@@ -8,6 +9,26 @@ import Footer from "@/app/components/Footer";
 export default function NotFound() {
   const path = usePathname() || "/";
   const shown = path.length > 42 ? path.slice(0, 41) + "…" : path;
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(true);
+
+  /* Honour "reduce motion": show the still frame and let the visitor start the film. */
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      v.pause();
+      setPlaying(false);
+    }
+  }, []);
+
+  const toggle = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) { v.play().then(() => setPlaying(true)).catch(() => setPlaying(false)); }
+    else { v.pause(); setPlaying(false); }
+  };
 
   const way = [
     { href: "/experiments", label: "Run an experiment", note: "Choose, and see what it costs you" },
@@ -20,13 +41,14 @@ export default function NotFound() {
       <Nav />
 
       <main className="nf" style={{ flex: 1, padding: "7.5rem 1.8rem 5rem", position: "relative", overflow: "hidden" }}>
-        {/* The numeral: one solid, one ghosted and out of register, like a misprint */}
-        <div className="nf-numeral" aria-hidden="true">
-          <span className="nf-ghost">404</span>
-          <span className="nf-solid">404</span>
-        </div>
-
+        <div className="nf-grid">
         <div className="nf-body">
+          {/* The numeral: one solid, one ghosted and out of register, like a misprint */}
+          <div className="nf-numeral" aria-hidden="true">
+            <span className="nf-ghost">404</span>
+            <span className="nf-solid">404</span>
+          </div>
+
           <p className="nf-label">page not found</p>
 
           <h1 className="nf-title">
@@ -53,30 +75,90 @@ export default function NotFound() {
 
           <Link href="/" className="nf-home">← back to the laboratory</Link>
         </div>
+
+        <figure className="nf-plate">
+          <div className="nf-plate__frame">
+            <video
+              ref={videoRef}
+              className="nf-plate__video"
+              src="/videos/cosmos.mp4"
+              poster="/images/404-cosmos-poster.jpg"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-hidden="true"
+            />
+          </div>
+          <figcaption>
+            <span>(This page) Nothing here, so here is somewhere else.</span>
+            <button type="button" onClick={toggle} aria-label={playing ? "Pause the film" : "Play the film"}>
+              {playing ? "pause" : "play"}
+            </button>
+          </figcaption>
+        </figure>
+        </div>
       </main>
 
       <Footer />
 
       <style jsx global>{`
         .nf { display: block; }
+        .nf-grid {
+          max-width: 1180px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: minmax(0, 560px) minmax(15rem, 27rem);
+          justify-content: space-between;
+          align-items: start;
+          gap: 3rem 4rem;
+        }
+        .nf-body { position: relative; z-index: 1; min-width: 0; }
+
+        /* The numeral: one solid, one ghosted and out of register, like a misprint */
         .nf-numeral {
-          position: absolute;
-          top: 3.5rem;
-          right: 4vw;
+          position: relative;
           font-family: var(--serif);
           font-style: italic;
-          font-size: clamp(9rem, 30vw, 26rem);
-          line-height: 0.8;
+          font-size: clamp(5.5rem, 9vw, 8rem);
+          line-height: 0.85;
           letter-spacing: -0.04em;
+          margin: 0 0 1.4rem -0.04em;
           user-select: none;
           pointer-events: none;
         }
-        .nf-numeral span { position: absolute; top: 0; right: 0; white-space: nowrap; }
-        .nf-solid { color: var(--ink); opacity: 0.07; }
-        .nf-ghost { color: transparent; -webkit-text-stroke: 1px rgba(28, 26, 23, 0.22); transform: translate(0.035em, 0.03em); }
-        .nf-numeral { width: 1px; height: 1px; }
+        .nf-numeral span { display: block; }
+        .nf-solid { color: var(--ink); opacity: 0.1; }
+        .nf-ghost { position: absolute; top: 0; left: 0; color: transparent; -webkit-text-stroke: 1px rgba(28, 26, 23, 0.25); transform: translate(0.035em, 0.03em); }
 
-        .nf-body { position: relative; z-index: 1; max-width: 560px; margin: 0 auto 0 max(1.8rem, 8vw); }
+        /* The film, set like a plate in the magazine */
+        .nf-plate { margin: 0; position: sticky; top: 5.5rem; }
+        .nf-plate__frame { aspect-ratio: 4 / 5; background: #d9d9d9; overflow: hidden; box-shadow: 0 2px 16px rgba(28, 28, 26, 0.08); }
+        .nf-plate__video { display: block; width: 100%; height: 100%; object-fit: cover; }
+        .nf-plate figcaption {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          gap: 1rem;
+          margin-top: 0.8rem;
+          font-family: var(--mono);
+          font-size: 0.55rem;
+          letter-spacing: 0.06em;
+          line-height: 1.5;
+          color: var(--muted);
+        }
+        .nf-plate figcaption button {
+          font-family: var(--mono);
+          font-size: 0.55rem;
+          letter-spacing: 0.1em;
+          color: var(--muted);
+          border-bottom: 1px solid var(--border);
+          padding: 0.15rem 0;
+          flex-shrink: 0;
+        }
+        .nf-plate figcaption button:hover, .nf-plate figcaption button:focus-visible { color: var(--ink); border-color: var(--ink); outline: none; }
+
         .nf-label {
           font-family: var(--mono);
           font-size: 0.55rem;
@@ -145,13 +227,13 @@ export default function NotFound() {
         .nf-home { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; color: var(--muted); border-bottom: 1px solid var(--border); padding-bottom: 0.15rem; }
         .nf-home:hover { color: var(--ink); border-color: var(--ink); }
 
+        @media (max-width: 900px) {
+          .nf-grid { grid-template-columns: minmax(0, 1fr); gap: 3.2rem; }
+          .nf-plate { position: static; width: min(100%, 26rem); }
+        }
         @media (max-width: 700px) {
           .nf { padding-top: 6rem !important; }
-          .nf-body { margin-left: 0; }
-          .nf-numeral { position: relative; top: 0; right: auto; width: auto; height: auto; font-size: 7.5rem; margin: 0 0 0.6rem 1.4rem; }
-          .nf-numeral span { position: static; display: block; }
-          .nf-ghost { display: none !important; }
-          .nf-solid { opacity: 0.12; }
+          .nf-numeral { font-size: 6rem; margin-bottom: 0.6rem; }
           .nf-label { margin-bottom: 1.6rem; }
           .nf-title { margin-bottom: 2rem; }
           .nf-proof { margin-bottom: 2.2rem; }
